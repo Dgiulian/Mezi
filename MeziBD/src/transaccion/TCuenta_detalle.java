@@ -243,11 +243,11 @@ private static Contrato getContrato(){
       contrato.setNumero(666);      
       return contrato;
   }
-  public List<Cuenta_detalle> detalleInquilino(Contrato contrato, ArrayList<Contrato_valor> lstValor, ArrayList<Contrato_documento> lstDocum, ArrayList<Contrato_gasto> lstGasto){
+  public List<Cuenta_detalle> detalleInquilino(Contrato contrato, ArrayList<Contrato_valor> lstValor,  ArrayList<Contrato_gasto> lstGasto){
        ArrayList<Cuenta_detalle> lstDetalle = new ArrayList<Cuenta_detalle>();
        lstDetalle.addAll(this.crearDetalleInquilino(contrato));                        
        lstDetalle.addAll(this.crearDetalle(lstValor.toArray(new Contrato_valor[lstValor.size()])));
-       lstDetalle.addAll(this.crearDetalle(lstDocum.toArray(new Contrato_documento[lstDocum.size()]), OptionsCfg.CLIENTE_TIPO_INQUILINO));
+       //lstDetalle.addAll(this.crearDetalle(lstDocum.toArray(new Contrato_documento[lstDocum.size()]), OptionsCfg.CLIENTE_TIPO_INQUILINO));
        lstDetalle.addAll(this.crearDetalle(lstGasto.toArray(new Contrato_gasto[lstGasto.size()]),contrato.getFecha_inicio()));
        return lstDetalle;
   }

@@ -28,8 +28,10 @@ import transaccion.TContrato_gasto;
 import transaccion.TContrato_valor;
 import transaccion.TCuenta;
 import transaccion.TCuenta_detalle;
+import transaccion.TInquilino;
 import transaccion.TParametro;
 import transaccion.TPropiedad;
+import transaccion.TPropietario;
 import transaccion.TVendedor;
 import utils.BaseException;
 import utils.OptionsCfg;
@@ -234,10 +236,11 @@ public class ContratoEdit extends HttpServlet {
                }
                if(arr_gasto_concepto!=null) {
                 for (int i =0;i<arr_gasto_concepto.length;i++){
-                     String gasto_concepto          = arr_gasto_importe[i];
+                     String gasto_concepto          = arr_gasto_concepto[i];
                      Integer gasto_aplica           = Parser.parseInt(arr_gasto_aplica[i]);
                      Float gasto_importe            = Parser.parseFloat(arr_gasto_importe[i]);                   
                      Contrato_gasto gasto =  new Contrato_gasto();
+                     gasto.setConcepto(gasto_concepto);
                      gasto.setId_contrato(id_contrato);
                      gasto.setId_aplica(gasto_aplica);
                      gasto.setImporte(gasto_importe);
@@ -250,6 +253,10 @@ public class ContratoEdit extends HttpServlet {
                TContrato_valor     tv = new TContrato_valor();
                TContrato_documento td = new TContrato_documento();
                TContrato_gasto     tg = new TContrato_gasto();
+               
+               new TInquilino().alta(id_inquilino);
+               new TPropietario().alta(propiedad.getId_propietario());
+               
                
                for(Contrato_valor valor:lstValor)     tv.alta(valor);
                for(Contrato_documento docum:lstDocum) tv.alta(docum);
@@ -283,7 +290,7 @@ public class ContratoEdit extends HttpServlet {
                int id_cc_propietario_o  = tc.alta(cc_propietario_o);
                int id_cc_propietario_no = tc.alta(cc_propietario_no);
                
-               List<Cuenta_detalle> detalleInquilino_o    = tcd.detalleInquilino(contrato, lstValor, lstDocum, lstGastoInq);
+               List<Cuenta_detalle> detalleInquilino_o    = tcd.detalleInquilino(contrato, lstValor, lstGastoInq);
                List<Cuenta_detalle> detalleInquilino_no   = tcd.detalleInquilino(lstDocum);
                
                List<Cuenta_detalle> detallePropietario_o  = tcd.detallePropietario(contrato, lstGastoProp);

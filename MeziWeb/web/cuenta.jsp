@@ -322,7 +322,8 @@
                },
                success: function(result) {
                    if(result.Result === "OK") {
-                       $('#fecha_liquidacion').val(convertirFecha(result.Record.fecha_liquidacion));
+                       if(result.Record.fecha_liquidacion!==undefined)
+                        $('#fecha_liquidacion').val(convertirFecha(result.Record.fecha_liquidacion));
                        $tabla.find('tbody').html(createTableCuenta(result.Records));                       
                        $btnAjustar.data('id_cuenta',result.Record.id);
                        $btnLiquidar.data('id_cuenta',result.Record.id);
@@ -341,12 +342,12 @@
         for(var i = 0;i< data.length;i++){
            html +="<tr class=''>";
            var d = data[i];
-           saldo += d.debe - d.haber;
+           saldo += d.debe.toFixed(2) - d.haber.toFixed(2);
            html += wrapTag('td',convertirFecha(d.fecha),'');
            html += wrapTag('td',d.concepto,'');
-           html += wrapTag('td',d.debe,'numeric');
-           html += wrapTag('td',d.haber,'numeric');
-           html += wrapTag('td',saldo,'numeric');
+           html += wrapTag('td',d.debe.toFixed(2),'numeric');
+           html += wrapTag('td',d.haber.toFixed(2),'numeric');
+           html += wrapTag('td',saldo.toFixed(2),'numeric');
             
 //            html +='<td style="width:75px"  >' + '</td>';
 //            html +=wrapTag('td',htmlEdit + htmlDel,'');

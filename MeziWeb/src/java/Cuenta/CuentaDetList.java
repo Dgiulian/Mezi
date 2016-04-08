@@ -75,7 +75,7 @@ public class CuentaDetList extends HttpServlet {
             
             if (lista != null) {
                 Contrato contrato = tcr.getById(cuenta.getId_contrato());
-                Float punitorio_porc = contrato.getPunitorio_monto();
+                Float punitorio_porc = contrato.getPunitorio_monto() / 100;
                 
                 String ult_liquidacion      = cuenta.getFecha_liquidacion();
                 LocalDate fecha_liquidacion = new LocalDate(ult_liquidacion);
@@ -92,9 +92,9 @@ public class CuentaDetList extends HttpServlet {
                         if (days >=10){
                             Cuenta_detalle punitorio = new Cuenta_detalle();
                             punitorio.setFecha(cd.getFecha());
-                            punitorio.setConcepto(String.format("Punitorio mes %d",cd.getId_referencia()));
+                            punitorio.setConcepto(String.format("Punitorio mes %d (%d dias)",cd.getId_referencia(),days));
                             punitorio.setId_concepto(OptionsCfg.CONCEPTO_PUNITORIO);
-                            float monto_punitorio = days * punitorio_porc / 100;
+                            float monto_punitorio = days * punitorio_porc  ;
                             punitorio.setDebe(monto_punitorio);
                             listaDetalle.add(punitorio);                            
                         }

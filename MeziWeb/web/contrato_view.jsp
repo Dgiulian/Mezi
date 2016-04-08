@@ -1,4 +1,5 @@
 
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="bd.Contrato_gasto"%>
 <%@page import="bd.Contrato_documento"%>
 <%@page import="bd.Contrato_valor"%>
@@ -62,6 +63,7 @@
     List<Contrato_valor> lstValor = (List<Contrato_valor>) request.getAttribute("lstValor");
     List<Contrato_documento> lstDocum= (List<Contrato_documento>) request.getAttribute("lstDocum");
     List<Contrato_gasto> lstGasto = (List<Contrato_gasto>) request.getAttribute("lstGasto");
+    DecimalFormat df = new DecimalFormat("#.00");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -216,36 +218,6 @@
                                         </div> <!-- tab1 -->
 
                                             <div class="tab-pane row " id="tabProp">
-<!--                                                <div class="col-lg-12">
-                                                    <h2>Listado de propiedades disponibles</h2>
-                                                    <table  id="tblPropiedades" class="table table-condensed table-bordered table-responsive">
-                                                        <colgroup>
-                                                            <col style="width:10%">
-                                                            <col style="">
-                                                            <col style="width:5%">
-                                                        </colgroup>
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Tipo</th>
-                                                                <th>Domicilio</th>
-                                                                <th>Propietario</th>
-                                                                <th>Acci&oacute;n</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <% for(Propiedad p:lstPropiedades){%>
-                                                            <tr>
-                                                                <td><%=p.getId()%></td>
-                                                                <td><%=p.getDireccion()%></td>
-                                                                <td></td>
-                                                                <td><span class='btn btn-xs btn-primary btn-circle btn-sel' data-index="<%=p.getId()%>"><span class='fa fa-plus'></span></td>
-                                                            </tr>
-                                                            <% }%>
-                                                        </tbody>
-
-                                                    </table>
-                                                </div>
-                                                <hr>-->
                                                 <div class="col-lg-8">
                                                     <fieldset disabled>
                                                     <legend>Datos de la propiedad</legend>
@@ -381,7 +353,7 @@
                                                                 <tr>
                                                                     <td><%=TFecha.formatearFechaBdVista(valor.getDesde())%><input type="hidden" name="valor_desde" value="<%=TFecha.formatearFechaBdVista(valor.getDesde())%>"></td>
                                                                     <td><%=TFecha.formatearFechaBdVista(valor.getHasta())%><input type="hidden" name="valor_hasta" value="<%=TFecha.formatearFechaBdVista(valor.getHasta())%>"></td>
-                                                                    <td><%=valor.getMonto()%><input type="hidden" name="valor_monto" value="<%=valor.getMonto()%>"></td>
+                                                                    <td><%=df.format(valor.getMonto())%><input type="hidden" name="valor_monto" value="<%=valor.getMonto()%>"></td>
                                                                     <td><span class='btn btn-xs btn-danger btn-circle btn-del'><span class='fa fa-trash-o'></span></td>
                                                                 </tr>
                                                                 <%}%>
@@ -416,7 +388,7 @@
                                                                 <tr>
                                                                     <td><%=TFecha.formatearFechaBdVista(documento.getDesde())%><input type="hidden" name="documento_desde" value="<%=TFecha.formatearFechaBdVista(documento.getDesde())%>"></td>
                                                                     <td><%=TFecha.formatearFechaBdVista(documento.getHasta())%><input type="hidden" name="documento_hasta" value="<%=TFecha.formatearFechaBdVista(documento.getHasta())%>"></td>
-                                                                    <td><%=documento.getMonto()%><input type="hidden" name="documento_monto" value="<%=documento.getMonto()%>"></td>
+                                                                    <td><%=df.format(documento.getMonto())%><input type="hidden" name="documento_monto" value="<%=documento.getMonto()%>"></td>
                                                                     <td><span class='btn btn-xs btn-danger btn-circle btn-del'><span class='fa fa-trash-o'></span></td>
                                                                 </tr>
                                                                 <%}%>                                                              
@@ -435,7 +407,7 @@
                                                                     <label class="control-label" for="punitorio_monto">Punitorio</label>
                                                                     <div class="controls">
                                                                         <div class="input-group">
-                                                                          <input type="text" id="punitorio_monto" name="punitorio_monto" class="form-control  numeric" value="<%=contrato.getPunitorio_monto()%>">
+                                                                          <input type="text" id="punitorio_monto" name="punitorio_monto" class="form-control  numeric" value="<%=df.format(contrato.getPunitorio_monto())%>">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -476,7 +448,7 @@
                                                                     <label class="control-label" for="comision_vendedor">Comision al vendedor ($)</label>
                                                                     <div class="controls">
                                                                         <div class="input-group">
-                                                                          <input type="text" id="comision_vendedor"  name="comision_vendedor"  class="form-control numeric" value="<%=contrato.getComision_vendedor()%>">
+                                                                          <input type="text" id="comision_vendedor"  name="comision_vendedor"  class="form-control numeric" value="<%=df.format(contrato.getComision_vendedor())%>">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -495,7 +467,7 @@
                                                                     <label class="control-label" for="gastos_escribania_inquilino">Gastos escriban&iacute;a</label>
                                                                     <div class="controls">
                                                                         <div class="input-group">
-                                                                          <input type="text" id="gastos_escribania_inquilino" name="gastos_escribania_inquilino" class="form-control numeric" value="<%=contrato.getGastos_escribania_inquilino()%>">
+                                                                          <input type="text" id="gastos_escribania_inquilino" name="gastos_escribania_inquilino" class="form-control numeric" value="<%=df.format(contrato.getGastos_escribania_inquilino())%>">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -504,7 +476,7 @@
                                                                     <label class="control-label" for="gastos_sellado_inquilino">Gastos sellado</label>
                                                                     <div class="controls">
                                                                         <div class="input-group">
-                                                                          <input type="text" id="gastos_sellado_inquilino" name="gastos_sellado_inquilino" class="form-control  numeric" value="<%=contrato.getGastos_sellado_inquilino()%>">
+                                                                          <input type="text" id="gastos_sellado_inquilino" name="gastos_sellado_inquilino" class="form-control  numeric" value="<%=df.format(contrato.getGastos_sellado_inquilino())%>">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -517,7 +489,7 @@
                                                                     <label class="control-label" for="comision_monto_inquilino">Comisi&oacute;n</label>
                                                                     <div class="controls">
                                                                         <div class="input-group">
-                                                                          <input type="text" id="comision_monto_inquilino" name="comision_monto_inquilino" class="form-control  numeric" value="<%=contrato.getComision_monto_inquilino()%>">
+                                                                          <input type="text" id="comision_monto_inquilino" name="comision_monto_inquilino" class="form-control  numeric" value="<%=df.format(contrato.getComision_monto_inquilino())%>">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -546,7 +518,7 @@
                                                                     <label class="control-label" for="deposito_monto">Deposito</label>
                                                                     <div class="controls">
                                                                         <div class="input-group">
-                                                                          <input type="text" id="deposito_monto" name="deposito_monto" class="form-control  numeric" value="<%=contrato.getDeposito_monto()%>">
+                                                                          <input type="text" id="deposito_monto" name="deposito_monto" class="form-control  numeric" value="<%=df.format(contrato.getDeposito_monto())%>">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -580,7 +552,7 @@
                                                                     <label class="control-label" for="dni">Gastos escriban&iacute;a</label>
                                                                     <div class="controls">
                                                                         <div class="input-group">
-                                                                          <input type="text" id="gastos_escribania_propietario" name="gastos_escribania_propietario" class="form-control  numeric" value="<%=contrato.getGastos_escribania_propietario()%>">
+                                                                          <input type="text" id="gastos_escribania_propietario" name="gastos_escribania_propietario" class="form-control  numeric" value="<%=df.format(contrato.getGastos_escribania_propietario())%>">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -589,7 +561,7 @@
                                                                     <label class="control-label" for="gastos_sellado_propietario">Gastos sellado</label>
                                                                     <div class="controls">
                                                                         <div class="input-group">
-                                                                          <input type="text" id="gastos_sellado_propietario" name="gastos_sellado_propietario" class="form-control  numeric" value="<%=contrato.getGastos_sellado_propietario()%>">
+                                                                          <input type="text" id="gastos_sellado_propietario" name="gastos_sellado_propietario" class="form-control  numeric" value="<%=df.format(contrato.getGastos_sellado_propietario())%>">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -602,7 +574,7 @@
                                                                     <label class="control-label" for="comision_monto_propietario">Comisi&oacute;n</label>
                                                                     <div class="controls">
                                                                         <div class="input-group">
-                                                                          <input type="text" id="comision_monto_propietario" name="comision_monto_propietario" class="form-control numeric" value="<%=contrato.getComision_monto_propietario()%>">
+                                                                          <input type="text" id="comision_monto_propietario" name="comision_monto_propietario" class="form-control numeric" value="<%=df.format(contrato.getComision_monto_propietario())%>">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -635,7 +607,6 @@
                                                                 <col style="width:15%">
                                                                 <col style="width:10%">
                                                             </colgroup>
-
                                                             <thead>
                                                                 <tr>
                                                                     <th>Concepto</th>
@@ -651,8 +622,8 @@
                                                                 %> 
                                                                 <tr>
                                                                     <td><%=gasto.getConcepto()%><input type="hidden" name="gasto_concepto" value="<%=gasto.getConcepto()%>"></td>
-                                                                    <td><%=aplica%><input type="hidden" name="gasto_hasta" value="<%=gasto.getId_aplica()%>"></td>
-                                                                    <td><%=gasto.getImporte()%><input type="hidden" name="valor_monto" value="<%=gasto.getImporte()%>"></td>
+                                                                    <td><%=aplica%><input type="hidden" name="gasto_aplica" value="<%=gasto.getId_aplica()%>"></td>
+                                                                    <td><%=df.format(gasto.getImporte())%><input type="hidden" name="valor_monto" value="<%=gasto.getImporte()%>"></td>
                                                                     <td><span class='btn btn-xs btn-danger btn-circle btn-del'><span class='fa fa-trash-o'></span></td>
                                                                 </tr>
                                                                 <%}%>                                                               
@@ -692,8 +663,8 @@
                                              <div class="row">
                                                 <div class="col-lg-12">
                                                    <div class="form-actions">
-                                                      <button type="submit" class="btn btn-primary" id="btnSubmit">Guardar</button>
-                                                      <a  href="<%= PathCfg.CONTRATO%>"class="btn btn-default">Cancelar</a>
+                                                      <!--<button type="submit" class="btn btn-primary" id="btnSubmit">Guardar</button>-->
+                                                      <a  href="<%= PathCfg.CONTRATO%>"class="btn btn-default">Volver</a>
                                                   </div>
                                                </div>
                                             </div>

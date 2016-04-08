@@ -139,6 +139,9 @@ public class PagoEdit extends HttpServlet {
             cd.setId_referencia(id_pago);
             Float total = liqEfeMnt + liqChkMnt + liqTraMnt;
             cd.setHaber(total);
+            
+            cuenta.setFecha_liquidacion(fecha);
+            tc.actualizar(cuenta);
             int id = tcd.alta(cd);
             if(id!=0){
                 jr.setResult("OK");

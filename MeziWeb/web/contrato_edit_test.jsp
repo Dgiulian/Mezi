@@ -657,13 +657,13 @@
                                                             <tbody>
                                                                 <tr>
                                                                 <td>Transporte<input type="hidden" name="gasto_concepto" value="Transporte"></td>
-                                                                <td>Propietario<input type="hidden" name="gasto_aplica" value="Propietario"></td>
+                                                                <td>Propietario<input type="hidden" name="gasto_aplica" value="2"></td>
                                                                 <td>132<input type="hidden" name="gasto_importe" value="132"></td>
                                                                 <td class=""><span class="btn btn-xs btn-danger btn-circle btn-del"><span class="fa fa-trash-o"></span></span></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>Cafe<input type="hidden" name="gasto_concepto" value="Cafe"></td>
-                                                                <td>Inquilino<input type="hidden" name="gasto_aplica" value="Inquilino"></td>
+                                                                <td>Inquilino<input type="hidden" name="gasto_aplica" value="1"></td>
                                                                 <td>123<input type="hidden" name="gasto_importe" value="123"></td>
                                                                 <td class=""><span class="btn btn-xs btn-danger btn-circle btn-del"><span class="fa fa-trash-o"></span></span></td>
                                                             </tr>
@@ -1004,7 +1004,7 @@ function agregarGasto(target){
                      '<div class="form-group"> ' +
                         '<label class="col-md-4 control-label" for="gasto_aplica">Aplica</label> ' +
                         '<div class="col-md-8"> ' +
-                        '<select id="gasto_concepto" name="gasto_aplica" type="text" class="form-control input-md"> ' +
+                        '<select id="gasto_aplica" name="gasto_aplica" type="text" class="form-control input-md"> ' +
                         '<option value="1">Inquilino</option>' +
                         '<option value="2">Propietario</option>' +
                         '</select>' +

@@ -1,4 +1,5 @@
 
+<%@page import="utils.OptionsCfg"%>
 <%@page import="utils.PathCfg"%>
 <div class="modal fade" id="mdlCliente">
     <div class="modal-dialog">
@@ -65,8 +66,8 @@
            loadDataCliente({});
            var $id_tipo_cliente=$('#id_tipo_cliente').val();
            var titulo = "Buscar cliente";
-           if($id_tipo_cliente==1) titulo = "Buscar propietario" ;
-           if($id_tipo_cliente==2) titulo = "Buscar Inquilino";
+           if(parseInt($id_tipo_cliente)===<%=OptionsCfg.CLIENTE_TIPO_INQUILINO%>   ) titulo = "Buscar Inquilino" ;
+           if(parseInt($id_tipo_cliente)===<%=OptionsCfg.CLIENTE_TIPO_PROPIETARIO%>) titulo = "Buscar Propietario";
            
            $('#mdlTitle').text(titulo);
        });

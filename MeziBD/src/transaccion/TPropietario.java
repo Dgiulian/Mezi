@@ -3,6 +3,7 @@ package transaccion;
 import bd.Cliente_tipo;
 import bd.Propietario;
 import java.util.List;
+import utils.OptionsCfg;
 public class TPropietario extends TransaccionBase<Propietario> {
 
 	@Override
@@ -24,6 +25,19 @@ public class TPropietario extends TransaccionBase<Propietario> {
             tipo.setId_cliente(prop.getId());
             tipo.setId_tipo_cliente(Cliente_tipo.PROPIETARIO);
             return new TCliente_tipo().alta(tipo);
+        }
+        public Integer alta(Integer id_propietario){
+            TCliente_tipo tc = new TCliente_tipo();
+            String query = String.format("select * from cliente_tipo where cliente_tipo.id_cliente = %d and cliente_tipo.id_tipo_cliente=%d",id_propietario,OptionsCfg.CLIENTE_TIPO_PROPIETARIO);
+            Cliente_tipo cliente_tipo = tc.getById(query);
+            Integer id =0;
+            if(cliente_tipo==null){
+                cliente_tipo = new Cliente_tipo();
+                cliente_tipo.setId_cliente(id_propietario);
+                cliente_tipo.setId_tipo_cliente(OptionsCfg.CLIENTE_TIPO_PROPIETARIO);
+                id = tc.alta(cliente_tipo);
+            } else id = cliente_tipo.getId();
+            return id;
         }
          public boolean baja(Propietario prop){
 //            Cliente_tipo tipo = new Cliente_tipo();

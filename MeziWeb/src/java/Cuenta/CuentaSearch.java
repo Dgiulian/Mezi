@@ -4,6 +4,7 @@
  */
 package Cuenta;
 
+import bd.Contrato;
 import bd.Cuenta;
 import com.google.gson.Gson;
 import java.io.IOException;
@@ -13,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import transaccion.TContrato;
 import transaccion.TCuenta;
 import utils.BaseException;
 import utils.JsonRespuesta;
@@ -58,7 +60,10 @@ public class CuentaSearch extends HttpServlet {
                 cuenta = tc.getBydClienteContrato(id_cliente,id_contrato,id_tipo);
             }
             if(cuenta==null) throw new BaseException("ERROR","No se encontr&oacute; la cuenta corriente");
-                        
+            
+            Contrato contrato = new TContrato().getById(cuenta.getId_contrato());
+                if(cuenta.getFecha_liquidacion()==null || cuenta.getFecha_liquidacion().equals("")) cuenta.setFecha_liquidacion(contrato.getFecha_inicio());
+                
             jr.setResult("OK");
             jr.setTotalRecordCount(1);
             jr.setRecord(cuenta);

@@ -94,6 +94,8 @@ public class PathCfg {
     public static final String CUENTA_LIST = CUENTA + "List";
     public static final String CUENTA_EDIT = CUENTA + "Edit";
     public static final String CUENTA_DEL  = CUENTA + "Del";
+    public static final String CUENTA_SEARCH  = CUENTA + "Search";
+    public static final String CUENTA_PRINT  = CUENTA + "Print";
     
     public static final String CUENTA_DET      = CUENTA + "Det"; 
     public static final String CUENTA_DET_LIST = CUENTA_DET + "List";
@@ -103,4 +105,7 @@ public class PathCfg {
     
     public static final String PAGO      = "Pago";
     public static final String PAGO_EDIT = PAGO + "Edit";
+    
+    public static final String RECIBO      = "Recibo";
+    public static final String RECIBO_PRINT = RECIBO + "Print";
 }

@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Cuenta;
+package CuentaDetalle;
 
+import bd.Contrato;
 import bd.Cuenta;
 import bd.Cuenta_detalle;
 import com.google.gson.Gson;
@@ -13,6 +14,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.joda.time.LocalDate;
+import transaccion.TContrato;
 import transaccion.TCuenta;
 import transaccion.TCuenta_detalle;
 import utils.BaseException;
@@ -85,7 +88,22 @@ public class CuentaDetEdit extends HttpServlet {
             
             
             Cuenta cuenta = tc.getById(id_cuenta);
-            if(cuenta==null) throw new BaseException("ERROR","Debe indicar la cuenta a ajustar");
+            
+            
+            if(cuenta==null) throw new BaseException("ERROR","Debe indicar la cuenta a ajustar");            
+            /*
+             * La fecha de ajuste no puede ser anterior a la ultima liquidación.
+             * Si no existiera ninguna liquidación, la fecha no debe ser anterior a la fecha de inicio del contrato.
+             *
+             */
+            String fecha_inicio = cuenta.getFecha_liquidacion();
+            if(fecha_inicio==null || fecha_inicio.equals("")){
+                Contrato contrato = new TContrato().getById(cuenta.getId_contrato());
+                if(contrato!=null) fecha_inicio = contrato.getFecha_inicio();
+            }
+            
+            
+            if(new LocalDate(fecha).isBefore(new LocalDate(fecha_inicio))) throw new BaseException("ERROR","La fecha del ajuste debe ser posterior a la fecha actual");
             
             Cuenta_detalle cd = new Cuenta_detalle();
             cd.setId_cuenta(cuenta.getId());

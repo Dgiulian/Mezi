@@ -239,7 +239,7 @@
     </servlet>
     <servlet>
         <servlet-name>CuentaDetList</servlet-name>
-        <servlet-class>Cuenta.CuentaDetList</servlet-class>
+        <servlet-class>CuentaDetalle.CuentaDetList</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ContratoSearch</servlet-name>
@@ -251,11 +251,19 @@
     </servlet>
     <servlet>
         <servlet-name>CuentaDetEdit</servlet-name>
-        <servlet-class>Cuenta.CuentaDetEdit</servlet-class>
+        <servlet-class>CuentaDetalle.CuentaDetEdit</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>PagoEdit</servlet-name>
         <servlet-class>Pago.PagoEdit</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReciboPrint</servlet-name>
+        <servlet-class>Recibo.ReciboPrint</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CuentaPrint</servlet-name>
+        <servlet-class>Cuenta.CuentaPrint</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ClientePath</servlet-name>
@@ -472,6 +480,14 @@
     <servlet-mapping>
         <servlet-name>PagoEdit</servlet-name>
         <url-pattern>/PagoEdit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReciboPrint</servlet-name>
+        <url-pattern>/ReciboPrint</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CuentaPrint</servlet-name>
+        <url-pattern>/CuentaPrint</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

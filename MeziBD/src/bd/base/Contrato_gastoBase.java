@@ -6,6 +6,7 @@ public class Contrato_gastoBase {
 	public Integer id_aplica = 0;
 	public String concepto = "";
 	public Float importe = 0f;
+	public Integer cuotas = 0;
 
 	public Contrato_gastoBase() {
 	}
@@ -16,6 +17,7 @@ public class Contrato_gastoBase {
 		this.id_aplica = contrato_gastobase.getId_aplica();
 		this.concepto = contrato_gastobase.getConcepto();
 		this.importe = contrato_gastobase.getImporte();
+		this.cuotas = contrato_gastobase.getCuotas();
 	}
 
 	public Integer getId() {
@@ -60,6 +62,15 @@ public class Contrato_gastoBase {
 
 	public Contrato_gastoBase setImporte(Float importe) {
 		this.importe = importe;
+		return this;
+	}
+
+	public Integer getCuotas() {
+		return this.cuotas;
+	}
+
+	public Contrato_gastoBase setCuotas(Integer cuotas) {
+		this.cuotas = cuotas;
 		return this;
 	}
 }

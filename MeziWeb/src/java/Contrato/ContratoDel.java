@@ -4,12 +4,33 @@
  */
 package Contrato;
 
+import bd.Contrato;
+import bd.Contrato_documento;
+import bd.Contrato_gasto;
+import bd.Contrato_valor;
+import bd.Cuenta_detalle;
+import bd.Propiedad;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import transaccion.TAuditoria;
+import transaccion.TContrato;
+import transaccion.TContrato_documento;
+import transaccion.TContrato_gasto;
+import transaccion.TContrato_valor;
+import transaccion.TCuenta_detalle;
+import transaccion.TPropiedad;
+import utils.BaseException;
+import utils.JsonRespuesta;
+import utils.OptionsCfg;
+import utils.Parser;
 
 /**
  *
@@ -47,7 +68,7 @@ public class ContratoDel extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    
     /**
      * Handles the HTTP
      * <code>GET</code> method.
@@ -75,7 +96,54 @@ public class ContratoDel extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.setContentType("application/json;charset=UTF-8");
+        PrintWriter         out = response.getWriter();
+        JsonRespuesta       jr  = new JsonRespuesta();
+        TContrato           tc  = new TContrato();
+        TPropiedad          tp  = new TPropiedad();
+        TContrato_valor     tv  = new TContrato_valor();
+        TContrato_documento td  = new TContrato_documento();
+        TContrato_gasto     tg  = new TContrato_gasto();
+        TCuenta_detalle     tcd = new TCuenta_detalle();
+        HashMap<String,String> mapFiltro = new HashMap<String,String>();
+        try {           
+           Integer id = Parser.parseInt(request.getParameter("id"));
+           Contrato contrato = tc.getById(id);
+           if (contrato==null) throw new BaseException("ERROR","No existe el registro");
+           mapFiltro.put("id_contrato",contrato.getId().toString());
+
+           
+           boolean baja = tc.baja(contrato);
+           if ( !baja)throw new BaseException("ERROR","Ocurrio un error al eliminar el registro");
+                Propiedad propiedad = tp.getById(contrato.getId_propiedad());
+                List<Cuenta_detalle> listaDetalle = tcd.getListFiltro(mapFiltro);
+                List<Contrato_valor>     lstValor = tv.getListFiltro(mapFiltro);
+                List<Contrato_documento> lstDocum = td.getListFiltro(mapFiltro);
+                List<Contrato_gasto>    lstGastos = tg.getListFiltro(mapFiltro);
+                if(propiedad!=null){
+                    propiedad.setId_estado(OptionsCfg.PROPIEDAD_DISPONIBLE);
+                    tp.actualizar(propiedad);
+                }
+                for(Cuenta_detalle cd: listaDetalle)   tcd.baja(cd);           
+                for(Contrato_valor valor:lstValor)     tv.baja(valor);
+                for(Contrato_documento docum:lstDocum) td.baja(docum);
+                for(Contrato_gasto gasto:lstGastos)    tg.baja(gasto);
+                jr.setResult("OK");
+                Integer id_usuario = 0;
+                Integer id_tipo_usuario = 0;
+                HttpSession session = request.getSession();
+                id_usuario = (Integer) session.getAttribute("id_usuario");
+                id_tipo_usuario = (Integer) session.getAttribute("id_tipo_usuario");
+                TAuditoria.guardar(id_usuario,id_tipo_usuario,OptionsCfg.MODULO_CONTRATO,OptionsCfg.ACCION_BAJA,contrato.getId(),tc.auditar(contrato));
+           
+        }  catch (BaseException ex) {
+            jr.setResult(ex.getResult());
+            jr.setMessage(ex.getMessage());            
+        }
+        finally {
+            out.print(new Gson().toJson(jr));
+            out.close();
+        }
     }
 
     /**

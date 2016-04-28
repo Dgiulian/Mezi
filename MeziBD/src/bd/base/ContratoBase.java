@@ -19,11 +19,13 @@ public class ContratoBase {
 	public Float comision_monto_inquilino = 0f;
 	public String comision_desde_inquilino = "";
 	public Integer comision_cuotas_inquilino = 0;
+	public Integer comision_menusal_inquilino = 0;
 	public Float gastos_escribania_propietario = 0f;
 	public Float gastos_sellado_propietario = 0f;
 	public Float comision_monto_propietario = 0f;
 	public String comision_desde_propietario = "";
 	public Integer comision_cuotas_propietario = 0;
+	public Float comision_mensual_propietario = 0f;
 	public Float deposito_monto = 0f;
 	public String deposito_desde = "";
 	public Integer deposito_cuotas = 0;
@@ -57,6 +59,8 @@ public class ContratoBase {
 				.getComision_desde_inquilino();
 		this.comision_cuotas_inquilino = contratobase
 				.getComision_cuotas_inquilino();
+		this.comision_menusal_inquilino = contratobase
+				.getComision_menusal_inquilino();
 		this.gastos_escribania_propietario = contratobase
 				.getGastos_escribania_propietario();
 		this.gastos_sellado_propietario = contratobase
@@ -67,6 +71,8 @@ public class ContratoBase {
 				.getComision_desde_propietario();
 		this.comision_cuotas_propietario = contratobase
 				.getComision_cuotas_propietario();
+		this.comision_mensual_propietario = contratobase
+				.getComision_mensual_propietario();
 		this.deposito_monto = contratobase.getDeposito_monto();
 		this.deposito_desde = contratobase.getDeposito_desde();
 		this.deposito_cuotas = contratobase.getDeposito_cuotas();
@@ -241,6 +247,16 @@ public class ContratoBase {
 		return this;
 	}
 
+	public Integer getComision_menusal_inquilino() {
+		return this.comision_menusal_inquilino;
+	}
+
+	public ContratoBase setComision_menusal_inquilino(
+			Integer comision_menusal_inquilino) {
+		this.comision_menusal_inquilino = comision_menusal_inquilino;
+		return this;
+	}
+
 	public Float getGastos_escribania_propietario() {
 		return this.gastos_escribania_propietario;
 	}
@@ -288,6 +304,16 @@ public class ContratoBase {
 	public ContratoBase setComision_cuotas_propietario(
 			Integer comision_cuotas_propietario) {
 		this.comision_cuotas_propietario = comision_cuotas_propietario;
+		return this;
+	}
+
+	public Float getComision_mensual_propietario() {
+		return this.comision_mensual_propietario;
+	}
+
+	public ContratoBase setComision_mensual_propietario(
+			Float comision_mensual_propietario) {
+		this.comision_mensual_propietario = comision_mensual_propietario;
 		return this;
 	}
 

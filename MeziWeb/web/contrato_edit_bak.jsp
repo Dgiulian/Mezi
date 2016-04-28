@@ -1,9 +1,4 @@
 
-<%@page import="bd.Contrato_gasto"%>
-<%@page import="bd.Contrato_documento"%>
-<%@page import="bd.Contrato_valor"%>
-<%@page import="bd.Contrato"%>
-<%@page import="utils.TFecha"%>
 <%@page import="bd.Cliente"%>
 <%@page import="transaccion.TLocalidad"%>
 <%@page import="transaccion.TBarrio"%>
@@ -17,15 +12,6 @@
 <%@page import="java.util.HashMap"%>
 <%@page import="transaccion.TPropiedad"%>
 <%
-    Contrato           contrato           = (Contrato)           request.getAttribute("contrato");
-    List<Contrato_valor>     lstContrato_valor     = (List<Contrato_valor>)     request.getAttribute("contrato_valor");
-    List<Contrato_documento> lstContrato_documento = (List<Contrato_documento>) request.getAttribute("contrato_documento");
-    List<Contrato_gasto>     lstContrato_gasto     = (List<Contrato_gasto>)     request.getAttribute("contrato_gasto");
-
-    Propiedad propiedad = (Propiedad) request.getAttribute("propiedad");
-    Cliente   cliente   = (Cliente)   request.getAttribute("inquilino");
-    Vendedor  vendedor  = (Vendedor)  request.getAttribute("vendedor");
-
     TPropiedad tp = new TPropiedad();
     HashMap<String,String> mapFiltro = new HashMap<String,String>();
 
@@ -39,7 +25,7 @@
     List<Vendedor> lstVendedores = new TVendedor().getListFiltro(filtroVendedores);
     if(lstVendedores==null) lstVendedores = new ArrayList<Vendedor>();
 
-
+    Propiedad propiedad = (Propiedad) request.getAttribute("propiedad");
     boolean con_propiedad = true;
     boolean con_cliente = true;
     boolean con_vendedor = true;
@@ -47,7 +33,7 @@
         propiedad = new Propiedad();
         con_propiedad = false;
     }
-
+    Cliente cliente = (Cliente) request.getAttribute("inquilino");
     if (cliente==null){
         cliente = new Cliente();
         con_cliente = false;
@@ -61,7 +47,7 @@
     if(localidad==null){
         localidad = new Localidad();
     }
-
+    Vendedor vendedor = (Vendedor) request.getAttribute("vendedor");
     if (vendedor==null){
         vendedor = new Vendedor();
         con_vendedor = false;
@@ -77,11 +63,11 @@
             border-top: 2px solid #eee;
             width: 100%;
         }
-
+        
     </style>
 </head>
 
-<body>    
+<body>
 		<!-- start: Header -->
 	<%@include file="tpl_header.jsp"%>
 
@@ -113,8 +99,48 @@
                                                <div class="col-lg-8">
                                                    <fieldset>
                                                        <legend>Datos del cliente</legend>
+<!--                                                     <div class="col-lg-12">
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-4 nopadding ">
+                                                                <div class="controls">
+                                                                    <label class="control-label" for="id_inquilino_search">Nº Carpeta</label>
+                                                                      <div class="input-group ">
+                                                                        <input type="text" id="id_inquilino_search" name="id_inquilino_search" class="form-control" >
+                                                                      </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 ">
+                                                                <div class="controls">
+                                                                    <label class="control-label" for="dni_search">DNI</label>
+                                                                      <div class="input-group ">
+                                                                        <input type="text" id="dni_search" name="dni_search" class="form-control" >
+                                                                      </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-4 ">
+                                                                <div class="controls">
+                                                                    <label class="control-label" for="id_inquilino">Buscar</label>
+                                                                      <div class="input-group ">
+                                                                        <span class="btn btn-primary" id="btnBuscarCliente"> Buscar</span>
+                                                                      </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 ">
+                                                                <div class="controls">
+                                                                    <label class="control-label" for="id_inquilino">Buscar</label>
+                                                                      <div class="input-group ">
+                                                                        <span class="btn btn-primary" data-toggle="modal" data-target="#mdlCliente">Seleccionar</span>
+                                                                      </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div> row
+                                                    </div>
+                                                   <hr style=""/>-->
                                                    <div class="col-lg-12">
                                                         <div class="form-group row">
+                                                            
                                                                 <div class="col-lg-2 nopadding">
                                                                     <div class="controls">
                                                                         <label class="control-label" for="id_inquilino">N&uacute;mero carpeta</label>
@@ -149,11 +175,11 @@
                                                                 </div>
                                                             </div>
                                                             <%}%>
-
+                                                           
                                                         </div><!-- row -->
                                                    </div>
                                                     <div class="col-lg-12">
-
+                                                        
                                                         <div class="form-group row">
                                                             <div class="col-lg-4 nopadding">
                                                                 <label class="control-label" for="dni">DNI</label>
@@ -181,6 +207,36 @@
                                         </div> <!-- tab1 -->
 
                                             <div class="tab-pane row " id="tabProp">
+<!--                                                <div class="col-lg-12">
+                                                    <h2>Listado de propiedades disponibles</h2>
+                                                    <table  id="tblPropiedades" class="table table-condensed table-bordered table-responsive">
+                                                        <colgroup>
+                                                            <col style="width:10%">
+                                                            <col style="">
+                                                            <col style="width:5%">
+                                                        </colgroup>
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Tipo</th>
+                                                                <th>Domicilio</th>
+                                                                <th>Propietario</th>
+                                                                <th>Acci&oacute;n</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <% for(Propiedad p:lstPropiedades){%>
+                                                            <tr>
+                                                                <td><%=p.getId()%></td>
+                                                                <td><%=p.getDireccion()%></td>
+                                                                <td></td>
+                                                                <td><span class='btn btn-xs btn-primary btn-circle btn-sel' data-index="<%=p.getId()%>"><span class='fa fa-plus'></span></td>
+                                                            </tr>
+                                                            <% }%>
+                                                        </tbody>
+
+                                                    </table>
+                                                </div>
+                                                <hr>-->
                                                 <div class="col-lg-8">
                                                     <fieldset>
                                                     <legend>Datos de la propiedad</legend>
@@ -262,7 +318,7 @@
                                                         <label class="control-label" for="numero">N&uacute;mero</label>
                                                         <div class="controls">
                                                               <div class="input-group">
-                                                                <input type="text" name="numero" id="numero" class="form-control" value="<%=contrato.getNumero()%>">
+                                                                <input type="text" name="numero" id="numero" class="form-control" >
                                                               </div>
                                                         </div>
                                                     </div>
@@ -270,7 +326,7 @@
                                                         <label class="control-label" for="fecha_inicio">Fecha de Inicio</label>
                                                         <div class="controls">
                                                               <div class="input-group ">
-                                                                  <input type="text" id="fecha_inicio" name="fecha_inicio" class="form-control  date-picker" value="<%=TFecha.formatearFechaBdVista(contrato.getFecha_inicio())%>">
+                                                                    <input type="text" id="fecha_inicio" name="fecha_inicio" class="form-control  date-picker">
                                                               </div>
                                                         </div>
                                                     </div>
@@ -278,7 +334,7 @@
                                                         <label class="control-label" for="meses">Meses</label>
                                                         <div class="controls">
                                                               <div class="input-group ">
-                                                                <input type="text" id="meses" name="meses" class="form-control  numeric"  value="<%=contrato.getMeses()%>">
+                                                                <input type="text" id="meses" name="meses" class="form-control  numeric">
                                                               </div>
                                                         </div>
                                                     </div>
@@ -286,7 +342,7 @@
                                                         <label class="control-label" for="fecha_fin">Fecha de Fin</label>
                                                         <div class="controls">
                                                               <div class="input-group ">
-                                                                    <input type="text" id="fecha_fin" name="fecha_fin" class="form-control  date-picker" value="<%=TFecha.formatearFechaBdVista(contrato.getFecha_fin())%>">
+                                                                    <input type="text" id="fecha_fin" name="fecha_fin" class="form-control  date-picker">
                                                               </div>
                                                         </div>
                                                     </div>
@@ -310,18 +366,19 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <% for(Contrato_valor cv: lstContrato_valor){
-                                                                    String desde = TFecha.formatearFechaBdVista(cv.getDesde());
-                                                                    String hasta = TFecha.formatearFechaBdVista(cv.getHasta());
-                                                                    Float monto = cv.getMonto();
-                                                                %>                                                                
-                                                                 <tr>
-                                                                     <td><%=desde%><input type="hidden" name="valor_desde" value="<%=desde%>"></td>
-                                                                    <td><%=hasta%><input type="hidden" name="valor_hasta" value="<%=hasta%>"></td>
-                                                                    <td><%=monto%><input type="hidden" name="valor_monto" value="<%=monto%>"></td>
-                                                                    <td><span class='btn btn-xs btn-danger btn-circle btn-del'><span class='fa fa-trash-o'></span></td>
+<!--                                                                <tr>
+                                                                    <td>01/01/2016</td>
+                                                                    <td>31/01/2016</td>
+                                                                    <td>10</td>
+                                                                    <td></td>
                                                                 </tr>
-                                                                <% }%>
+                                                                <tr>
+                                                                    <td>01/02/2016</td>
+                                                                    <td>31/12/2016</td>
+                                                                    <td>10</td>
+                                                                    <td></td>
+                                                                </tr>-->
+
                                                             </tbody>
                                                             <tfoot><tr><td colspan="5"><span class="btn btn-primary" id="btnValor">Agregar Valor</span></td></tr></tfoot>
                                                         </table>
@@ -347,19 +404,7 @@
                                                                     <th>Acci&oacute;n</th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody>   
-                                                                <% for(Contrato_documento cd: lstContrato_documento){
-                                                                    String desde = TFecha.formatearFechaBdVista(cd.getDesde());
-                                                                    String hasta = TFecha.formatearFechaBdVista(cd.getHasta());
-                                                                    Float monto = cd.getMonto();
-                                                                    %>       
-                                                                <tr>
-                                                                    <td><%=desde%><input type="hidden" name="documento_desde" value="<%=desde%>"></td>
-                                                                    <td><%=hasta%><input type="hidden" name="documento_hasta" value="<%=hasta%>"></td>
-                                                                    <td><%=monto%><input type="hidden" name="documento_monto" value="<%=monto%>"></td>
-                                                                    <td><span class='btn btn-xs btn-danger btn-circle btn-del'><span class='fa fa-trash-o'></span></td>
-                                                                </tr>
-                                                                <% } %>
+                                                            <tbody>
                                                             </tbody>
                                                             <tfoot><tr><td colspan="5"><span class="btn btn-primary" id="btnDocumento">Agregar Valor</span></td></tr></tfoot>
                                                         </table>
@@ -375,7 +420,7 @@
                                                                     <label class="control-label" for="punitorio_monto">Punitorio</label>
                                                                     <div class="controls">
                                                                         <div class="input-group">
-                                                                          <input type="text" id="punitorio_monto" name="punitorio_monto" class="form-control  numeric" value="<%=contrato.getPunitorio_monto()%>">
+                                                                          <input type="text" id="punitorio_monto" name="punitorio_monto" class="form-control  numeric">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -384,7 +429,7 @@
                                                                     <label class="control-label" for="punitorio_desde">Desde el d&iacute;a</label>
                                                                     <div class="controls">
                                                                         <div class="input-group">
-                                                                          <input type="text" id="punitorio_desde" name="punitorio_desde" class="form-control numeric" value="<%=contrato.getPunitorio_desde()%>">
+                                                                          <input type="text" id="punitorio_desde" name="punitorio_desde" class="form-control numeric">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -416,7 +461,7 @@
                                                                     <label class="control-label" for="comision_vendedor">Comision al vendedor ($)</label>
                                                                     <div class="controls">
                                                                         <div class="input-group">
-                                                                          <input type="text" id="comision_vendedor"  name="comision_vendedor"  class="form-control numeric"  value="<%=contrato.getComision_vendedor()%>">
+                                                                          <input type="text" id="comision_vendedor"  name="comision_vendedor"  class="form-control numeric">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -431,20 +476,20 @@
                                                         <legend >Gastos inquilino</legend>
                                                        <div class="col-lg-12 ">
                                                             <div class="form-group row">
-                                                                <div class="col-lg-3 ">
+                                                                <div class="col-lg-4 col-sm-4 ">
                                                                     <label class="control-label" for="gastos_escribania_inquilino">Gastos escriban&iacute;a</label>
                                                                     <div class="controls">
                                                                         <div class="input-group">
-                                                                          <input type="text" id="gastos_escribania_inquilino" name="gastos_escribania_inquilino" class="form-control numeric"  value="<%=contrato.getGastos_escribania_inquilino()%>">
+                                                                          <input type="text" id="gastos_escribania_inquilino" name="gastos_escribania_inquilino" class="form-control numeric">
                                                                         </div>
                                                                     </div>
                                                                 </div>
 
-                                                                <div class="col-lg-3 ">
+                                                                <div class="col-lg-4 col-sm-4 ">
                                                                     <label class="control-label" for="gastos_sellado_inquilino">Gastos sellado</label>
                                                                     <div class="controls">
                                                                         <div class="input-group">
-                                                                          <input type="text" id="gastos_sellado_inquilino" name="gastos_sellado_inquilino" class="form-control  numeric"  value="<%=contrato.getGastos_sellado_inquilino()%>">
+                                                                          <input type="text" id="gastos_sellado_inquilino" name="gastos_sellado_inquilino" class="form-control  numeric">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -453,63 +498,62 @@
                                                         </div>
                                                         <div class="col-lg-12 ">
                                                             <div class="form-group row">
-                                                                <div class="col-lg-3 ">
+                                                                <div class="col-lg-4 col-sm-4 ">
                                                                     <label class="control-label" for="comision_monto_inquilino">Comisi&oacute;n</label>
                                                                     <div class="controls">
                                                                         <div class="input-group">
-                                                                          <input type="text" id="comision_monto_inquilino" name="comision_monto_inquilino" class="form-control  numeric"  value="<%=contrato.getComision_monto_inquilino()%>">
+                                                                          <input type="text" id="comision_monto_inquilino" name="comision_monto_inquilino" class="form-control  numeric">
                                                                         </div>
                                                                     </div>
                                                                 </div>
 
-                                                                <div class="col-lg-3">
+                                                                <div class="col-lg-4 col-sm-4 ">
                                                                     <label class="control-label" for="comision_desde_inquilino">Fecha Inicio</label>
                                                                     <div class="controls">
                                                                         <div class="input-group">
-                                                                          <input type="text" id="comision_desde_inquilino" name="comision_desde_inquilino" class="form-control date-picker"  value="<%=TFecha.formatearFechaBdVista(contrato.getComision_desde_inquilino())%>">
+                                                                          <input type="text" id="comision_desde_inquilino" name="comision_desde_inquilino" class="form-control date-picker">
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-lg-2 ">
+                                                                <div class="col-lg-3 ">
                                                                     <label class="control-label" for="comision_cuotas_inquilino">Cuotas</label>
                                                                     <div class="controls">
                                                                         <div class="input-group">
-                                                                          <input type="text" id="comision_cuotas_inquilino" name="comision_cuotas_inquilino" class="form-control numeric"  value="<%=contrato.getComision_cuotas_inquilino()%>">
+                                                                          <input type="text" id="comision_cuotas_inquilino" name="comision_cuotas_inquilino" class="form-control numeric">
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-12 ">
+                                                        <div class="col-lg-12 "> 
                                                             <div class="form-group row">
-                                                                <div class="col-lg-3">
+                                                                <div class="col-lg-4 col-sm-4 ">
                                                                     <label class="control-label" for="deposito_monto">Deposito</label>
                                                                     <div class="controls">
                                                                         <div class="input-group">
-                                                                          <input type="text" id="deposito_monto" name="deposito_monto" class="form-control  numeric"  value="<%=contrato.getDeposito_monto()%>">
+                                                                          <input type="text" id="deposito_monto" name="deposito_monto" class="form-control  numeric">
                                                                         </div>
                                                                     </div>
                                                                 </div>
 
-                                                                <div class="col-lg-3">
+                                                                <div class="col-lg-4 col-sm-4 ">
                                                                     <label class="control-label" for="deposito_desde">Fecha Inicio</label>
                                                                     <div class="controls">
                                                                         <div class="input-group">
-                                                                          <input type="text" id="deposito_desde" name="deposito_desde" class="form-control date-picker"  value="<%=TFecha.formatearFechaBdVista(contrato.getDeposito_desde())%>">
+                                                                          <input type="text" id="deposito_desde" name="deposito_desde" class="form-control date-picker">
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-lg-2 ">
+                                                                <div class="col-lg-3 ">
                                                                     <label class="control-label" for="deposito_cuotas">Cuotas</label>
                                                                     <div class="controls">
                                                                         <div class="input-group">
-                                                                          <input type="text" id="deposito_cuotas" name="deposito_cuotas" class="form-control  numeric"  value="<%=contrato.getDeposito_cuotas()%>">
+                                                                          <input type="text" id="deposito_cuotas" name="deposito_cuotas" class="form-control  numeric">
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                
                                                             </div>
-                                                        </div>
+                                                        </div>                                                       
                                                     </fieldset> <!--Inquilino -->
                                                 </div> <!--col-lg-g -->
                                                 <div class="col-lg-6">
@@ -517,20 +561,20 @@
                                                         <legend >Gastos propietario</legend>
                                                        <div class="col-lg-12 ">
                                                             <div class="form-group row">
-                                                                <div class="col-lg-4">
+                                                                <div class="col-lg-4 col-sm-4 ">
                                                                     <label class="control-label" for="dni">Gastos escriban&iacute;a</label>
                                                                     <div class="controls">
                                                                         <div class="input-group">
-                                                                          <input type="text" id="gastos_escribania_propietario" name="gastos_escribania_propietario" class="form-control  numeric"  value="<%=contrato.getGastos_escribania_propietario()%>">
+                                                                          <input type="text" id="gastos_escribania_propietario" name="gastos_escribania_propietario" class="form-control  numeric">
                                                                         </div>
                                                                     </div>
                                                                 </div>
 
-                                                                <div class="col-lg-4 ">
+                                                                <div class="col-lg-4 col-sm-4 ">
                                                                     <label class="control-label" for="gastos_sellado_propietario">Gastos sellado</label>
                                                                     <div class="controls">
                                                                         <div class="input-group">
-                                                                          <input type="text" id="gastos_sellado_propietario" name="gastos_sellado_propietario" class="form-control  numeric"  value="<%=contrato.getGastos_sellado_propietario()%>">
+                                                                          <input type="text" id="gastos_sellado_propietario" name="gastos_sellado_propietario" class="form-control  numeric">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -539,36 +583,28 @@
                                                         </div>
                                                         <div class="col-lg-12 ">
                                                             <div class="form-group row">
-                                                                <div class="col-lg-3 ">
+                                                                <div class="col-lg-4 col-sm-4 ">
                                                                     <label class="control-label" for="comision_monto_propietario">Comisi&oacute;n</label>
                                                                     <div class="controls">
                                                                         <div class="input-group">
-                                                                          <input type="text" id="comision_monto_propietario" name="comision_monto_propietario" class="form-control numeric" value="<%=contrato.getComision_monto_propietario()%>">
+                                                                          <input type="text" id="comision_monto_propietario" name="comision_monto_propietario" class="form-control numeric">
                                                                         </div>
                                                                     </div>
                                                                 </div>
 
-                                                                <div class="col-lg-3 ">
+                                                                <div class="col-lg-4 col-sm-4 ">
                                                                     <label class="control-label" for="comision_desde_propietario">Fecha Inicio</label>
                                                                     <div class="controls">
                                                                         <div class="input-group">
-                                                                          <input type="text" id="comision_desde_propietario" name="comision_desde_propietario" class="form-control date-picker"  value="<%=TFecha.formatearFechaBdVista(contrato.getComision_desde_propietario())%>">
+                                                                          <input type="text" id="comision_desde_propietario" name="comision_desde_propietario" class="form-control date-picker">
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-lg-2">
+                                                                <div class="col-lg-3">
                                                                     <label class="control-label" for="comision_cuotas_propietario">Cuotas</label>
                                                                     <div class="controls">
                                                                         <div class="input-group">
-                                                                          <input type="text" id="comision_cuotas_propietario" name="comision_cuotas_propietario" class="form-control numeric"  value="<%=contrato.getComision_cuotas_propietario()%>">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-4 ">
-                                                                    <label class="control-label" for="comision_mensual_propietario">Comisi&oacute;n mensual</label>
-                                                                    <div class="controls">
-                                                                        <div class="input-group">
-                                                                          <input type="text" id="comision_mensual_propietario" name="comision_mensual_propietario" class="form-control  numeric"  value="<%=contrato.getDeposito_cuotas()%>">
+                                                                          <input type="text" id="comision_cuotas_propietario" name="comision_cuotas_propietario" class="form-control numeric">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -583,7 +619,6 @@
                                                                 <col style="width:10%">
                                                                 <col style="width:15%">
                                                                 <col style="width:10%">
-                                                                <col style="width:10%">
                                                             </colgroup>
 
                                                             <thead>
@@ -591,23 +626,10 @@
                                                                     <th>Concepto</th>
                                                                     <th>Aplica</th>
                                                                     <th>Importe</th>
-                                                                    <th>Cuotas</th>
                                                                     <th>Acci&oacute;n</th>
                                                                 </tr>
-                                                            </thead>                                                            
+                                                            </thead>
                                                             <tbody>
-                                                                <% for(Contrato_gasto cg :lstContrato_gasto) {
-                                                                    String aplica = (cg.getId_aplica()==OptionsCfg.CLIENTE_TIPO_INQUILINO)?"Inquilino":"Propietario";
-
-                                                                %>
-                                                                <tr>
-                                                                    <td><%=cg.getConcepto()%><input type="hidden" name="gasto_concepto" value="<%=cg.getConcepto()%>"></td>
-                                                                    <td><%=aplica%><input type="hidden" name="gasto_aplica" value="<%=cg.getId_aplica()%>"></td>
-                                                                    <td><%=cg.getImporte()%><input type="hidden" name="gasto_importe" value="<%=cg.getImporte()%>"></td>
-                                                                    <td><%=cg.getCuotas()%><input type="hidden" name="gasto_cuota" value="<%=cg.getCuotas()%>"></td>
-                                                                    <td class=""><span class="btn btn-xs btn-danger btn-circle btn-del"><span class="fa fa-trash-o"></span></span></td>
-                                                                </tr>
-                                                                <%}%>
                                                             </tbody>
                                                             <tfoot><tr><td colspan="5"><span class="btn btn-primary" id="btnGasto">Agregar Valor</span></td></tr></tfoot>
                                                         </table>
@@ -618,15 +640,14 @@
                                                       <div class="form-group ">
                                                         <label for="asegura_renta" class="col-lg-2 control-label"><span class="">Asegura Renta</span></label>
                                                         <div class="col-lg-3">
-                                                            <% String asegura_renta = contrato.getAsegura_renta()==1?"checked":"";%>
-                                                            <input type="checkbox" id="asegura_renta" name="asegura_renta" <%=asegura_renta%> />
+                                                            <input type="checkbox" id="asegura_renta" name="asegura_renta"  />
                                                         </div>
                                                     </div>
                                                  </div>
                                                  <div class="col-lg-12">
                                                      <label class="control-label" for="observaciones">Observaciones</label>
                                                         <div class="input-control">
-                                                              <textarea class="form-control" name="observaciones" id="observaciones"><%=contrato.getObservaciones()%></textarea>
+                                                              <textarea class="form-control" name="observaciones" id="observaciones"></textarea>
                                                         </div>
                                                 </div>
                                              </div>
@@ -892,7 +913,7 @@ function agregarValor(target){
                             var fecha_desde = $('#valor_fecha_inicio').val();
                             var fecha_hasta = $('#valor_fecha_fin').val();
                             var monto = $('#valor_importe').val();
-
+                            
                             if(target=="Valor"){
                                 var html_desde = fecha_desde +  ' <input type="hidden" name="valor_desde" value="'+fecha_desde+'">';
                                 var html_hasta = fecha_hasta + ' <input type="hidden" name="valor_hasta" value="'+fecha_hasta+'">';
@@ -973,11 +994,11 @@ function agregarGasto(target){
                             var concepto = $('#gasto_concepto').val();
                             var aplica = $('#gasto_aplica').val()===1?"Inquilino":"Propietario";
                             var importe = $('#gasto_importe').val();
-
+                            
                             var html_concepto = concepto + '<input type="hidden" name="gasto_concepto" value="'+concepto+'">';
                             var html_aplica = aplica + '<input type="hidden" name="gasto_aplica" value="'+$('#gasto_aplica').val()+'">';
                             var html_importe = importe + '<input type="hidden" name="gasto_importe" value="'+importe+'">';
-
+                            
                             var html = '';
                             html += wrapTag('td',html_concepto,'');
                             html += wrapTag('td',html_aplica,'');
@@ -1022,7 +1043,7 @@ function validar(data){
     var $numero = $('#numero');
 
     todoOk &= validarCampo($id_inquilino,"Debe seleccionar el inquilino",validarNoCero);
-    todoOk &= validarCampo($id_propiedad,"Debe seleccionar la propiedad",validarNoCero);
+    todoOk &= validarCampo($id_propiedad,"Debe seleccionar la propiedad",validarNoCero);    
     todoOk &= validarCampo($fecha_inicio,"Ingrese la fecha de inicio del contrato",validarCampoFecha);
     todoOk &= validarCampo($fecha_fin,"Ingrese la fecha de fin del contrato",validarCampoFecha);
     todoOk &= validarNoNulo($meses,"Ingrese la cantidad de meses del contrato",validarNoCero);

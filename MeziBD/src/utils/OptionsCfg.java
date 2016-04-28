@@ -49,7 +49,15 @@ public class OptionsCfg {
     public static final int CONCEPTO_PAGO             = 9;
     public static final int CONCEPTO_SALDO            = 10;
     
-       
+    public static final int CONTRATO_ESTADO_ACTIVO    = 1;
+    public static final int CONTRATO_ESTADO_FIN = 2;
+   
+    public static final String RECIBO_IMAGE = "fondo_recibo";
+    public static final String CUENTA_IMAGE = "fondo_cuenta";
+    
+    public static final String RECIBO_PATH  = "recibo_path";
+    public static final String CUENTA_PATH  = "cuenta_path";
+    
     public static ArrayList<Option> getPerfiles(){
         ArrayList<Option> lista = new ArrayList();
         lista.add(new Option(1,"ADM","Administrador"));
@@ -101,6 +109,12 @@ public class OptionsCfg {
         }
         return mapa;
    } 
+     public static ArrayList<Option> getEstadosContrato(){
+        ArrayList<Option> lista = new ArrayList();
+        lista.add(new Option(CONTRATO_ESTADO_ACTIVO,String.format("%03d",CONTRATO_ESTADO_ACTIVO),"Activo"));
+        lista.add(new Option(CONTRATO_ESTADO_FIN,   String.format("%03d",CONTRATO_ESTADO_FIN), "Fin"));        
+        return lista;
+   }
     public static class Option{
         Integer id ;
         String codigo;

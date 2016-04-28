@@ -1,3 +1,4 @@
+<%@page import="utils.TFecha"%>
 <%@page import="transaccion.TLocalidad"%>
 <%@page import="utils.PathCfg"%>
 <%@page import="bd.Localidad"%>
@@ -17,7 +18,7 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="liqFecha">Fecha</label>
                         <div class="col-md-8">
-                        <input id="liqFecha" name="liqFecha" type="text" class="form-control input-md date-picker" value="">
+                            <input id="liqFecha" name="liqFecha" type="text" class="form-control input-md date-picker" value="<%=TFecha.ahora(TFecha.formatoVista)%>">
                         </div>
                     </div>
                 </div>
@@ -139,6 +140,4 @@
             });
             //bootbox.alert("Nombre " + nombre + ". Email: <b>" + email + "</b>");
     }
-    
-    
 </script>

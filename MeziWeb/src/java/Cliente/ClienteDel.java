@@ -89,9 +89,10 @@ public class ClienteDel extends HttpServlet {
         JsonRespuesta jr = new JsonRespuesta();
         try {           
            Integer id = Parser.parseInt(request.getParameter("id"));
-           Cliente cliente = new TCliente().getById(id);            
-           if (cliente==null) throw new BaseException("ERROR","No existe el registro");
            TCliente tc = new TCliente();
+           Cliente cliente = tc.getById(id);            
+           if (cliente==null) throw new BaseException("ERROR","No existe el registro");
+           
            boolean baja = tc.baja(cliente);
            if ( !baja)throw new BaseException("ERROR","Ocurrio un error al eliminar el registro");
                jr.setResult("OK");

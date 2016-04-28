@@ -15,7 +15,7 @@
                             </ul>
                         </li>-->
                         <li><a href="<%=PathCfg.PROPIEDAD%>"><i class="fa fa-home"></i><span class="hidden-sm text"> Propiedades</span></a></li>
-                        <li><a href="<%=PathCfg.CONTRATO%>"><i class="fa fa-file-text"></i><span class="hidden-sm text"> Contratos</span></a></li>
+                        <li><a href="<%=PathCfg.CONTRATO%>"><i class="fa fa-file-text"></i><span class="hidden-sm text"> Carpetas</span></a></li>
                         <li><a href="<%=PathCfg.CUENTA%>?id_tipo_cliente=<%=OptionsCfg.CLIENTE_TIPO_INQUILINO%>"><i class="fa fa-dollar"></i><span class="hidden-sm text"> Cuenta Inquilino</span></a></li>
                         <li><a href="<%=PathCfg.CUENTA%>?id_tipo_cliente=<%=OptionsCfg.CLIENTE_TIPO_PROPIETARIO%>"><i class="fa fa-dollar"></i><span class="hidden-sm text"> Cuenta Propietario</span></a></li>
                         <li><a href="<%=PathCfg.LOCALIDAD%>"><i class="fa fa-flag"></i><span class="hidden-sm text"> Localidades</span></a></li>

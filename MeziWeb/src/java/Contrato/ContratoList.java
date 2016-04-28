@@ -25,6 +25,7 @@ import transaccion.TPropiedad;
 import transaccion.TPropietario;
 import utils.JsonRespuesta;
 import utils.OptionsCfg;
+import utils.OptionsCfg.Option;
 import utils.Parser;
 
 /**
@@ -35,6 +36,7 @@ public class ContratoList extends HttpServlet {
     private Map<Integer,Propietario> mapPropietarios;
     private Map<Integer,Inquilino>   mapInquilinos;
     private Map<Integer,Propiedad>   mapPropiedades;
+    private Map<Integer,Option>      mapEstados;
     
     /**
      * Processes requests for both HTTP
@@ -55,12 +57,8 @@ public class ContratoList extends HttpServlet {
         Integer id_cliente = Parser.parseInt(request.getParameter("id_cliente"));
         Integer id_propiedad = Parser.parseInt(request.getParameter("id_propiedad"));
         Integer id_tipo = Parser.parseInt(request.getParameter("id_tipo"));
-        Integer page = 0;
-        try{
-             page = (pagNro!=null)?Integer.parseInt(pagNro):0;             
-        } catch(NumberFormatException ex) {
-            page = 0;            
-        }
+        Integer page    = Parser.parseInt(pagNro);
+        
         try {
             JsonRespuesta jr = new JsonRespuesta();           
            
@@ -68,6 +66,7 @@ public class ContratoList extends HttpServlet {
             mapPropietarios = new TPropietario().getMap();
             mapInquilinos   = new TInquilino().getMap();
             mapPropiedades  = new TPropiedad().getMap();
+            mapEstados = OptionsCfg.getMap(OptionsCfg.getEstadosContrato());
             
             TContrato tp = new TContrato();
             HashMap<String,String> mapFiltro = new HashMap<String,String> ();                        
@@ -151,7 +150,7 @@ public class ContratoList extends HttpServlet {
         String propietario = "";
         String detalles    = "";
         String precio      = "";
-        String tipo_contrato = "";
+        String tipo_contrato   = "";
         String estado_contrato = "";
         
         
@@ -162,8 +161,11 @@ public class ContratoList extends HttpServlet {
             Propietario pro = mapPropietarios.get(contrato.getId_propietario());
             
             if(propiedad!=null) direccion = propiedad.getDireccion();
-            if(inq!=null) inquilino = inq.getApellido() + ", " + inq.getApellido();
-            if(pro!=null) propietario = pro.getApellido() + ", " + pro.getApellido();
+            if(inq!=null) inquilino   = inq.getApellido() + ", " + inq.getNombre();
+            if(pro!=null) propietario = pro.getApellido() + ", " + pro.getNombre();
+            Option optEstado = mapEstados.get(contrato.getId_estado());
+            
+            estado_contrato = (optEstado!=null)?optEstado.getDescripcion():"";
             tipo_contrato = "Alquiler";
             //Propietario po = mapPropietarios.get(contrato.getId_propiedad());
         }

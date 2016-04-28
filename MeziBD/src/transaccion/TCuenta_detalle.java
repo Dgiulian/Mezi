@@ -35,11 +35,11 @@ public class TCuenta_detalle extends TransaccionBase<Cuenta_detalle> {
         
 public List<Cuenta_detalle> crearDetalleInquilino(Contrato contrato){
     ArrayList<Cuenta_detalle> lstDetalle = new ArrayList<Cuenta_detalle>();
-    String fecha            = contrato.getFecha_inicio();
-    Float gasto_escribania  = contrato.getGastos_escribania_inquilino();
-    Float gasto_sellado     = contrato.getGastos_sellado_inquilino();
-    Float comision_monto    = contrato.getComision_monto_inquilino();
-    Integer comision_cuotas = contrato.getComision_cuotas_inquilino();
+    String  fecha            = contrato.getComision_desde_inquilino();
+    Float   gasto_escribania = contrato.getGastos_escribania_inquilino();
+    Float   gasto_sellado    = contrato.getGastos_sellado_inquilino();
+    Float   comision_monto   = contrato.getComision_monto_inquilino();
+    Integer comision_cuotas  = contrato.getComision_cuotas_inquilino();
     
     if(gasto_escribania>0f)
         lstDetalle.add(detalleEscribania(gasto_escribania,fecha));
@@ -53,11 +53,11 @@ public List<Cuenta_detalle> crearDetalleInquilino(Contrato contrato){
 }
 public List<Cuenta_detalle> crearDetallePropietario(Contrato contrato){
     ArrayList<Cuenta_detalle> lstDetalle = new ArrayList<Cuenta_detalle>();
-    String fecha            = contrato.getFecha_inicio();
-    Float gasto_escribania  = contrato.getGastos_escribania_propietario();
-    Float gasto_sellado     = contrato.getGastos_sellado_propietario();
-    Float comision_monto    = contrato.getComision_monto_propietario();
-    Integer comision_cuotas = contrato.getComision_cuotas_propietario();
+    String  fecha            = contrato.getComision_desde_propietario();
+    Float   gasto_escribania = contrato.getGastos_escribania_propietario();
+    Float   gasto_sellado    = contrato.getGastos_sellado_propietario();
+    Float   comision_monto   = contrato.getComision_monto_propietario();
+    Integer comision_cuotas  = contrato.getComision_cuotas_propietario();
     
     if(gasto_escribania>0f)
         lstDetalle.add(detalleEscribania(gasto_escribania,fecha));
@@ -105,15 +105,16 @@ public List<Cuenta_detalle> crearDetalle(Contrato_documento[] lstDocum,Integer i
         LocalDate hasta = new LocalDate(docum.getHasta());
         Integer mes_desde = desde.getMonthOfYear();
         Integer mes_hasta = hasta.getMonthOfYear();
-
+        int i=0;
         for(LocalDate fecha = desde;fecha.isBefore(hasta);fecha = fecha.plusMonths(1).withDayOfMonth(1)){
             Cuenta_detalle cd = new Cuenta_detalle();
 //            LocalDate fecha = desde.plusMonths(i).withDayOfMonth(1);
             Float monto = docum.getMonto();
 
-            String concepto = String.format("Documento %s",fecha.getMonthOfYear());
+            String concepto = String.format("Documento mes %s",fecha.getMonthOfYear());
             cd.setConcepto(concepto);
             cd.setId_concepto(OptionsCfg.CONCEPTO_DOCUMENTO);
+            cd.setId_referencia(++i);
             if (id_tipo== OptionsCfg.CLIENTE_TIPO_PROPIETARIO) cd.setHaber(monto);
             else if (id_tipo== OptionsCfg.CLIENTE_TIPO_INQUILINO) cd.setDebe(monto);
             cd.setFecha(TFecha.formatearFecha(fecha.toDate(), TFecha.formatoBD));
@@ -125,15 +126,20 @@ public List<Cuenta_detalle> crearDetalle(Contrato_documento[] lstDocum,Integer i
 public List<Cuenta_detalle> crearDetalle(Contrato_gasto[] lstGasto, String fecha){
     ArrayList<Cuenta_detalle> lstDetalle = new ArrayList<Cuenta_detalle>();
     for(Contrato_gasto gasto:lstGasto){
-            Cuenta_detalle cd = new Cuenta_detalle();            
-            Float monto = gasto.getImporte();
-            
-            String concepto = gasto.getConcepto();
+        Integer cuota = gasto.getCuotas();
+        if (cuota<=0) cuota = 1;
+        Float monto = gasto.getImporte() / cuota ;
+        
+        for(int i = 0;i<cuota;i++){
+            Cuenta_detalle cd = new Cuenta_detalle();
+            String concepto = gasto.getConcepto() ;
+            if(cuota>1) concepto += String.format(" Cuota %d",i);
             cd.setConcepto(concepto);
             cd.setDebe(monto);
             cd.setFecha(fecha);
             cd.setId_concepto(OptionsCfg.CONCEPTO_GASTO);
             lstDetalle.add(cd);
+        }            
     }
     return lstDetalle;
 }
@@ -245,8 +251,8 @@ private static Contrato getContrato(){
   }
   public List<Cuenta_detalle> detalleInquilino(Contrato contrato, ArrayList<Contrato_valor> lstValor,  ArrayList<Contrato_gasto> lstGasto){
        ArrayList<Cuenta_detalle> lstDetalle = new ArrayList<Cuenta_detalle>();
-       lstDetalle.addAll(this.crearDetalleInquilino(contrato));                        
        lstDetalle.addAll(this.crearDetalle(lstValor.toArray(new Contrato_valor[lstValor.size()])));
+       lstDetalle.addAll(this.crearDetalleInquilino(contrato));
        //lstDetalle.addAll(this.crearDetalle(lstDocum.toArray(new Contrato_documento[lstDocum.size()]), OptionsCfg.CLIENTE_TIPO_INQUILINO));
        lstDetalle.addAll(this.crearDetalle(lstGasto.toArray(new Contrato_gasto[lstGasto.size()]),contrato.getFecha_inicio()));
        return lstDetalle;
@@ -257,9 +263,9 @@ private static Contrato getContrato(){
        return lstDetalle;
   }
   public List<Cuenta_detalle> detallePropietario(Contrato contrato, ArrayList<Contrato_gasto> lstGasto){
-       ArrayList<Cuenta_detalle> lstDetalle = new ArrayList<Cuenta_detalle>();
-       lstDetalle.addAll(this.crearDetalleInquilino(contrato));                        
+       ArrayList<Cuenta_detalle> lstDetalle = new ArrayList<Cuenta_detalle>();       
        lstDetalle.addAll(this.crearDetalle(lstGasto.toArray(new Contrato_gasto[lstGasto.size()]),contrato.getFecha_inicio()));
+       lstDetalle.addAll(this.crearDetalleInquilino(contrato));
        return lstDetalle;
   }
   public List<Cuenta_detalle> detallePropietario( ArrayList<Contrato_documento> lstDocum){

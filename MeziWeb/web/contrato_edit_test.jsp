@@ -26,6 +26,8 @@
     if(lstVendedores==null) lstVendedores = new ArrayList<Vendedor>();
 
     Propiedad propiedad = (Propiedad) request.getAttribute("propiedad");
+    Cliente cliente = (Cliente) request.getAttribute("inquilino");
+    
     boolean con_propiedad = true;
     boolean con_cliente = true;
     boolean con_vendedor = true;
@@ -34,7 +36,7 @@
         propiedad = new Propiedad();
         con_propiedad = false;
     }
-    Cliente cliente = (Cliente) request.getAttribute("inquilino");
+    
     if (cliente==null){
         cliente = new Cliente();
         con_cliente = false;
@@ -209,36 +211,6 @@
                                         </div> <!-- tab1 -->
 
                                             <div class="tab-pane row " id="tabProp">
-<!--                                                <div class="col-lg-12">
-                                                    <h2>Listado de propiedades disponibles</h2>
-                                                    <table  id="tblPropiedades" class="table table-condensed table-bordered table-responsive">
-                                                        <colgroup>
-                                                            <col style="width:10%">
-                                                            <col style="">
-                                                            <col style="width:5%">
-                                                        </colgroup>
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Tipo</th>
-                                                                <th>Domicilio</th>
-                                                                <th>Propietario</th>
-                                                                <th>Acci&oacute;n</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <% for(Propiedad p:lstPropiedades){%>
-                                                            <tr>
-                                                                <td><%=p.getId()%></td>
-                                                                <td><%=p.getDireccion()%></td>
-                                                                <td></td>
-                                                                <td><span class='btn btn-xs btn-primary btn-circle btn-sel' data-index="<%=p.getId()%>"><span class='fa fa-plus'></span></td>
-                                                            </tr>
-                                                            <% }%>
-                                                        </tbody>
-
-                                                    </table>
-                                                </div>
-                                                <hr>-->
                                                 <div class="col-lg-8">
                                                     <fieldset>
                                                     <legend>Datos de la propiedad</legend>
@@ -655,7 +627,7 @@
                                                             </thead>
                                                             
                                                             <tbody>
-                                                                <tr>
+                                                            <tr>
                                                                 <td>Transporte<input type="hidden" name="gasto_concepto" value="Transporte"></td>
                                                                 <td>Propietario<input type="hidden" name="gasto_aplica" value="2"></td>
                                                                 <td>132<input type="hidden" name="gasto_importe" value="132"></td>

@@ -165,12 +165,52 @@ function selTodos(filtro,checked){
 
 $(document).ready(function(){
    $('.uppercase').keyup(function(e) {
-       console.log(e);
         if(e.keyCode>=65 && e.keyCode <= 90) 
             this.value = this.value.toUpperCase();
         return true;
     });
+    $('form').bind('keypress keydown',function(e){
+        var code = e.keyCode || e.which;
+        if(code===13){
+            e.preventDefault();
+            return false;
+        }
+    }); 
     
+//    $('input').bind('keypress keydown',function(e){
+//        var code = e.keyCode || e.which;
+//        // Tab code = 9;
+//        if(code===13){
+//            e.preventDefault();
+//            return false;
+//        }
+//   
+//    }); 
+    var inputs = $(':input:not(:hidden,:button)').keydown(function keydown(e){  /* Simulate tab  */
+            var code = e.keyCode || e.which;            
+            if(code===13){
+           e.preventDefault();
+           var nextInput = inputs.get(inputs.index(this) + 1);
+           if (nextInput) {
+              nextInput.focus();
+           }
+        }
+    });
+    
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        var target = $(e.target).attr("href") // activated tab
+        var inputs = $(':input:not(:hidden,:button)').keydown(function (e){  /* Simulate tab  */
+        
+        var code = e.keyCode || e.which;
+        if(code===13){
+        e.preventDefault();
+        var nextInput = inputs.get(inputs.index(this) + 1);
+        if (nextInput) {
+           nextInput.focus();
+        }
+    }
+});
+    });
     if($().mask) {
         $('.date-picker').mask('99/99/9999');
         $('.hora').mask('99:99:99');
@@ -179,13 +219,14 @@ $(document).ready(function(){
         $('.date-picker').datepicker({
             language: 'es',
             format:'dd/mm/yyyy',
-            autoClose: true
+            autoClose: true,
+            autoclose: true
         }); 
-         $('.date-picker').on('changeDate', function(ev){
-             
-             $(this).val(ev.target.value);    
-            $(this).datepicker('hide');
-        });
+//         $('.date-picker').on('changeDate', function(ev){
+
+//            $(this).val(ev.target.value);    
+//            $(this).datepicker('hide');
+//        });
     }
     
      $('#btnHideData').click(function(){
@@ -200,6 +241,7 @@ $(document).ready(function(){
    
 });
 
+    
  function validarCampo (campo,mensajeError,check){     
     if(check ===undefined) { check = false;}          
     if(campo ===undefined || campo.val()=== "" || check(campo)){

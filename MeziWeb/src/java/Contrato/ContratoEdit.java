@@ -21,6 +21,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import test.ContratoTest;
+import test.Contrato_documentoTest;
+import test.Contrato_gastoTest;
+import test.Contrato_valorTest;
 import transaccion.TCliente;
 import transaccion.TContrato;
 import transaccion.TContrato_documento;
@@ -62,16 +66,27 @@ public class ContratoEdit extends HttpServlet {
         Integer id_cliente = Parser.parseInt(request.getParameter("id_cliente"));
         Integer id_vendedor = Parser.parseInt(request.getParameter("id_vendedor"));
         
+        Contrato contrato = new Contrato();
+        List<Contrato_valor>     contrato_valor = new ArrayList<Contrato_valor>();
+        List<Contrato_gasto>     contrato_gasto = new ArrayList<Contrato_gasto>();
+        List<Contrato_documento> contrato_documento = new ArrayList<Contrato_documento>();
+        
         Parametro parametro = new TParametro().getByCodigo("entorno");
         if (parametro!=null && parametro.getValor().equalsIgnoreCase("test")) {
-            id_propiedad = id_propiedad!=0?id_propiedad:2;
-            id_cliente = id_cliente!=0?id_cliente:6;
-            id_vendedor = id_vendedor!=0?id_cliente:3;
+            contrato = new ContratoTest();
+            contrato_valor = Contrato_valorTest.getList();
+            contrato_documento = Contrato_documentoTest.getList();
+            contrato_gasto = Contrato_gastoTest.getList();
             
+            id_propiedad = id_propiedad!=0?id_propiedad:contrato.getId_propiedad();
+            id_cliente   = id_cliente!=0?id_cliente:contrato.getId_inquilino();
+            id_vendedor  = id_vendedor!=0?id_vendedor:contrato.getId_vendedor();
         }
-        
-        
-        
+        request.setAttribute("contrato",contrato);
+        request.setAttribute("contrato_valor",contrato_valor);
+        request.setAttribute("contrato_documento",contrato_documento);
+        request.setAttribute("contrato_gasto",contrato_gasto);
+         
         Propiedad propiedad = new TPropiedad().getById(id_propiedad);
         if(propiedad!=null) 
             request.setAttribute("propiedad", propiedad);
@@ -86,7 +101,8 @@ public class ContratoEdit extends HttpServlet {
             request.setAttribute("vendedor",vendedor);
         
         if (parametro!=null && parametro.getValor().equalsIgnoreCase("test")) {
-            request.getRequestDispatcher("contrato_edit_test.jsp").forward(request, response);
+            request.getRequestDispatcher("contrato_edit.jsp").forward(request, response);
+//            request.getRequestDispatcher("contrato_edit_test.jsp").forward(request, response);
         } else 
             request.getRequestDispatcher("contrato_edit.jsp").forward(request, response);
     }
@@ -121,6 +137,7 @@ public class ContratoEdit extends HttpServlet {
         Float    comision_monto_propietario    = Parser.parseFloat(request.getParameter("comision_monto_propietario"));
         String   comision_desde_propietario    = TFecha.formatearFechaVistaBd(request.getParameter("comision_desde_propietario"));
         Integer  comision_cuotas_propietario   = Parser.parseInt(request.getParameter("comision_cuotas_propietario"));
+        Float    comision_mensual_propietario  = Parser.parseFloat(request.getParameter("comision_mensual_propietario"));
         Float    gastos_escribania_propietario = Parser.parseFloat(request.getParameter("gastos_escribania_propietario"));
         Float    gastos_sellado_propietario    = Parser.parseFloat(request.getParameter("gastos_sellado_propietario"));
         Float    deposito_monto                = Parser.parseFloat(request.getParameter("deposito_monto"));
@@ -140,15 +157,23 @@ public class ContratoEdit extends HttpServlet {
         String[] arr_gasto_concepto            = request.getParameterValues("gasto_concepto");
         String[] arr_gasto_aplica              = request.getParameterValues("gasto_aplica");
         String[] arr_gasto_importe             = request.getParameterValues("gasto_importe");
+        String[] arr_gasto_cuota             = request.getParameterValues("gasto_cuota");
         
         ArrayList<Contrato_valor>     lstValor  =  new ArrayList<Contrato_valor>();
         ArrayList<Contrato_documento> lstDocum  =  new ArrayList<Contrato_documento>();
         ArrayList<Contrato_gasto>     lstGastoInq   =  new ArrayList<Contrato_gasto>();
         ArrayList<Contrato_gasto>     lstGastoProp  =  new ArrayList<Contrato_gasto>();
         
+        TContrato_valor     tv = new TContrato_valor();
+        TContrato_documento td = new TContrato_documento();
+        TContrato_gasto     tg = new TContrato_gasto();
+        TPropiedad          tp = new TPropiedad();
+        TInquilino          ti = new TInquilino();
+        TPropietario     tprop = new TPropietario();
+        
        try{
            Integer id_contrato = 0;
-           Propiedad propiedad = new TPropiedad().getById(id_propiedad);
+           Propiedad propiedad = tp.getById(id_propiedad);
            if(propiedad==null) throw new BaseException("ERROR","Seleccione la propiedad");
           
            Cliente cliente = new TCliente().getById(id_inquilino);
@@ -192,6 +217,7 @@ public class ContratoEdit extends HttpServlet {
            
            contrato.setComision_desde_propietario(comision_desde_propietario);
            contrato.setComision_cuotas_propietario(comision_cuotas_propietario);
+           contrato.setComision_mensual_propietario(comision_mensual_propietario);
            contrato.setGastos_escribania_propietario(gastos_escribania_propietario);
            contrato.setGastos_sellado_propietario(gastos_sellado_propietario);
            contrato.setDeposito_monto(deposito_monto);
@@ -199,6 +225,7 @@ public class ContratoEdit extends HttpServlet {
            contrato.setDeposito_cuotas(deposito_cuotas);
            contrato.setAsegura_renta(asegura_renta);
            contrato.setObservaciones(observaciones);
+           contrato.setId_estado(OptionsCfg.CONTRATO_ESTADO_ACTIVO);
            id_contrato = new TContrato().alta(contrato);
            if(id_contrato!=0){ // Si se guardo bien el contrato
                if(arr_valor_desde!=null){
@@ -236,32 +263,33 @@ public class ContratoEdit extends HttpServlet {
                }
                if(arr_gasto_concepto!=null) {
                 for (int i =0;i<arr_gasto_concepto.length;i++){
-                     String gasto_concepto          = arr_gasto_concepto[i];
-                     Integer gasto_aplica           = Parser.parseInt(arr_gasto_aplica[i]);
-                     Float gasto_importe            = Parser.parseFloat(arr_gasto_importe[i]);                   
-                     Contrato_gasto gasto =  new Contrato_gasto();
+                     String gasto_concepto = arr_gasto_concepto[i];
+                     Integer gasto_aplica  = Parser.parseInt(arr_gasto_aplica[i]);
+                     Float gasto_importe   = Parser.parseFloat(arr_gasto_importe[i]);                   
+                     Integer gasto_cuota   = Parser.parseInt(arr_gasto_cuota[i]);                   
+                     Contrato_gasto gasto  =  new Contrato_gasto();
                      gasto.setConcepto(gasto_concepto);
                      gasto.setId_contrato(id_contrato);
                      gasto.setId_aplica(gasto_aplica);
                      gasto.setImporte(gasto_importe);
+                     gasto.setCuotas(gasto_cuota);
                      if (gasto_aplica==1) 
                          lstGastoInq.add(gasto);
                      else if(gasto_aplica==2) lstGastoProp.add(gasto);
  //                    new TContrato_gasto().alta(gasto);
                 }
                }
-               TContrato_valor     tv = new TContrato_valor();
-               TContrato_documento td = new TContrato_documento();
-               TContrato_gasto     tg = new TContrato_gasto();
                
-               new TInquilino().alta(id_inquilino);
-               new TPropietario().alta(propiedad.getId_propietario());
                
+               ti.alta(id_inquilino);
+               tprop.alta(propiedad.getId_propietario());
+               propiedad.setId_estado(OptionsCfg.PROPIEDAD_ALQUILADA);
+               tp.actualizar(propiedad);
                
                for(Contrato_valor valor:lstValor)     tv.alta(valor);
-               for(Contrato_documento docum:lstDocum) tv.alta(docum);
-               for(Contrato_gasto gasto:lstGastoInq)  tv.alta(gasto);
-               for(Contrato_gasto gasto:lstGastoProp) tv.alta(gasto);
+               for(Contrato_documento docum:lstDocum) td.alta(docum);
+               for(Contrato_gasto gasto:lstGastoInq)  tg.alta(gasto);
+               for(Contrato_gasto gasto:lstGastoProp) tg.alta(gasto);
                
                Cuenta cc_inquilino_o = new Cuenta();
                

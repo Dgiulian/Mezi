@@ -125,7 +125,7 @@
                 method: 'POST',
                 dataType: 'json',
                 beforeSend:function(){
-                    completarCliente({id_inquilino: '',
+                    completarCliente({id: 0,
                                       nombre: '',
                                       apellido: '',
                                       dni: '',

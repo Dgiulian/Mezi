@@ -1,6 +1,3 @@
-<%@page import="org.joda.time.format.DateTimeFormat"%>
-<%@page import="org.joda.time.format.DateTimeFormatter"%>
-<%@page import="org.joda.time.LocalDate"%>
 <%@page import="bd.Localidad"%>
 <%@page import="bd.Barrio"%>
 <%@page import="bd.Propiedad"%>
@@ -13,8 +10,8 @@
     Localidad localidad = new Localidad();
     Barrio barrio = new Barrio();
     Integer id_tipo_cliente = (Integer) request.getAttribute("id_tipo_cliente");
-    
-    DateTimeFormatter dtfOut = DateTimeFormat.forPattern("MM/dd/yyyy");
+    String fecha_consulta = TFecha.ahora(TFecha.formatoVista);
+//    fecha_consulta = "05/01/2016";
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -42,7 +39,7 @@
 				<div class="col-lg-12">
                                     <div class="box">
                                         <div class="box-header">
-                                            <H3 style="font-height:15px">Administraci&oacute;n de cuenta corriente <%=(id_tipo_cliente==OptionsCfg.CLIENTE_TIPO_PROPIETARIO)?"propietario":"inquilino" %></H3>
+                                            <H3 style="font-size:15px">Administraci&oacute;n de cuenta corriente <%=(id_tipo_cliente==OptionsCfg.CLIENTE_TIPO_PROPIETARIO)?"propietario":"inquilino" %></H3>
                                         </div>
                                     <div  class="box-content">
                                         <div class="col-lg-12   ">
@@ -75,45 +72,34 @@
                                                                           </div>
                                                                     </div>
                                                                 </div>
-<!--                                                                <div class="col-lg-4">
-                                                                    <div class="controls">
-                                                                        <label class="control-label" for="id_tipo_cliente">Tipo</label>
-                                                                          <div class="input-group ">
-                                                                            <input type="radio" id="id_tipo_cliente" name="id_tipo_cliente" class="radio radio-inline" value="1" checked> Inquilino
-                                                                            <input type="radio" id="id_tipo_cliente" name="id_tipo_cliente" class="radio radio-inline" value="2" > Propietario
-                                                                          </div>
-                                                                    </div>
-                                                                </div>-->
-                                                            <%if (!con_cliente) {%>
-<!--                                                            <div class="col-lg-2 ">
-                                                                <div class="controls">
-                                                                    <label class="control-label" for="id_inquilino">&nbsp;</label>
-                                                                      <div class="input-group ">
-                                                                        <span class="btn btn-primary" data-toggle="modal" data-target="#mdlCliente">Seleccionar</span>
-                                                                      </div>
-                                                                </div>
-                                                            </div>-->
-                                                            <%}%>
-                                                        
+
                                                         </div><!-- row -->
                                                         </fieldset>
-                                                            <div class="col-lg-4 ">
-                                                                <div class="controls">
-                                                                    <label class="control-label" for="fecha_consulta">Fecha consulta</label>
-                                                                      <div class="input-group ">
-                                                                          <input type="text" class="form-control" id="fecha_consulta" name="fecha_consulta" value="<%=dtfOut.print(new LocalDate())%>" disabled>
-                                                                      </div>
+                                                        <div class="col-lg-3 ">
+                                                            <div class="controls">
+                                                                <label class="control-label" for="fecha_desde_oficial">Fecha desde</label>
+                                                                  <div class="input-group ">
+                                                                      <input type="text" class="form-control date-picker" id="fecha_desde_oficial" name="fecha_desde_oficial" >
+                                                                  </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3 ">
+                                                            <div class="controls">
+                                                                <label class="control-label" for="fecha_hasta_oficial">Fecha hasta</label>
+                                                                  <div class="input-group ">
+                                                                      <input type="text" class="form-control date-picker" id="fecha_hasta_oficial" name="fecha_hasta_oficial" value="<%=fecha_consulta%>">
+                                                                  </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-5 ">
+                                                            <div class="controls">
+                                                                <label class="control-label" for="">&nbsp;</label>
+                                                                <div class="controls ">
+                                                                <span class="btn btn-primary" id="btnActualizarOficial" >Actualizar </span>
+                                                                <span class="btn btn-primary" id="btnImprimirOficial">Imprimir</span>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-lg-4 ">
-                                                                <div class="controls">
-                                                                    <label class="control-label" for="fecha_liquidacion">&Uacute;ltima Liquidaci&oacute;n</label>
-                                                                      <div class="input-group ">
-                                                                          <input type="text" class="form-control" id="fecha_liquidacion" name="fecha_liquidacion" disabled>
-                                                                      </div>
-                                                                </div>
-                                                            </div>
-                                                            
+                                                        </div>
                                                 </div>
                                                 <!--<div class="row">-->
                                                 <div class="col-lg-6">
@@ -152,6 +138,30 @@
                                                         </div> row -->
                                                      </div> <!-- col-lg-12 -->
                                                     </fieldset>
+                                                        <div class="col-lg-3 ">
+                                                            <div class="controls">
+                                                                <label class="control-label" for="fecha_desde_no_oficial">Fecha desde</label>
+                                                                  <div class="input-group ">
+                                                                      <input type="text" class="form-control date-picker" id="fecha_desde_no_oficial" name="fecha_desde_no_oficial" >
+                                                                  </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3 ">
+                                                            <div class="controls">
+                                                                <label class="control-label" for="fecha_hasta_no_oficial">Fecha hasta</label>
+                                                                  <div class="input-group ">
+                                                                      <input type="text" class="form-control date-picker" id="fecha_hasta_no_oficial" name="fecha_hasta_no_oficial" value="<%=fecha_consulta%>">
+                                                                  </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-5 ">
+                                                            <label class="control-label" for="">&nbsp;</label>
+                                                            <div class="controls">                                                                
+                                                                <span class="btn btn-primary" id="btnActualizarNoOficial" sytle="margin-right:2px;">Actualizar </span> 
+                                                                <span class="btn btn-primary" id="btnImprimirNoOficial">Imprimir</span>
+                                                                
+                                                            </div>
+                                                        </div>
                                                 </div>
                                     </div>
                                     <!--</div>-->
@@ -162,7 +172,8 @@
                                         <hr /> 
                                         <div class="col-lg-6">
                                             <h2><i class="fa fa-edit"></i>Cuenta Oficial 
-                                                <span class="btn btn-primary" id="btnAjOficial"  data-id_cuenta='' data-toggle="modal" data-target="#mdlConcepto">Ajustar</span>                                            
+                                                <input type="hidden" name="id_cuenta_oficial" id="id_cuenta_oficial" >
+                                                <span class="btn btn-primary" id="btnAjOficial"  data-id_cuenta='' data-toggle="modal" data-target="#mdlConcepto">Ajustar</span>                                             
                                                 <span class="btn btn-primary" id="btnLiqOficial" data-id_cuenta='' data-toggle="modal" data-target="#mdlLiquidar" id="btnLiquidar">Liquidar</span>
                                             </h2>
                                             <table class="table table-bordered table-condensed table-striped" id="tblCuentaOficial">
@@ -195,6 +206,7 @@
                                         </div>
                                         <div class="col-lg-6">
                                             <h2><i class="fa fa-edit"></i>Cuenta no oficial 
+                                                <input type="hidden" name="id_cuenta_no_oficial" id="id_cuenta_no_oficial" >
                                                 <span class="btn btn-primary" id="btnAjNoOficial"  data-id_cuenta='' data-toggle="modal" data-target="#mdlConcepto">Ajustar</span>
                                                 <span class="btn btn-primary" id="btnLiqNoOficial" data-id_cuenta='' data-toggle="modal" data-target="#mdlLiquidar" id="btnLiquidar">Liquidar</span></h2>
                                             <table class="table table-bordered table-condensed table-striped" id="tblCuentaNoOficial">
@@ -276,6 +288,7 @@
 	<!-- page scripts -->
 	<script src="assets/js/jquery-ui-1.10.3.custom.min.js"></script>
         <script src="assets/js/bootstrap-datepicker.min.js"></script>
+        <script src="assets/js/locales/bootstrap-datepicker.es.min.js"></script>
 	<script src="assets/js/bootstrap-timepicker.min.js"></script>
 	<script src="assets/js/moment.min.js"></script>
 	
@@ -294,21 +307,123 @@
 //           $('#dni_search').change(filtrar_cuenta);
 //           filtrar_cuenta();
 
+            $('#btnActualizarOficial').click(function(){               
+                loadData(recuperarDataOficial());
+            });
+            $('#btnActualizarNoOficial').click(function(){
+                loadData(recuperarDataNoOficial());
+            });
             
+            $('#btnImprimirOficial').click(function(){
+                imprimir(recuperarDataOficial());
+            });
+            $('#btnImprimirNoOficial').click(function(){
+                imprimir(recuperarDataNoOficial());        
+            });
         });
+        function imprimir(data){
+            if (data.id_cuenta===0) {
+                    bootbox.alert("Debe seleccionar la cuenta");
+                    return;
+            }
+            location.href = "<%=PathCfg.CUENTA_PRINT%>?id="+encodeURIComponent(data.id_cuenta) + "&fecha_desde=" + encodeURIComponent(data.fecha_desde) + "&fecha_hasta=" + encodeURIComponent(data.fecha_hasta); 
+        }
+        function recuperarDataOficial(){
+            var $id_cuenta = parseInt($('#id_cuenta_oficial').val());
+            var $fecha_desde = $('#fecha_desde_oficial').val();
+            var $fecha_hasta = $('#fecha_hasta_oficial').val();
+            
+            if (isNaN($id_cuenta)) $id_cuenta = 0;
+            
+            return {
+                    id_cuenta: $id_cuenta,  
+                    id_tipo:  1,
+                    fecha_desde: $fecha_desde,
+                    fecha_hasta: $fecha_hasta,
+                }
+        }
+        function recuperarDataNoOficial(){
+            var $id_cuenta   = parseInt($('#id_cuenta_no_oficial').val());
+            if (isNaN($id_cuenta)) $id_cuenta = 0;
+            var $fecha_desde = $('#fecha_desde_no_oficial').val();
+            var $fecha_hasta = $('#fecha_hasta_no_oficial').val();
         
-        function loadData(data){
+            return {
+                    id_cuenta: $id_cuenta,  
+                    id_tipo: 2,
+                    fecha_desde: $fecha_desde,
+                    fecha_hasta: $fecha_hasta,
+                    }
+        }
+        function buscar_cuenta(data){            
             var $tabla;    
             var $btnAjustar;
             var $btnLiquidar;
+            var $btnDesde;      
+            console.log("T: ",data);
             if(data.id_tipo===2){
-                $tabla      = $('#tblCuentaNoOficial');
-                $btnAjustar = $('#btnAjNoOficial');
+                $tabla       = $('#tblCuentaNoOficial');
+                $btnAjustar  = $('#btnAjNoOficial');
+                $btnLiquidar = $('#btnLiqNoOficial');
+                $btnDesde    = $('#fecha_desde_no_oficial');
+                data.fecha_desde = $('#fecha_desde_no_oficial').val();
+                data.fecha_hasta = $('#fecha_hasta_no_oficial').val();
+            } else {
+               $tabla       = $('#tblCuentaOficial');
+               $btnAjustar  = $('#btnAjOficial');
+               $btnLiquidar = $('#btnLiqOficial');
+               $btnDesde    = $('#fecha_desde_oficial');
+               data.fecha_desde = $('#fecha_desde_oficial').val();
+               data.fecha_hasta = $('#fecha_hasta_oficial').val();
+            }
+            
+            $.ajax({
+               url: '<%= PathCfg.CUENTA_SEARCH %>',
+               data: data,
+               method:"POST",
+               dataType: "json",
+               beforeSend:function(){
+                    var cant_cols = $tabla.find('thead th').length;
+                    $tabla.find('tbody').html("<tr><td colspan='" + cant_cols + "'><center><img src='assets/img/ajax-loader.gif'/></center></td></tr>");
+               },
+               success: function(result) {
+                   if(result.Result === "OK") {
+                       if(result.Record.fecha_liquidacion!==undefined)
+                            $btnDesde.val(convertirFecha(result.Record.fecha_liquidacion));
+                        if(result.Record.id_tipo===<%=OptionsCfg.CUENTA_OFICIAL%>)
+                            $('#id_cuenta_oficial').val(result.Record.id);
+                        
+                        else $('#id_cuenta_no_oficial').val(result.Record.id);
+                        
+                       $btnAjustar.data('id_cuenta',result.Record.id);
+                       $btnLiquidar.data('id_cuenta',result.Record.id);
+                       data.fecha_desde = $btnDesde.val();
+                       loadData(data);
+                   } else { 
+                       var  html = result.Message;
+                       html = "<td colspan='5' style='text-align:center'>" + html + "</td>";
+                       html = wrapTag("tr",html);
+                       $tabla.find('tbody').html(html);                       
+                   }
+               }
+           });
+    }
+    //
+        function loadData(data){
+            
+            var $tabla;    
+            var $btnAjustar;
+            var $btnLiquidar;
+            console.log(data);
+            if(data.id_tipo===2){
+                $tabla       = $('#tblCuentaNoOficial');
+                $btnAjustar  = $('#btnAjNoOficial');
                 $btnLiquidar = $('#btnLiqNoOficial');
             } else {
-               $tabla      = $('#tblCuentaOficial');
-               $btnAjustar = $('#btnAjOficial');
+               $tabla       = $('#tblCuentaOficial');
+               $btnAjustar  = $('#btnAjOficial');
                $btnLiquidar = $('#btnLiqOficial');
+               
             }
             
             $.ajax({
@@ -323,7 +438,7 @@
                success: function(result) {
                    if(result.Result === "OK") {
                        if(result.Record.fecha_liquidacion!==undefined)
-                        $('#fecha_liquidacion').val(convertirFecha(result.Record.fecha_liquidacion));
+                        $('#fecha_desde').val(convertirFecha(result.Record.fecha_liquidacion));
                        $tabla.find('tbody').html(createTableCuenta(result.Records));                       
                        $btnAjustar.data('id_cuenta',result.Record.id);
                        $btnLiquidar.data('id_cuenta',result.Record.id);
@@ -356,22 +471,37 @@
        return html;
     }  
     function filtrar_cuenta(){            
-        var id_cliente = $('#id_inquilino').val();
-        var id_contrato = $('#id_contrato').val();
-        var dni_search = $('#id_propiedad').val();
-        
-        var data ={
+        var id_cliente    = $('#id_inquilino').val();
+        var id_contrato   = $('#id_contrato').val();
+        var id_propiedad  = $('#id_propiedad').val();                
+//        var data = {
+//            id_cliente: id_cliente,
+//            id_tipo: 1,
+//            id_tipo_cliente:1,
+//            id_contrato: id_contrato,
+//            id_propiedad: id_propiedad,
+//        
+//        };
+
+        buscar_cuenta({
             id_cliente: id_cliente,
-            id_tipo:1,
+            id_tipo: 1,
             id_tipo_cliente:1,
             id_contrato: id_contrato,
-            dni: dni_search  ,
-        };
-        loadData(data);
-        data.id_tipo = 2;
-        loadData(data);
+            id_propiedad: id_propiedad,
+        
+        });
+        buscar_cuenta({
+            id_cliente: id_cliente,
+            id_tipo: 2,
+            id_tipo_cliente:1,
+            id_contrato: id_contrato,
+            id_propiedad: id_propiedad,
+        
+        });
+//        loadData(data);
 
-     }
+   }
    function completarCliente(data){
         $('#id_inquilino').val(data.id);
         $('#nombre').val(data.nombre);
@@ -379,7 +509,9 @@
         $('#dni').val(data.dni);
         $('#cuil').val(data.cuil);
         var $id_tipo_cliente = $('#id_tipo_cliente').val();
-        listar_contrato({id_cliente:data.id,id_tipo:$id_tipo_cliente});
+        console.log(data.id);
+        if(data.id !==0)
+            listar_contrato({id_cliente:data.id,id_tipo:$id_tipo_cliente});
         //buscar_contrato({id_cliente:data.id,id_tipo:$id_tipo_cliente});
     }
     function listar_contrato(data){
@@ -397,10 +529,13 @@
                    if(result.Result === "OK") {
                        $tabla.find('tbody').html(createTableContrato(result.Records));
                        $('input[name="rdPropiedad"]').change(function(){
-                           $('#id_contrato').val($(this).val());
-                          //$('#id_propiedad').val($(this).val());
+                           $('#id_contrato').val($(this).val());                          
                           filtrar_cuenta();
                        });
+                       if(result.TotalRecordCount===1) {
+                           $('input[name="rdPropiedad"]').prop('checked' ,true);
+                           $('input[name="rdPropiedad"]').trigger('change');
+                       }
 //                       var d = result.Record;                       
 //                       if(d!==undefined){
 //                        $('#id_contrato').val(d.id);
@@ -439,6 +574,7 @@
                         $('#id_contrato').val(d.id);
                         buscarPropiedad({id:d.id_propiedad});
                         filtrar_cuenta();
+                        //buscar_cuenta();
                        } else $('#id_contrato').val(0);
                    }
                }

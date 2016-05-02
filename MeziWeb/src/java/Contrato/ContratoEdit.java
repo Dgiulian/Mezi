@@ -63,16 +63,18 @@ public class ContratoEdit extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Integer id_propiedad = Parser.parseInt(request.getParameter("id_propiedad"));
-        Integer id_cliente = Parser.parseInt(request.getParameter("id_cliente"));
-        Integer id_vendedor = Parser.parseInt(request.getParameter("id_vendedor"));
+        Integer id_cliente   = Parser.parseInt(request.getParameter("id_cliente"));
+        Integer id_vendedor  = Parser.parseInt(request.getParameter("id_vendedor"));
+        String entorno       = request.getParameter("entorno");
         
         Contrato contrato = new Contrato();
-        List<Contrato_valor>     contrato_valor = new ArrayList<Contrato_valor>();
-        List<Contrato_gasto>     contrato_gasto = new ArrayList<Contrato_gasto>();
+        List<Contrato_valor>     contrato_valor     = new ArrayList<Contrato_valor>();
+        List<Contrato_gasto>     contrato_gasto     = new ArrayList<Contrato_gasto>();
         List<Contrato_documento> contrato_documento = new ArrayList<Contrato_documento>();
-        
+
         Parametro parametro = new TParametro().getByCodigo("entorno");
-        if (parametro!=null && parametro.getValor().equalsIgnoreCase("test")) {
+        if ((entorno!=null && entorno.equalsIgnoreCase("test")) || 
+           (parametro!=null && parametro.getValor().equalsIgnoreCase("test"))) {
             contrato = new ContratoTest();
             contrato_valor = Contrato_valorTest.getList();
             contrato_documento = Contrato_documentoTest.getList();

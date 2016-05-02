@@ -457,7 +457,9 @@
         for(var i = 0;i< data.length;i++){
            html +="<tr class=''>";
            var d = data[i];
+           
            saldo += d.debe.toFixed(2) - d.haber.toFixed(2);
+           if(d.id_concepto ===<%=OptionsCfg.CONCEPTO_PAGO%>) saldo = 0;
            html += wrapTag('td',convertirFecha(d.fecha),'');
            html += wrapTag('td',d.concepto,'');
            html += wrapTag('td',d.debe.toFixed(2),'numeric');

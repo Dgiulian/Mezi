@@ -45,12 +45,12 @@ public class ReciboPrint extends HttpServlet {
         Recibo recibo = null;
         Parametro parametro = new TParametro().getByCodigo(OptionsCfg.RECIBO_PATH);
         try{
-            if(request.getParameter("id")==null) throw new BaseException("Error de remito", "Debe seleccionar el remito");
+            if(request.getParameter("id")==null) throw new BaseException("Error de recibo", "Debe seleccionar el recibo");
             try{
                 Integer id = Integer.parseInt(request.getParameter("id"));
                 recibo = new TRecibo().getById(id);
             } catch (NumberFormatException ex){
-                throw new BaseException( "Error" ,"No se ha encontrado el remito");                
+                throw new BaseException( "Error" ,"No se ha encontrado el recibo");                
             }
             ReciboPdf reciboPdf = new ReciboPdf(recibo);
             Cliente cliente = new TCliente().getById(recibo.getId_cliente());
@@ -64,7 +64,7 @@ public class ReciboPrint extends HttpServlet {
             
             boolean generado = reciboPdf.createPdf(filePath);
             if (generado) {
-                //remitoPdf.imprimir(fileName);             
+                //reciboPdf.imprimir(fileName);             
                 // reads input file from an absolute path        
                 File downloadFile = new File(filePath);
                 FileInputStream inStream = new FileInputStream(downloadFile);

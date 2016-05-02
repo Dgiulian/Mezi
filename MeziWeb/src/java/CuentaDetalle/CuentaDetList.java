@@ -55,7 +55,7 @@ public class CuentaDetList extends HttpServlet {
       Integer id_contrato   = Parser.parseInt(request.getParameter("id_contrato"));
       Integer id_propiedad  = Parser.parseInt(request.getParameter("id_propiedad"));
       Integer id_tipo       = Parser.parseInt(request.getParameter("id_tipo"));
-      String fecha_desde    = TFecha.formatearFechaVistaBd(request.getParameter("fecha_desde"));
+      String strFecha_desde    = TFecha.formatearFechaVistaBd(request.getParameter("fecha_desde"));
       String fecha_hasta    = TFecha.formatearFechaVistaBd(request.getParameter("fecha_hasta"));
 //      String fecha_consulta = request.getParameter("fecha_consulta");
       Integer page          = Parser.parseInt(request.getParameter("pagNro"));
@@ -76,32 +76,37 @@ public class CuentaDetList extends HttpServlet {
             }
              if(cuenta==null) throw new BaseException("ERROR","No se encontr&oacute; la cuenta corriente");
             filtroCuenta.put("id_cuenta", cuenta.getId().toString());
-            List<Cuenta_detalle> lista = tcd.setOrderBy("fecha").getListFiltro(filtroCuenta);
+            List<Cuenta_detalle> lista = tcd.setOrderBy("fecha,id_concepto").getListFiltro(filtroCuenta);
             
             if (lista != null) {
                 Contrato contrato = tcr.getById(cuenta.getId_contrato());
                 Float punitorio_porc = contrato.getPunitorio_monto() / 100;
                 
-                if(fecha_desde==null || fecha_desde.equals(""))
-                   fecha_desde = cuenta.getFecha_liquidacion();
+                if(strFecha_desde==null || strFecha_desde.equals(""))
+                   strFecha_desde = cuenta.getFecha_liquidacion();
                 
-                if(fecha_desde==null || fecha_desde.equals("")) fecha_desde = contrato.getFecha_inicio();
+                if(strFecha_desde==null || strFecha_desde.equals("")) strFecha_desde = contrato.getFecha_inicio();
                 
-                LocalDate fecha_liquidacion = new LocalDate(fecha_desde);
+                LocalDate fecha_desde = new LocalDate(strFecha_desde);
+                LocalDate fecha_liquidacion;
+                if (cuenta.getFecha_liquidacion()!=null && !cuenta.getFecha_liquidacion().equals(""))
+                        fecha_liquidacion = new LocalDate(cuenta.getFecha_liquidacion());
+                else fecha_liquidacion = new LocalDate(contrato.getFecha_inicio());
                 
-                LocalDate fecha_hoy;
-                if(fecha_hasta==null || fecha_hasta.equals("")) fecha_hoy = new LocalDate();
-                else fecha_hoy = new LocalDate(fecha_hasta);
+                LocalDate fecha_consulta;
+                if(fecha_hasta==null || fecha_hasta.equals("")) fecha_consulta = new LocalDate();
+                else fecha_consulta = new LocalDate(fecha_hasta);
                 
                 ArrayList<Cuenta_detalle> listaDetalle      = new ArrayList();
                 for(Cuenta_detalle cd:lista) {
                     LocalDate fecha = new LocalDate(cd.getFecha());
-                    if (fecha_desde!=null && (fecha.isBefore(fecha_liquidacion) ) ) continue;
+                    if (strFecha_desde!=null && (fecha.isBefore(fecha_desde) ) ) continue;
                     
-                    if  (fecha.isAfter(fecha_hoy)) continue;
+                    if  (fecha.isAfter(fecha_consulta)) continue;
                     listaDetalle.add(cd);
+                    if(fecha.isBefore(fecha_liquidacion)) continue;
                     if (cd.getId_concepto()==OptionsCfg.CONCEPTO_ALQUILER || cd.getId_concepto()==OptionsCfg.CONCEPTO_DOCUMENTO){
-                        int days = Days.daysBetween(fecha, fecha_hoy).getDays() - 1;
+                        int days = Days.daysBetween(fecha, fecha_consulta).getDays() - 1;
                         if (days >=contrato.getPunitorio_desde()){
                             Cuenta_detalle punitorio = new Cuenta_detalle();
                             punitorio.setFecha(cd.getFecha());
@@ -113,7 +118,7 @@ public class CuentaDetList extends HttpServlet {
                         }
                     }
                 }
-                if(cuenta.getFecha_liquidacion()==null || cuenta.getFecha_liquidacion().equals("")) cuenta.setFecha_liquidacion(fecha_desde);
+                if(cuenta.getFecha_liquidacion()==null || cuenta.getFecha_liquidacion().equals("")) cuenta.setFecha_liquidacion(strFecha_desde);
                 jr.setRecord(cuenta);
                 //if(listaDetalle.isEmpty()) throw new BaseException("OK","");
                 jr.setResult("OK");

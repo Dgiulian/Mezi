@@ -132,7 +132,11 @@
                 success:function(result){
                    if(result.Result==="OK"){
                     $('#mdlLiquidar').modal('hide');
+                    console.log(result.Record);
+                    if(result.Record.id) {
+                        location.href = "<%=PathCfg.RECIBO_PRINT%>?id="+ result.Record.id;
                         filtrar_cuenta();
+                    }
                    } else{
                        bootbox.alert(result.Message);
                    }

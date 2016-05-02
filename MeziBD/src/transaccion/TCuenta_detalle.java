@@ -123,21 +123,22 @@ public List<Cuenta_detalle> crearDetalle(Contrato_documento[] lstDocum,Integer i
     }
     return lstDetalle;
 }
-public List<Cuenta_detalle> crearDetalle(Contrato_gasto[] lstGasto, String fecha){
+public List<Cuenta_detalle> crearDetalle(Contrato_gasto[] lstGasto, String desde){
     ArrayList<Cuenta_detalle> lstDetalle = new ArrayList<Cuenta_detalle>();
     for(Contrato_gasto gasto:lstGasto){
         Integer cuota = gasto.getCuotas();
         if (cuota<=0) cuota = 1;
         Float monto = gasto.getImporte() / cuota ;
-        
+        LocalDate fecha = new LocalDate(desde);
         for(int i = 0;i<cuota;i++){
             Cuenta_detalle cd = new Cuenta_detalle();
             String concepto = gasto.getConcepto() ;
-            if(cuota>1) concepto += String.format(" Cuota %d",i);
+            if(cuota>1) concepto += String.format(" Cuota %d",i+1);
             cd.setConcepto(concepto);
-            cd.setDebe(monto);
-            cd.setFecha(fecha);
+            cd.setDebe(monto);            
+            cd.setFecha(TFecha.formatearFecha(fecha.toDate(), TFecha.formatoBD));
             cd.setId_concepto(OptionsCfg.CONCEPTO_GASTO);
+            fecha = fecha.plusMonths(1).withDayOfMonth(1);
             lstDetalle.add(cd);
         }            
     }

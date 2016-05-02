@@ -161,20 +161,24 @@ public class PagoEdit extends HttpServlet {
              if (lista == null) throw new BaseException("ERROR","Ocurri&oacute; un error al editar la cuenta");
             Contrato contrato = tcr.getById(cuenta.getId_contrato());
             Float punitorio_porc = contrato.getPunitorio_monto() / 100;
-
-            String ult_liquidacion      = cuenta.getFecha_liquidacion();
+            String ult_liquidacion;
+            if(cuenta.getFecha_liquidacion()==null || cuenta.getFecha_liquidacion().equals(""))
+                ult_liquidacion = contrato.getFecha_inicio();
+            else  ult_liquidacion  = cuenta.getFecha_liquidacion();
+            /* Si es la primer liquidación, tomamos como ultima liquidacion, el inicio del contrato */
+            
             LocalDate fecha_liquidacion = new LocalDate(ult_liquidacion);
-            LocalDate fecha_hoy;
-            if(fecha==null || fecha.equals("")) fecha_hoy = new LocalDate();
-            else fecha_hoy = new LocalDate(fecha);
+            LocalDate fecha_conslta;
+            if(fecha==null || fecha.equals("")) fecha_conslta = new LocalDate();
+            else fecha_conslta = new LocalDate(fecha);
             
             for(Cuenta_detalle cuenta_detalle:lista) { // Calculo los punitorios
                 LocalDate fecha_det = new LocalDate(cuenta_detalle.getFecha());
                 if (ult_liquidacion!=null && fecha_det.isBefore(fecha_liquidacion) ) continue;
-                if  (fecha_det.isAfter(fecha_hoy)) continue;
+                if  (fecha_det.isAfter(fecha_conslta)) continue;
                 saldo += cuenta_detalle.getDebe() - cuenta_detalle.getHaber();
-                if (cuenta_detalle.getId_concepto()==OptionsCfg.CONCEPTO_ALQUILER){
-                    int days = Days.daysBetween(fecha_det, fecha_hoy).getDays() - 1;
+                if (cuenta_detalle.getId_concepto()==OptionsCfg.CONCEPTO_ALQUILER|| cuenta_detalle.getId_concepto()==OptionsCfg.CONCEPTO_DOCUMENTO){
+                    int days = Days.daysBetween(fecha_det, fecha_conslta).getDays() - 1;
                     if (days >=contrato.getPunitorio_desde()){
                         float monto_punitorio = days * punitorio_porc * cuenta_detalle.getDebe() ;
                         saldo += monto_punitorio;
@@ -215,6 +219,8 @@ public class PagoEdit extends HttpServlet {
             cuenta.setFecha_liquidacion(fecha);
             tc.actualizar(cuenta);
             for(Cuenta_detalle det_pago:listaPunitorio){
+                det_pago.setId_cuenta(id_cuenta);
+                det_pago.setFecha_creacion(TFecha.ahora());
                 int id = tcd.alta(det_pago);
             }
             
@@ -228,11 +234,11 @@ public class PagoEdit extends HttpServlet {
             recibo.setId_cliente(cuenta.getId_cliente());
             
             Integer id_recibo = tr.alta(recibo );            
-            lista = tcd.setOrderBy("fecha").getListFiltro(filtroCuenta);
+            lista = tcd.setOrderBy("fecha,id_concepto").getListFiltro(filtroCuenta);
             for(Cuenta_detalle cuenta_detalle:lista) { // Calculo los punitorios
                 LocalDate fecha_det = new LocalDate(cuenta_detalle.getFecha());
                 if (ult_liquidacion!=null && fecha_det.isBefore(fecha_liquidacion) ) continue;
-                if  (fecha_det.isAfter(fecha_hoy)) continue;
+                if  (fecha_det.isAfter(fecha_conslta)) continue;
                   Recibo_detalle rd = new Recibo_detalle();
                     rd.setId_recibo(id_recibo);
                     rd.setConcepto(cuenta_detalle.getConcepto());
@@ -244,6 +250,7 @@ public class PagoEdit extends HttpServlet {
             }
             if(id_pago!=0){
                 jr.setResult("OK");
+                recibo.setId(id_recibo);
                 jr.setRecord(recibo);
             } else {
                 throw new BaseException("ERROR","Ocurr&oacute; un error al aplicar el pago");

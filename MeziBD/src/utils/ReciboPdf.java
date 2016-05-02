@@ -106,8 +106,8 @@ public class ReciboPdf extends BasePdf{
 //        createHeadings(cb, 450,790, "Nº Recibo:");        
 //        createHeadings(cb, 450,780, "Fecha:");
         
-        addText(cb, 515,800, String.format("%d",recibo.getNumero()));
-        addText(cb, 515,810, TFecha.formatearFechaBdVista(recibo.getFecha()));
+        addText(cb, 515,810, String.format("%d",recibo.getNumero()));
+        addText(cb, 515,800, TFecha.formatearFechaBdVista(recibo.getFecha()));
         lineStart = 740;
         addText(cb, 100,lineStart - lineHeight * 0, cliente.getApellido() + ", " + cliente.getNombre());
         addText(cb, 300,lineStart - lineHeight * 0, "Dirección: " + propiedad.getDireccion());

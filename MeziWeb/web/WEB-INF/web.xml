@@ -11,31 +11,31 @@
     <filter>
         <filter-name>DeleteFilter</filter-name>
         <filter-class>Filters.DeleteFilter</filter-class>
-    </filter>
+    </filter>    
     <filter-mapping>
         <filter-name>AuthenticationFilter</filter-name>
         <url-pattern>/</url-pattern>
         <url-pattern>/index.jsp</url-pattern>
-        <url-pattern>/Popiedad</url-pattern>
-        <url-pattern>/PopiedadEdit</url-pattern>
+        <url-pattern>/Auditoria</url-pattern>
+        <url-pattern>/Barrio</url-pattern>
+        <url-pattern>/BarrioEdit</url-pattern>
         <url-pattern>/Cliente</url-pattern>
         <url-pattern>/ClienteEdit</url-pattern>
         <url-pattern>/Contrato</url-pattern>
         <url-pattern>/ContratoEdit</url-pattern>
         <url-pattern>/ContratoView</url-pattern>
-        <url-pattern>/Localidad</url-pattern>
-        <url-pattern>/LocalidadEdit</url-pattern>
-        <url-pattern>/Barrio</url-pattern>
-        <url-pattern>/BarrioEdit</url-pattern>
-        <url-pattern>/Servicio</url-pattern>
-        <url-pattern>/ServicioEdit</url-pattern>
-        <url-pattern>/Vendedor</url-pattern>
-        <url-pattern>/VendedorEdit</url-pattern>
-        <url-pattern>/Auditoria</url-pattern>
-        <url-pattern>/Usuario</url-pattern>
-        <url-pattern>/UsuarioEdit</url-pattern>
         <url-pattern>/Cuenta</url-pattern>
         <url-pattern>/CuentaEdit</url-pattern>
+        <url-pattern>/Localidad</url-pattern>
+        <url-pattern>/LocalidadEdit</url-pattern>
+        <url-pattern>/Popiedad</url-pattern>
+        <url-pattern>/PopiedadEdit</url-pattern>
+        <url-pattern>/Servicio</url-pattern>
+        <url-pattern>/ServicioEdit</url-pattern>
+        <url-pattern>/Usuario</url-pattern>
+        <url-pattern>/UsuarioEdit</url-pattern>
+        <url-pattern>/Vendedor</url-pattern>
+        <url-pattern>/VendedorEdit</url-pattern>
     </filter-mapping>
     <servlet>
         <servlet-name>ClientePath</servlet-name>

@@ -1,7 +1,7 @@
 <%@page import="utils.PathCfg"%>
 <!-- start: Meta -->
         <meta charset="utf-8">
-        
+
         <title><%=PathCfg.PAGE_TITLE%></title>
         <meta name="description" content="Mezi Inmobiliaria">
         <meta name="author" content="Diego Giuliani">
@@ -15,7 +15,6 @@
         <!-- start: CSS -->
         <link href="assets/css/bootstrap.min.css" rel="stylesheet">
         <link href="assets/css/style.min.css" rel="stylesheet">
-        <link href="assets/css/retina.min.css" rel="stylesheet">
         <link href="assets/css/print.css" rel="stylesheet" type="text/css" media="print"/>
         <!-- end: CSS -->
 
@@ -29,17 +28,13 @@
         <![endif]-->
 
         <!-- start: Favicon and Touch Icons -->
-        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" sizes="57x57" href="assets/ico/apple-touch-icon-57-precomposed.png">
         <link rel="shortcut icon" href="assets/ico/favicon.png">
-        <!-- end: Favicon and Touch Icons -->	
-        
+        <!-- end: Favicon and Touch Icons -->
+
     <style>
         legend{
             margin-bottom:5px;
-            
+
         }
         .nopadding {
             padding: 0 !important;
@@ -57,7 +52,7 @@
         .box-header .nav-tabs li.active>a {
             background: #A9A8A8;
         }
-        
+
         Flexible-container {
             position: relative;
             padding-bottom: 56.25%;

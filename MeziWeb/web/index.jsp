@@ -2,28 +2,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	
+
     <%@include file="tpl_head.jsp" %>
-		
+
 </head>
 
 <body>
     <%@include  file="tpl_header.jsp" %>
-	
+
 		<div class="container">
 		<div class="row">
-				
+
                     <%@include file="tpl_sidebar.jsp" %>
-						
+
 			<!-- start: Content -->
 			<div id="content" class="col-lg-10 col-sm-11 ">
-			
-			
+
+
 			<div class="row">
-				
+
 				<div class="col-sm-12 col-md-9">
 					<ol class="breadcrumb">
-					  	<li><a href="index.html#">Mezi</a></li>
+					  	<li><a href="/">Mezi</a></li>
 					  	<li class="active" >Dashboard</li>
 
 <!--						<div class="form-group choose-date hidden-xs">
@@ -37,28 +37,13 @@
 						</div>-->
 
 					</ol>
-					
+
 					<div class="row">
-
-						<div class="col-lg-3 col-sm-6 col-xs-6 col-xxs-12">
-							<div class="smallstat box">
-								<div class="boxchart-overlay blue">
-									<div class="boxchart">5,6,7,2,0,4,2,4,8,2,3,3,2</div>
-								</div>	
-								<span class="title">Clientes</span>
-								<span class="value">4 589</span>
-								<a href="" class="more">
-									<span>View More</span>
-									<i class="fa fa-chevron-right"></i>
-								</a>	
-							</div>
-						</div><!--/col-->
-
-						<div class="col-lg-3 col-sm-6 col-xs-6 col-xxs-12">
+<!--						<div class="col-lg-3 col-sm-6 col-xs-6 col-xxs-12">
 							<div class="smallstat box">
 								<div class="linechart-overlay red">
 									<div class="linechart">1,2,6,4,0,8,2,4,5,3,1,7,5</div>
-								</div>	
+								</div>
 								<span class="title">Deals</span>
 								<span class="value">789</span>
 								<a href="" class="more">
@@ -66,7 +51,7 @@
 									<i class="fa fa-chevron-right"></i>
 								</a>
 							</div>
-						</div><!--/col-->
+						</div>/col-->
 
 						<div class="col-lg-3 col-sm-6 col-xs-6 col-xxs-12">
 							<div class="smallstat box">
@@ -84,7 +69,7 @@
 							<div class="smallstat box">
 								<div class="piechart-overlay blue">
 									<div class="piechart" data-percent="55"><span>55</span>%</div>
-								</div>	
+								</div>
 								<span class="title">Account</span>
 								<span class="value">$199,99</span>
 								<a href="" class="more">
@@ -96,103 +81,7 @@
 
 					</div><!--/row-->
 
-					<div class="row">
-						
-						<div class="col-xs-12">
-						
-							<div class="box">
-								<div class="box-header">
-									<h2><i class="fa fa-bar-chart-o"></i>Traffic</h2>
-									<div class="box-icon">
-										<a href="index.html#" class="btn-setting"><i class="fa fa-wrench"></i></a>
-										<a href="index.html#" class="btn-close"><i class="fa fa-times"></i></a>
-									</div>
-									<ul class="nav nav-tabs" id="mainCharts">
-									  	<li id="chart24h"><a href="index.html#24h">24h</a></li>
-									  	<li id="chartWeek"><a href="index.html#week">week</a></li>
-									  	<li id="chartMonth" class="active"><a href="index.html#month">month</a></li>
-									</ul>
-								</div>
-								<div class="box-content">
 
-									<div class="tab-content">
-									  	<div class="tab-pane" id="24h">
-											<div id="chart-24h" style="height:250px;width:100%;"></div>
-											<ul class="stats">
-												<li>
-													<span>17.781</span>
-													<h5>Pageviews</h5>
-												</li>
-												<li>
-													<span>9.879</span>
-													<h5>Unique Users</h5>
-												</li>
-												<li>
-													<span>00:02:58</span>
-													<h5>Avg. Visit Duration</h5>
-												</li>
-												<li>
-													<span>59,83%</span>
-													<h5>Bounce Rate</h5>
-												</li>
-											</ul>
-									  	</div>
-									  	<div class="tab-pane" id="week">
-											<div id="chart-week" style="height:250px;width:100%;"></div>
-											<ul class="stats">
-												<li>
-													<div class="bgchart" id="statsbg1" style="height:93px;width:100%;"></div>
-													<span>17.781</span>
-													<h5>Pageviews</h5>
-												</li>
-												<li>
-													<div class="bgchart" id="statsbg2" style="height:93px;width:100%;"></div>
-													<span>9.879</span>
-													<h5>Unique Users</h5>
-												</li>
-												<li>
-													<div class="bgchart" id="statsbg3" style="height:93px;width:100%;"></div>
-													<span>00:02:58</span>
-													<h5>Avg. Visit Duration</h5>
-												</li>
-												<li>
-													<div class="bgchart" id="statsbg4" style="height:93px;width:100%;"></div>
-													<span>59,83%</span>
-													<h5>Bounce Rate</h5>
-												</li>
-											</ul>
-									  	</div>
-									  	<div class="tab-pane active" id="month">
-									  		<div id="chart-month" style="height:250px;width:100%;"></div>
-											<ul class="stats">
-												<li>
-													<span>17.781</span>
-													<h5>Pageviews</h5>
-												</li>
-												<li>
-													<span>9.879</span>
-													<h5>Unique Users</h5>
-												</li>
-												<li>
-													<span>00:02:58</span>
-													<h5>Avg. Visit Duration</h5>
-												</li>
-												<li>
-													<span>59,83%</span>
-													<h5>Bounce Rate</h5>
-												</li>
-											</ul>
-									  	</div>
-									</div>
-										
-								</div>
-									
-							</div>
-									
-						</div><!--/col-->
-						
-					</div><!--/row-->
-					
 					<div class="row">
 
 						<div class="col-lg-3 col-sm-6 col-xs-6 col-xxs-12">
@@ -205,12 +94,12 @@
 								<div class="clearfix">
 									<span class="date">Today 6:43 AM</span>
 									<span class="change">+$432,50 (15,78%)</span>
-								</div>	
+								</div>
 								<div class="chart-info-box" style="height:50px;margin-top: 20px;"></div>
 								</div>
-								
+
 								<div class="quarters">
-									
+
 									<div class="quarter q1">
 										<div>+$780,98 <span>Weekly Change</span></div>
 									</div>
@@ -284,9 +173,9 @@
 										$189.783,87
 										<span>Total Income</span>
 									</div>
-									
-								</div>	
-								
+
+								</div>
+
 							</div>
 						</div><!--/col-->
 
@@ -300,12 +189,12 @@
 								<div class="clearfix">
 									<span class="date">Today 6:43 AM</span>
 									<span class="change">+$432,50 (15,78%)</span>
-								</div>	
+								</div>
 								<div class="chart-info-box2" style="height:50px;margin-top: 20px;"></div>
 								</div>
-								
+
 								<div class="quarters">
-									
+
 									<div class="quarter q1">
 										<div>+$780,98 <span>Weekly Change</span></div>
 									</div>
@@ -379,9 +268,9 @@
 										$189.783,87
 										<span>Total Income</span>
 									</div>
-									
-								</div>	
-								
+
+								</div>
+
 							</div>
 						</div><!--/col-->
 
@@ -395,12 +284,12 @@
 								<div class="clearfix">
 									<span class="date">Today 6:43 AM</span>
 									<span class="change">+$432,50 (15,78%)</span>
-								</div>	
+								</div>
 								<div class="chart-info-box2" style="height:50px;margin-top: 20px;"></div>
 								</div>
-								
+
 								<div class="quarters">
-									
+
 									<div class="quarter q1">
 										<div>+$780,98 <span>Weekly Change</span></div>
 									</div>
@@ -474,9 +363,9 @@
 										$189.783,87
 										<span>Total Income</span>
 									</div>
-									
-								</div>	
-								
+
+								</div>
+
 							</div>
 						</div><!--/col-->
 
@@ -490,12 +379,12 @@
 								<div class="clearfix">
 									<span class="date">Today 6:43 AM</span>
 									<span class="change">+$432,50 (15,78%)</span>
-								</div>	
+								</div>
 								<div class="chart-info-box" style="height:50px;margin-top: 20px;"></div>
 								</div>
-								
+
 								<div class="quarters">
-									
+
 									<div class="quarter q1">
 										<div>+$780,98 <span>Weekly Change</span></div>
 									</div>
@@ -569,18 +458,18 @@
 										$189.783,87
 										<span>Total Income</span>
 									</div>
-									
-								</div>	
-								
+
+								</div>
+
 							</div>
 						</div><!--/col-->
 
 					</div><!--/row-->
-					
+
 					<div class="row">
-						
+
 						<div class="col-lg-6">
-							<div class="box calendar">	
+							<div class="box calendar">
 								<div class="calendar-small"></div>
 								<div class="calendar-details">
 									<div class="day">MONDAY</div>
@@ -591,18 +480,18 @@
 									</ul>
 									<div class="add-event">
 										<input type="text" class="new event" placeholder="click here to add event">
-									</div>		
+									</div>
 								</div>
 								<div class="clearfix"></div>
 							</div>
 						</div><!--/col-->
-						
+
 						<div class="col-lg-6">
-							
+
 							<div class="row">
-								
+
 								<div class="col-md-12">
-									
+
 									<div class="box">
 										<div class="box-header">
 											<h2><i class="fa fa-check"></i>Tasks in Progress</h2>
@@ -621,7 +510,7 @@
 														  <th>Progress</th>
 														  <th class="center">Status</th>
 													  </tr>
-												  </thead>   
+												  </thead>
 												  <tbody>
 													<tr>
 														<td>SEO Optimisation</td>
@@ -662,16 +551,16 @@
 														<td class="center red">
 															Canceled
 														</td>
-													</tr>											
+													</tr>
 												</tbody>
-											</table>	 	
+											</table>
 										</div>
 									</div>
-									
+
 								</div><!--/col-->
-								
+
 								<div class="col-md-12">
-									
+
 									<div class="box blue">
 										<div class="box-header">
 											<h2><i class="fa fa-bar-chart-o"></i>Weekly Stat</h2>
@@ -681,20 +570,20 @@
 											</div>
 										</div>
 										<div class="box-content">
-											<div class="chart-type1" style="height:170px"></div>	
-										</div>	
+											<div class="chart-type1" style="height:170px"></div>
+										</div>
 									</div><!--/span-->
-									
+
 								</div><!--/col-->
-									
-							</div><!--/row-->	
+
+							</div><!--/row-->
 
 						</div><!--/col-->
-							
+
 					</div><!--/row-->
-					
-					<div class="row">		
-						
+
+					<div class="row">
+
 						<div class="col-lg-4 col-md-4">
 
 							<div class="box">
@@ -713,9 +602,9 @@
 												<span class="todo-actions">
 													<a href="index.html#"><i class="fa fa-check"></i></a>
 												</span>
-												<span class="desc">Windows Phone 8 App</span> 
+												<span class="desc">Windows Phone 8 App</span>
 												<span class="label label-important">today</span>
-												<a class="remove" href="index.html#"><i class="fa fa-times"></i></a>					
+												<a class="remove" href="index.html#"><i class="fa fa-times"></i></a>
 											</li>
 											<li>
 												<span class="todo-actions">
@@ -723,7 +612,7 @@
 												</span>
 												<span class="desc">New frontend layout</span>
 												<span class="label label-important">today</span>
-												<a class="remove" href="index.html#"><i class="fa fa-times"></i></a>	
+												<a class="remove" href="index.html#"><i class="fa fa-times"></i></a>
 											</li>
 											<li>
 												<span class="todo-actions">
@@ -731,7 +620,7 @@
 												</span>
 												<span class="desc">Hire developers</span>
 												<span class="label label-warning">tommorow</span>
-												<a class="remove" href="index.html#"><i class="fa fa-times"></i></a>	
+												<a class="remove" href="index.html#"><i class="fa fa-times"></i></a>
 											</li>
 											<li>
 												<span class="todo-actions">
@@ -739,7 +628,7 @@
 												</span>
 												<span class="desc">Windows Phone 8 App</span>
 												<span class="label label-warning">tommorow</span>
-												<a class="remove" href="index.html#"><i class="fa fa-times"></i></a>	
+												<a class="remove" href="index.html#"><i class="fa fa-times"></i></a>
 											</li>
 											<li>
 												<span class="todo-actions">
@@ -747,7 +636,7 @@
 												</span>
 												<span class="desc">New frontend layout</span>
 												<span class="label label-success">this week</span>
-												<a class="remove" href="index.html#"><i class="fa fa-times"></i></a>	
+												<a class="remove" href="index.html#"><i class="fa fa-times"></i></a>
 											</li>
 											<li>
 												<span class="todo-actions">
@@ -755,7 +644,7 @@
 												</span>
 												<span class="desc">Hire developers</span>
 												<span class="label label-success">this week</span>
-												<a class="remove" href="index.html#"><i class="fa fa-times"></i></a>	
+												<a class="remove" href="index.html#"><i class="fa fa-times"></i></a>
 											</li>
 											<li>
 												<span class="todo-actions">
@@ -763,7 +652,7 @@
 												</span>
 												<span class="desc">New frontend layout</span>
 												<span class="label label-info">this month</span>
-												<a class="remove" href="index.html#"><i class="fa fa-times"></i></a>	
+												<a class="remove" href="index.html#"><i class="fa fa-times"></i></a>
 											</li>
 											<li>
 												<span class="todo-actions">
@@ -771,15 +660,15 @@
 												</span>
 												<span class="desc">Hire developers</span>
 												<span class="label label-info">this month</span>
-												<a class="remove" href="index.html#"><i class="fa fa-times"></i></a>	
+												<a class="remove" href="index.html#"><i class="fa fa-times"></i></a>
 											</li>
 										</ul>
-									</div>	
+									</div>
 								</div>
 							</div>
 
 						</div><!--/col-->
-						
+
 						<div class="col-lg-8 col-md-8">
 							<div class="box">
 								<div class="box-header">
@@ -795,7 +684,7 @@
 									</ul>
 								</div>
 								<div class="box-content no-padding">
-									
+
 									<div class="tab-content">
 									  	<div class="tab-pane active" id="tickets">
 											<table class="table bootstrap-datatable datatable small-font">
@@ -807,7 +696,7 @@
 														<th>User</th>
 														<th>Number</th>
 													</tr>
-												</thead>   
+												</thead>
 												<tbody>
 													<tr>
 														<td><span class="label label-success">Complete</span></td>
@@ -858,7 +747,7 @@
 														<td>Melanie Brown</td>
 														<td><b>[#199272]</b></td>
 													</tr>
-																							
+
 												</tbody>
 											</table>
 									  	</div>
@@ -866,9 +755,9 @@
 											<ul class="users-list">
 												<li>
 													<a href="index.html#">
-														<img class="avatar" alt="Lucas" src="assets/img/avatar.jpg">
+														<img class="avatar" alt="Lucas" src="">
 													</a>
-													<div class="name">?ukasz Holeczek 
+													<div class="name">?ukasz Holeczek
 														<div class="dropdown pull-right">
 															<a class="fa fa-cogs" data-toggle="dropdown" href="index.html#"></a>
 															<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
@@ -880,11 +769,11 @@
 														</div>
 													</div>
 													<span class="place"><i class="fa fa-map-marker"></i>Mikolow, POLAND</span>
-													<span class="job"><i class="fa fa-briefcase"></i>Founder, BootstrapMaster.com</span>                                 
+													<span class="job"><i class="fa fa-briefcase"></i>Founder, BootstrapMaster.com</span>
 												</li>
 												<li>
 													<a href="index.html#">
-														<img class="avatar" alt="Bill" src="assets/img/avatar9.jpg">
+														<img class="avatar" alt="Bill" src="">
 													</a>
 													<div class="name">Bill Cole
 														<div class="dropdown pull-right">
@@ -898,11 +787,11 @@
 														</div>
 													</div>
 													<span class="place"><i class="fa fa-map-marker"></i>London, ENGLAND</span>
-													<span class="job"><i class="fa fa-briefcase"></i>CEO, Rainbow INC</span>                                 
+													<span class="job"><i class="fa fa-briefcase"></i>CEO, Rainbow INC</span>
 												</li>
 												<li>
 													<a href="index.html#">
-														<img class="avatar" alt="Jane" src="assets/img/avatar5.jpg">
+														<img class="avatar" alt="Jane" src="">
 													</a>
 													<div class="name">Jane Sanchez
 														<div class="dropdown pull-right">
@@ -916,11 +805,11 @@
 														</div>
 													</div>
 													<span class="place"><i class="fa fa-map-marker"></i>Berlin, GERMANY</span>
-													<span class="job"><i class="fa fa-briefcase"></i>Head of Stars Group</span>                               
+													<span class="job"><i class="fa fa-briefcase"></i>Head of Stars Group</span>
 												</li>
 												<li>
 													<a href="index.html#">
-														<img class="avatar" alt="Kate" src="assets/img/avatar6.jpg">
+														<img class="avatar" alt="Kate" src="">
 													</a>
 													<div class="name">Kate Presley
 														<div class="dropdown pull-right">
@@ -934,13 +823,13 @@
 														</div>
 													</div>
 													<span class="place"><i class="fa fa-map-marker"></i>Madrid, SPAIN</span>
-													<span class="job"><i class="fa fa-briefcase"></i>Creative Director, IdeaLab LTD</span>                                  
+													<span class="job"><i class="fa fa-briefcase"></i>Creative Director, IdeaLab LTD</span>
 												</li>
 												<li>
 													<a href="index.html#">
-														<img class="avatar" alt="Lucas" src="assets/img/avatar7.jpg">
+														<img class="avatar" alt="Lucas" src="">
 													</a>
-													<div class="name">Anna Holmes 
+													<div class="name">Anna Holmes
 														<div class="dropdown pull-right">
 															<a class="fa fa-cogs" data-toggle="dropdown" href="index.html#"></a>
 															<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
@@ -952,7 +841,7 @@
 														</div>
 													</div>
 													<span class="place"><i class="fa fa-map-marker"></i>Paris, FRANCE</span>
-													<span class="job"><i class="fa fa-briefcase"></i>Co-Founder, ArtStudio</span>                                 
+													<span class="job"><i class="fa fa-briefcase"></i>Co-Founder, ArtStudio</span>
 												</li>
 											</ul>
 									  	</div>
@@ -960,7 +849,7 @@
 									  		<ul class="comments-list">
 												<li>
 													<a href="index.html#">
-														<img class="avatar" alt="Lucas" src="assets/img/avatar.jpg">
+														<img class="avatar" alt="Lucas" src="">
 													</a>
 													<div>
 														<strong>?ukasz Holeczek</strong> - Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
@@ -969,58 +858,58 @@
 												</li>
 												<li>
 													<a href="index.html#">
-														<img class="avatar" alt="Bill" src="assets/img/avatar9.jpg">
+														<img class="avatar" alt="Bill" src="">
 													</a>
 													<div>
 														<strong>Bill Cole</strong> - Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
 													</div>
-													<div class="date">22 hours ago</div>	                                
+													<div class="date">22 hours ago</div>
 												</li>
 												<li>
 													<a href="index.html#">
-														<img class="avatar" alt="Jane" src="assets/img/avatar5.jpg">
+														<img class="avatar" alt="Jane" src="">
 													</a>
 													<div>
 														<strong>Jane Sanchez</strong> - Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
 													</div>
-													<div class="date">2 days ago</div>		                                  
+													<div class="date">2 days ago</div>
 												</li>
 												<li>
 													<a href="index.html#">
-														<img class="avatar" alt="Kate" src="assets/img/avatar6.jpg">
+														<img class="avatar" alt="Kate" src="">
 													</a>
 													<div>
 														<strong>Kate Presley</strong> - Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
 													</div>
-													<div class="date">10 days ago</div>	                                  
+													<div class="date">10 days ago</div>
 												</li>
 											</ul>
 										</div>
 									</div>
-									
+
 								</div>
-							</div>	
+							</div>
 						</div><!--/col-->
-						
-					</div><!--/row-->		
-	
-					
-					
+
+					</div><!--/row-->
+
+
+
 				</div><!--/col-->
-				
+
 				<div class="col-md-3 visible-md visible-lg" id="feed">
-					
+
 					<h2>Activity Feed <a class="fa fa-repeat"></a></h2>
-					
+
 					<ul id="filter">
 						<li><a class="green" href="index.html#" data-option-value="task">Tasks</a></li>
 						<li><a class="red" href="index.html#" data-option-value="comment">Comments</a></li>
 						<li><a class="blue" href="index.html#" data-option-value="message">Messages</a></li>
 						<li><a href="index.html#" data-option-value="all">All</a></li>
 					</ul>
-					
+
 					<ul id="timeline">
-						
+
 						<li class="task">
 							<i class="fa fa-check-square green"></i>
 							<div class="title">New website - A/B Tests</div>
@@ -1029,7 +918,7 @@
 							<span class="separator">?</span>
 							<span class="name">Megan Abbott</span>
 						</li>
-						
+
 						<li class="comment">
 							<i class="fa fa-comments red"></i>
 							<div class="title">Sales increase</div>
@@ -1038,7 +927,7 @@
 							<span class="separator">?</span>
 							<span class="name">Ashley Tan</span>
 						</li>
-						
+
 						<li class="comment">
 							<i class="fa fa-comments red"></i>
 							<div class="title">New Bootstrap Theme</div>
@@ -1047,7 +936,7 @@
 							<span class="separator">?</span>
 							<span class="name">Ashley Tan</span>
 						</li>
-						
+
 						<li class="message">
 							<i class="fa fa-pencil-square blue"></i>
 							<div class="title">Job offer</div>
@@ -1056,7 +945,7 @@
 							<span class="separator">?</span>
 							<span class="name">James Doe</span>
 						</li>
-						
+
 						<li class="task">
 							<i class="fa fa-check-square green"></i>
 							<div class="title">Custom Design</div>
@@ -1064,30 +953,30 @@
 							<span class="date">5 days ago</span>
 							<span class="separator">?</span>
 							<span class="name">Megan Abbott</span>
-						</li>		
-						
+						</li>
+
 					</ul>
-					<a href="index.html#" id="load-more">???</a>		
-						
-					
-				</div><!--/col-->	
-				
-			</div><!--/row-->	
-			
-			
-			
-							
-			
-     
-					
+					<a href="index.html#" id="load-more">???</a>
+
+
+				</div><!--/col-->
+
+			</div><!--/row-->
+
+
+
+
+
+
+
 			</div>
 			<!-- end: Content -->
-				
-				</div><!--/row-->		
-		
+
+				</div><!--/row-->
+
 	</div><!--/container-->
-	
-	
+
+
 	<div class="modal fade" id="myModal">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -1105,86 +994,54 @@
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
-	
+
 	<div class="clearfix"></div>
-	
+
 	<footer>
-		
+
 		<div class="row">
-			
+
 			<div class="col-sm-5">
 				&copy; 2014 creativeLabs. <a href="http://bootstrapmaster.com">Admin Templates</a> by BootstrapMaster
 			</div><!--/.col-->
-			
+
 			<div class="col-sm-7 text-right">
 				Powered by: <a href="http://bootstrapmaster.com/demo/genius/" alt="Bootstrap Admin Templates">Genius Dashboard</a> | Based on Bootstrap 3.1.1 | Built with brix.io <a href="http://brix.io" alt="Brix.io - Interface Builder">Interface Builder</a>
-			</div><!--/.col-->	
-			
-		</div><!--/.row-->	
+			</div><!--/.col-->
+
+		</div><!--/.row-->
 
 	</footer>
-		
+
 	<!-- start: JavaScript-->
-	<!--[if !IE]>-->
 
-			<script src="assets/js/jquery-2.1.0.min.js"></script>
+	<script src="assets/js/jquery-2.1.0.min.js"></script>
 
-	<!--<![endif]-->
-
-	<!--[if IE]>
-	
-		<script src="assets/js/jquery-1.11.0.min.js"></script>
-	
-	<![endif]-->
-
-	<!--[if !IE]>-->
-
-		<script type="text/javascript">
-			window.jQuery || document.write("<script src='assets/js/jquery-2.1.0.min.js'>"+"<"+"/script>");
-		</script>
-
-	<!--<![endif]-->
-
-	<!--[if IE]>
-	
-		<script type="text/javascript">
-	 	window.jQuery || document.write("<script src='assets/js/jquery-1.11.0.min.js'>"+"<"+"/script>");
-		</script>
-		
-	<![endif]-->
+	<script type="text/javascript">
+		window.jQuery || document.write("<script src='assets/js/jquery-2.1.0.min.js'>"+"<"+"/script>");
+	</script>
 	<script src="assets/js/jquery-migrate-1.2.1.min.js"></script>
 	<script src="assets/js/bootstrap.min.js"></script>
-	
-		
-	
-	
+
+
 	<!-- page scripts -->
 	<script src="assets/js/jquery-ui-1.10.3.custom.min.js"></script>
 	<script src="assets/js/jquery.ui.touch-punch.min.js"></script>
-	<script src="assets/js/jquery.sparkline.min.js"></script>
+
 	<script src="assets/js/fullcalendar.min.js"></script>
 	<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="assets/js/excanvas.min.js"></script><![endif]-->
-	<script src="assets/js/jquery.flot.min.js"></script>
-	<script src="assets/js/jquery.flot.pie.min.js"></script>
-	<script src="assets/js/jquery.flot.stack.min.js"></script>
-	<script src="assets/js/jquery.flot.resize.min.js"></script>
-	<script src="assets/js/jquery.flot.time.min.js"></script>
-	<script src="assets/js/jquery.autosize.min.js"></script>
-	<script src="assets/js/jquery.placeholder.min.js"></script>
+
 	<script src="assets/js/moment.min.js"></script>
 	<script src="assets/js/daterangepicker.min.js"></script>
 	<script src="assets/js/jquery.easy-pie-chart.min.js"></script>
 	<script src="assets/js/jquery.dataTables.min.js"></script>
 	<script src="assets/js/dataTables.bootstrap.min.js"></script>
-	
+
 	<!-- theme scripts -->
 	<script src="assets/js/custom.min.js"></script>
 	<script src="assets/js/core.min.js"></script>
-	
-	<!-- inline scripts related to this page -->
-	<script src="assets/js/pages/index.js"></script>
-	
+
 	<!-- end: JavaScript-->
-	
+
 </body>
 </html>

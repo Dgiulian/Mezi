@@ -111,6 +111,7 @@ String apenom = cliente.getId()==0?"":cliente.getApellido() + ", " + cliente.get
                                                                         <option value="1"> Casa</option>
                                                                         <option value="2" selected> Departamento</option>
                                                                         <option value="3"> Terreno</option>                                                                            
+                                                                        <option value="4"> Local comercial</option>                                                                            
                                                                     </select>
                                                                   </div>
                                                             </div>

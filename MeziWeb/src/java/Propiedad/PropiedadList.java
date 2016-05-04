@@ -34,7 +34,7 @@ public class PropiedadList extends HttpServlet {
     private Map<Integer,Barrio> mapBarrios;
     private Map<Integer,Propietario> mapPropietarios;
     private Map<Integer,Option> mapEstados;
-    private String[] arrTipo_propiedad  = {"","Casa","Departamento","Terreno"};
+    private String[] arrTipo_propiedad  = {"","Casa","Departamento","Terreno","Local comercial"};
     
     /**
      * Processes requests for both HTTP

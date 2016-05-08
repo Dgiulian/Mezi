@@ -264,6 +264,7 @@
            
             var htmlEdit = "<a href='<%= PathCfg.PROPIEDAD_EDIT%>?id="+ d.id +"' class='btn btn-xs btn-circle  btn-warning'><span class='fa fa-edit fw'></span></a> ";
             var htmlServ = "<a href='<%= PathCfg.SERVICIO%>?id_propiedad="+ d.id +"' class='btn btn-xs btn-circle  btn-primary'><span class='fa fa-lightbulb-o fw'></span></a> ";
+            htmlServ = "";        
             var htmlCont  = "";
             if(d.id_estado===1)
                 htmlCont = "<a href='<%= PathCfg.CONTRATO_EDIT%>?id_propiedad="+ d.id +"' class='btn btn-xs btn-circle  btn-primary'><span class='fa  fa-file-text-o fw'></span></a> ";

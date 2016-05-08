@@ -18,7 +18,7 @@ public class ContratoTest extends Contrato{
             this.setFecha_fin("2016-12-31");
             this.setMeses(12);
             this.setAsegura_renta(1);
-            this.setPunitorio_monto(2f);
+            this.setPunitorio_monto(0.017f);
             this.setPunitorio_desde(10);
             this.setComision_vendedor(50f);
             this.setGastos_escribania_inquilino(100f);

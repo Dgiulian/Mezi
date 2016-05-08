@@ -38,6 +38,11 @@ function validarFecha(fecha,formato){
     if (formato===undefined) formato = "DD/MM/YYYY";
     return moment(fecha,formato,true).isValid();
 }
+function validarAnterior(fecha_desde,fecha_hasta){
+    var desde = moment(fecha_desde,"DD/MM/YYYY");
+    var hasta = moment(fecha_hasta,"DD/MM/YYYY");
+    return desde.isBefore(hasta);
+}
 function availableDate(md_date,md_time,rows){
     if (rows === undefined)
         var rows = $('#measured_data tbody tr').not('.data-unsaved');
@@ -212,28 +217,31 @@ $(document).ready(function(){
 });
     });
     if($().mask) {
-        $('.date-picker').mask('99/99/9999');
+        $('.date-input').mask('99/99/9999');
         $('.hora').mask('99:99:99');
     }
     if($().datepicker) {
+        if($.fn.datepicker.defaults)
+            $.fn.datepicker.defaults.format = "dd/mm/yyyy";
         $('.date-picker').datepicker({
             language: 'es',
+            locale:'es-AR',
             format:'dd/mm/yyyy',
-            autoClose: true,
+            dateFormat:'dd/mm/yyyy',
             autoclose: true
-        }); 
-//         $('.date-picker').on('changeDate', function(ev){
-
-//            $(this).val(ev.target.value);    
+        });
+//                .on('changeDate', function(ev){
+//            
+//            $(this).parent().find('input').val(ev.target.value);    
 //            $(this).datepicker('hide');
 //        });
     }
     
-     $('#btnHideData').click(function(){
-        $('#btnHideData').toggleClass("fa-chevron-down");
-        $('#btnHideData').toggleClass("fa-chevron-up");
-       $('#data').slideToggle();
-    });
+   $('#btnHideData').click(function(){
+      $('#btnHideData').toggleClass("fa-chevron-down");
+      $('#btnHideData').toggleClass("fa-chevron-up");
+      $('#data').slideToggle();
+   });
     
    $('#lnkVRCertificado').click(lnkVRCertificado);
    $('#lnkVRHistorial').click(lnkVRHistorial);
@@ -420,4 +428,19 @@ function lnkVRHistorial(){
            
        });
    }        
+function calcularHasta(fecha,meses){
+    if ( fecha === "" ) return "";
+    if ( meses === "" ) return "";
+    meses = parseInt(meses);
+
+    var m = moment(fecha, 'DD/MM/YYYY');
+
+    if (m.isValid()){
+        if(meses===12) m.add(meses - 1,'M').endOf('month');
+        else m.add(meses,'M').endOf('month');        
+        console.log(m.format("DD/MM/YYYY"));
+        return m.format("DD/MM/YYYY");
+    }
+    else return "";
+ }
 //$('#nav-bar').width('50px'); $('$('.side - bar').width('50px');$('#page - wrapper').css('margin - left','50px')

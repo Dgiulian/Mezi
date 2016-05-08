@@ -63,7 +63,7 @@
     List<Contrato_valor> lstValor = (List<Contrato_valor>) request.getAttribute("lstValor");
     List<Contrato_documento> lstDocum= (List<Contrato_documento>) request.getAttribute("lstDocum");
     List<Contrato_gasto> lstGasto = (List<Contrato_gasto>) request.getAttribute("lstGasto");
-    DecimalFormat df = new DecimalFormat("#.00");
+    DecimalFormat df = new DecimalFormat("#.#####");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -306,7 +306,7 @@
                                                         <label class="control-label" for="fecha_inicio">Fecha de Inicio</label>
                                                         <div class="controls">
                                                               <div class="input-group ">
-                                                                  <input type="text" id="fecha_inicio" name="fecha_inicio" class="form-control  date-picker" value="<%=TFecha.formatearFechaBdVista(contrato.getFecha_inicio())%>">
+                                                                  <input type="text" id="fecha_inicio" name="fecha_inicio" class="form-control " value="<%=TFecha.formatearFechaBdVista(contrato.getFecha_inicio())%>">
                                                               </div>
                                                         </div>
                                                     </div>
@@ -322,7 +322,7 @@
                                                         <label class="control-label" for="fecha_fin">Fecha de Fin</label>
                                                         <div class="controls">
                                                               <div class="input-group ">
-                                                                    <input type="text" id="fecha_fin" name="fecha_fin" class="form-control  date-picker" value="<%=TFecha.formatearFechaBdVista(contrato.getFecha_fin())%>">
+                                                                    <input type="text" id="fecha_fin" name="fecha_fin" class="form-control" value="<%=TFecha.formatearFechaBdVista(contrato.getFecha_fin())%>">
                                                               </div>
                                                         </div>
                                                     </div>
@@ -498,7 +498,7 @@
                                                                     <label class="control-label" for="comision_desde_inquilino">Fecha Inicio</label>
                                                                     <div class="controls">
                                                                         <div class="input-group">
-                                                                            <input type="text" id="comision_desde_inquilino" name="comision_desde_inquilino" class="form-control date-picker" value="<%=TFecha.formatearFechaBdVista(contrato.getComision_desde_inquilino())%>">
+                                                                            <input type="text" id="comision_desde_inquilino" name="comision_desde_inquilino" class="form-control " value="<%=TFecha.formatearFechaBdVista(contrato.getComision_desde_inquilino())%>">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -527,7 +527,7 @@
                                                                     <label class="control-label" for="deposito_desde">Fecha Inicio</label>
                                                                     <div class="controls">
                                                                         <div class="input-group">
-                                                                            <input type="text" id="deposito_desde" name="deposito_desde" class="form-control date-picker" value="<%=TFecha.formatearFechaBdVista(contrato.getDeposito_desde())%>">
+                                                                            <input type="text" id="deposito_desde" name="deposito_desde" class="form-control " value="<%=TFecha.formatearFechaBdVista(contrato.getDeposito_desde())%>">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -583,7 +583,7 @@
                                                                     <label class="control-label" for="comision_desde_propietario">Fecha Inicio</label>
                                                                     <div class="controls">
                                                                         <div class="input-group">
-                                                                            <input type="text" id="comision_desde_propietario" name="comision_desde_propietario" class="form-control date-picker" value="<%=TFecha.formatearFechaBdVista(contrato.comision_desde_propietario)%>">
+                                                                            <input type="text" id="comision_desde_propietario" name="comision_desde_propietario" class="form-control " value="<%=TFecha.formatearFechaBdVista(contrato.comision_desde_propietario)%>">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -766,354 +766,7 @@
             onNext: mover,
             onPrevious:mover
         });
-        $('#btnBuscarCliente').click(function(){
-          var id = $('#id_inquilino_search').val();
-          if(id!=='') buscarCliente({id: id});
-          else {
-              var docum = $('#dni_search').val();
-              buscarCliente({documento: docum});
-          }
-
-        });
-        $('.btn-sel').click(function(){
-            var index = $(this).data('index');
-            buscarPropiedad({id:index});
-        });
-        $('#btnValor').click(function(){agregarValor("Valor")});
-        $('#btnDocumento').click(function(){agregarValor("Documento")});
-        $('#btnGasto').click(function(){agregarGasto("")});
-        $('.btn-del').click(borrar);
-        $('#meses').focusout(function(){
-            var fecha_inicio = $('#fecha_inicio').val();
-            var meses = $('#meses').val();
-            $('#fecha_fin').val(calcularHasta(fecha_inicio,meses));
-        });
-
-    $('#btnSubmit').submit(submitForm);
-});
-
- function calcularHasta(fecha,meses){
-    if ( fecha === "" ) return "";
-    if ( meses === "" ) return "";
-    meses = parseInt(meses);
-
-    var m = moment(fecha, 'DD/MM/YYYY');
-
-    if (m.isValid()){
-        m.add(meses,'M');
-        console.log(m.format("DD/MM/YYYY"));
-        return m.format("DD/MM/YYYY");
-    }
-    else return "";
- }
-function buscarCliente(data){
-    $.ajax({url: '<%=PathCfg.CLIENTE_SEARCH%>',
-            data: data,
-            method: 'POST',
-            dataType: 'json',
-            beforeSend:function(){
-                completarCliente({id_inquilino: '',
-                                  nombre: '',
-                                  apellido: '',
-                                  dni: '',
-                                  cuil: '',
-                                  id_tipo_persona: ''});
-            },
-            success:function(result){
-                console.log(result);
-                if(result.Result==='OK'){
-                    completarCliente(result.Record);
-                } else {
-                    //bootbox.alert(result.Message);
-                }
-            }
     });
-}
-function completarCliente(data){
-    $('#id_inquilino').val(data.id);
-    $('#nombre').val(data.nombre);
-    $('#apellido').val(data.apellido);
-    $('#dni').val(data.dni);
-    $('#cuil').val(data.cuil);
-}
-function buscarPropiedad(data){
-    $.ajax({
-        url:'<%=PathCfg.PROPIEDAD_SEARCH%>',
-        data:data,
-        method:'POST',
-        dataType:'json',
-        beforeSend:function(){
-            completarPropiedad({id_propiedad: '',
-                                calle: '',
-                                numero: '',
-                                piso: '',
-                                dpto: '',
-                                barrio: '',
-                                localidad: ''});
-            },
-        success: function(result) {
-            if(result.Result==='OK'){
-                completarPropiedad(result.Record);
-            } else {
-                bootbox.alert(result.Message);
-            }
-        }
-    });
-}
-function completarPropiedad(data){
-    $('#id_propiedad').val(data.id);
-    $('#calle').val(data.calle);
-    $('#numero').val(data.numero);
-    $('#piso').val(data.piso);
-    $('#dpto').val(data.dpto);
-    $('#barrio').val(data.barrio);
-    $('#localidad').val(data.localidad);
-}
-function agregarValor(target){
-    var title = target==="Valor"?"Agregar valor de contrato":"Agregar Documento";
-    var table = target==="Valor"?"#tblValor":"#tblDocumento";
-
-    bootbox.dialog({
-                title: title,
-                message: '<div class="row">  ' +
-                    '<div class="col-md-12"> ' +
-                    '<form class="form-vertical"> ' +
-                     '<div class="form-group"> ' +
-                        '<label class="col-md-4 control-label" for="valor_fecha_inicio">Desde</label> ' +
-                        '<div class="col-md-8"> ' +
-                        '<input id="valor_fecha_inicio" type="text" class="form-control input-md date-picker" value=""> ' +
-                     '</div>' +
-                     '<div class="form-group"> ' +
-                        '<label class="col-md-4 control-label" for="valor_fecha_fin">Hasta</label> ' +
-                        '<div class="col-md-8"> ' +
-                        '<input id="valor_fecha_fin" type="text" class="form-control input-md date-picker" value=""> ' +
-                     '</div>' +
-
-                    '<div class="form-group"> ' +
-                        '<label class="col-md-4 control-label" for="valor_importe">Importe</label>' +
-                        '<div class="col-md-8"> ' +
-                        '<input id="valor_importe" type="text" class="form-control input-md" value=""> ' +
-                        '</div> ' +
-                    '</div>'+
-
-                      '</div> ' +
-                    '</form>' +
-                    '</div>'+
-                    '</div>',
-                buttons: {
-                    success: {
-                        label: "Guardar",
-                        className: "btn-success",
-                        callback: function () {
-                            var fecha_desde = $('#valor_fecha_inicio').val();
-                            var fecha_hasta = $('#valor_fecha_fin').val();
-                            var monto = $('#valor_importe').val();
-                            
-                            if(target=="Valor"){
-                                var html_desde = fecha_desde +  ' <input type="hidden" name="valor_desde" value="'+fecha_desde+'">';
-                                var html_hasta = fecha_hasta + ' <input type="hidden" name="valor_hasta" value="'+fecha_hasta+'">';
-                                var html_monto = monto + ' <input type="hidden" name="valor_monto" value="'+monto+'">';
-                            } else {
-                                var html_desde = fecha_desde +  ' <input type="hidden" name="documento_desde" value="'+fecha_desde+'">';
-                                var html_hasta = fecha_hasta + ' <input type="hidden" name="documento_hasta" value="'+fecha_hasta+'">';
-                                var html_monto = monto + ' <input type="hidden" name="documento_monto" value="'+monto+'">';
-                            }
-                            var html = '';
-                            html += wrapTag('td',html_desde,'');
-                            html += wrapTag('td',html_hasta,'');
-                            html += wrapTag('td',html_monto,'');
-                            var span = "<span class='btn btn-xs btn-danger btn-circle btn-del'><span class='fa fa-trash-o'></span>";
-                            html += wrapTag('td',span,'');
-                            html = wrapTag('tr',html,'');
-                            $(table).find('tbody').append(html);
-                            $('.btn-del').click(borrar);
-                        }
-                    },
-                    cancel: {
-                        label: "Cancelar",
-                        callback: function () {}
-                    }
-                }
-            }).init(function(){
-        if($().mask) {
-            $('.date-picker').mask('99/99/9999');
-            $('.hora').mask('99:99:99');
-        }
-        if($().datepicker) {
-            $('.date-picker').datepicker({
-                language: 'es'
-            });
-             $('.date-picker').on('changeDate', function(ev){
-                $(this).datepicker('hide');
-            });
-        }
-    });
-}
-function agregarGasto(target){
-    var title = "Agregar gasto";
-    var table = "#tblGasto";
-    bootbox.dialog({
-                title: title,
-                message: '<div class="row">  ' +
-                    '<div class="col-md-12"> ' +
-                    '<form class="form-vertical"> ' +
-                     '<div class="form-group"> ' +
-                        '<label class="col-md-4 control-label" for="gasto_concepto">Concepto</label> ' +
-                        '<div class="col-md-8"> ' +
-                        '<input id="gasto_concepto" name="gasto_concepto" type="text" class="form-control input-md" value=""> ' +
-                     '</div>' +
-                     '<div class="form-group"> ' +
-                        '<label class="col-md-4 control-label" for="gasto_aplica">Aplica</label> ' +
-                        '<div class="col-md-8"> ' +
-                        '<select id="gasto_concepto" name="gasto_aplica" type="text" class="form-control input-md"> ' +
-                        '<option value="1">Inquilino</option>' +
-                        '<option value="2">Propietario</option>' +
-                        '</select>' +
-                     '</div>' +
-                    '<div class="form-group"> ' +
-                        '<label class="col-md-4 control-label" for="gasto_importe">Importe</label>' +
-                        '<div class="col-md-8"> ' +
-                        '<input id="gasto_importe" name="gasto_importe" type="text" class="form-control input-md" value=""> ' +
-                        '</div> ' +
-                    '</div>'+
-
-                      '</div> ' +
-                    '</form>' +
-                    '</div>'+
-                    '</div>',
-                buttons: {
-                    success: {
-                        label: "Guardar",
-                        className: "btn-success",
-                        callback: function () {
-                            var concepto = $('#gasto_concepto').val();
-                            var aplica = $('#gasto_aplica').val()===1?"Inquilino":"Propietario";
-                            var importe = $('#gasto_importe').val();
-                            
-                            var html_concepto = concepto + '<input type="hidden" name="gasto_concepto" value="'+concepto+'">';
-                            var html_aplica = aplica + '<input type="hidden" name="gasto_aplica" value="'+$('#gasto_aplica').val()+'">';
-                            var html_importe = importe + '<input type="hidden" name="gasto_importe" value="'+importe+'">';
-                            
-                            var html = '';
-                            html += wrapTag('td',html_concepto,'');
-                            html += wrapTag('td',html_aplica,'');
-                            html += wrapTag('td',html_importe,'');
-                            var span = "<span class='btn btn-xs btn-danger btn-circle btn-del'><span class='fa fa-trash-o'></span>";
-                            html += wrapTag('td',span,'');
-                            html = wrapTag('tr',html,'');
-                            $(table).find('tbody').append(html);
-                            $('.btn-del').click(borrar);
-                        }
-                    },
-                    cancel: {
-                        label: "Cancelar",
-                        callback: function () {}
-                    }
-                }
-            });
-}
-function borrar(e){
-    var $tr = $(this).parent().parent();
-    bootbox.confirm("Esta seguro que desea eliminar el registro?",function(result){
-         if(result) {
-            $tr.remove();
-         }
-     });
-}
-
-function mover(tab, navigation, index){
-    if(index===3){
-        $('#btnRow').css('display','block');
-        console.log(tab,navigation,index);
-    } else $('#btnRow').css('display','none');
-}
-function validar(data){
-    var todoOk = true;
-    var $id_inquilino = $('#id_inquilino');
-    var $id_propiedad = $('#id_propiedad');
-    var $fecha_inicio = $('#fecha_inicio');
-    var $fecha_fin = $('#fecha_fin');
-    var $meses = $('#meses');
-    var $numero = $('#numero');
-
-    todoOk &= validarCampo($id_inquilino,"Debe seleccionar el inquilino",validarNoCero);
-    todoOk &= validarCampo($id_propiedad,"Debe seleccionar la propiedad",validarNoCero);
-    todoOk &= validarCampo($fecha_inicio,"Ingrese la fecha de inicio del contrato",validarCampoFecha);
-    todoOk &= validarCampo($fecha_fin,"Ingrese la fecha de fin del contrato",validarCampoFecha);
-    todoOk &= validarNoNulo($meses,"Ingrese la cantidad de meses del contrato",validarNoCero);
-
-    return todoOk;
-}
-
-function validarValores(){
-    var $tabla = $('#tblValor');
-    var filas = $tabla.find('tbody tr');
-    for(var i =0;i<= filas.length;i++ ){
-        var f = $(filas[i]);
-        var fecha_inicio = $(f[0]);
-        var fecha_fin = $(f[1]);
-        var importe = $(f[2]);
-
-        console.log(validarFecha(fecha_inicio));
-        console.log(validarFecha(fecha_fin));
-        console.log(validarNoCero(importe));
-    }
-
-}
-
-
-
-function validarDocumentos(){
-
-}
-function validarNoNulo($campo,mensaje){
-    if($campo ===undefined || $campo.val()==="" || parseInt($campo.val())===0) {
-        $.notify(mensaje,"error");
-        return false;
-}
-return true;
-}
-//function loadDataPropiedad(data){
-//            var $tabla = $('#tblPropiedades');
-//            //$tabla.DataTable().destroy();
-//            data.id_estado = 1;
-//            data.id_operadion = 1;
-//            $.ajax({
-//               url: '<%= PathCfg.PROPIEDAD_LIST %>',
-//               data: data,
-//               method:"POST",
-//               dataType: "json",
-//               beforeSend:function(){
-//                    var cant_cols = $tabla.find('thead th').length;
-//                    $tabla.find('tbody').html("<tr><td colspan='" + cant_cols + "'><center><img src='assets/img/ajax-loader.gif'/></center></td></tr>");
-//               },
-//               success: function(result) {
-//                   if(result.Result === "OK") {
-//
-//                       $tabla.find('tbody').html(createTablePropiedad(result.Records));
-//                        $('.btn-del').click(borrar);
-//                   }
-//               }
-//           });
-//    }
-//function createTablePropiedad(data){
-//        var html = "";
-//        for(var i = 0;i< data.length;i++){
-//           html +="<tr class=''>";
-//           d = data[i];
-//           html +=wrapTag('td',d.tipo_inmueble,'');
-//           html += wrapTag('td',d.calle + ' ' + d.numero,'');
-////           html += wrapTag('td',d.barrio,'');
-////           html += wrapTag('td',d.precio,'');
-//           html += wrapTag('td',d.propietario,'');
-//
-//           var htmlSel = "<span class='btn btn-xs btn-primary btn-circle btn-sel'  data-index='"+ d.id + "' ><span class='fa fa-plus'></span>";
-//           html +='<td style="width:75px"  >' + htmlSel + '</td>';
-////         html +=wrapTag('td',htmlEdit + htmlDel,'');
-//           html +="</tr>";
-//       }
-//       return html;
-//    }
 </script>
  <%@include file="mdl_cliente.jsp" %>
  <%@include file="mdl_propiedad.jsp" %>

@@ -1,6 +1,7 @@
 package transaccion;
 
 import bd.Cliente_tipo;
+import bd.Contrato;
 import bd.Propietario;
 import java.util.List;
 import utils.OptionsCfg;
@@ -46,9 +47,25 @@ public class TPropietario extends TransaccionBase<Propietario> {
 //            return new TCliente_tipo().alta(tipo);
              return false;
         }
-         
+         public boolean baja(Integer id_propietario){
+            /* Borra de la tabla cliente_tipo */
+            TCliente_tipo tc = new TCliente_tipo();
+            String query = String.format("select * from contrato where contrato.id_propietario = %d",id_propietario);
+            List<Contrato> list = new TContrato().getList(query);
+            if(list.isEmpty()){
+                /* Si no existen más contratos de ese propietario, se borra de la tabla cliente_tipo */ 
+                query = String.format("select * from cliente_tipo where cliente_tipo.id_cliente = %d and  cliente_tipo.id_tipo_cliente = %d",id_propietario,OptionsCfg.CLIENTE_TIPO_PROPIETARIO);
+                System.out.println(query);
+                for(Cliente_tipo ct: tc.getList(query)){
+                    tc.baja(ct);
+                };
+            }
+            return true;
+        }
          public static void main(String[] args){
-            List<Propietario> list = new TPropietario().getList();
-             System.out.println(list);
+//            List<Propietario> list = new TPropietario().getList();
+//             System.out.println(list);
+             
+             
          }
 }

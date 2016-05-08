@@ -48,6 +48,7 @@ public class OptionsCfg {
     public static final int CONCEPTO_AJUSTE           = 8;
     public static final int CONCEPTO_PAGO             = 9;
     public static final int CONCEPTO_SALDO            = 10;
+    public static final int CONCEPTO_COMISION_ADMINISTRACION = 12;
     
     public static final int CONTRATO_ESTADO_ACTIVO    = 1;
     public static final int CONTRATO_ESTADO_FIN = 2;

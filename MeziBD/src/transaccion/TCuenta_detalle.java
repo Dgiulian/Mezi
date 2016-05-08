@@ -7,6 +7,7 @@ import bd.Contrato_valor;
 import bd.Cuenta;
 import bd.Cuenta_detalle;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import java.util.List;
 import org.joda.time.LocalDate;
@@ -71,7 +72,7 @@ public List<Cuenta_detalle> crearDetallePropietario(Contrato contrato){
 }
 
 
-public List<Cuenta_detalle> crearDetalle(Contrato_valor[] lstValores){
+public List<Cuenta_detalle> crearDetalle(Contrato contrato,Contrato_valor[] lstValores,Integer id_tipo){
     ArrayList<Cuenta_detalle> lstDetalle = new ArrayList<Cuenta_detalle>();
     for(Contrato_valor valor:lstValores){
         
@@ -89,10 +90,24 @@ public List<Cuenta_detalle> crearDetalle(Contrato_valor[] lstValores){
             
             cd.setConcepto(concepto);
             cd.setId_concepto(OptionsCfg.CONCEPTO_ALQUILER);
-            cd.setDebe(monto);
+            
+            if (id_tipo== OptionsCfg.CLIENTE_TIPO_PROPIETARIO) cd.setHaber(monto);
+            else if (id_tipo== OptionsCfg.CLIENTE_TIPO_INQUILINO) cd.setDebe(monto);            
             cd.setId_referencia(i++);
             cd.setFecha(TFecha.formatearFecha(fecha.toDate(), TFecha.formatoBD));
-            lstDetalle.add(cd);            
+            lstDetalle.add(cd);
+             
+             if (id_tipo== OptionsCfg.CLIENTE_TIPO_PROPIETARIO) {
+             Cuenta_detalle cd_adm = new Cuenta_detalle(); 
+              cd_adm.setConcepto("Comisión administración");
+              cd_adm.setId_concepto(OptionsCfg.CONCEPTO_COMISION_ADMINISTRACION);
+              cd_adm.setDebe(monto * contrato.getComision_mensual_propietario() / 100); // <--- Ver esto
+              cd_adm.setId_referencia(i++);
+              cd_adm.setFecha(TFecha.formatearFecha(fecha.toDate(), TFecha.formatoBD));
+              lstDetalle.add(cd_adm);
+             } 
+            //else if (id_tipo== OptionsCfg.CLIENTE_TIPO_INQUILINO) cd.setDebe(monto);
+            
         }
         System.out.println(" ");
     }
@@ -161,14 +176,16 @@ public Cuenta_detalle detalleSellado(Float monto,String fecha){
     d_sellado.setId_concepto(OptionsCfg.CONCEPTO_GASTO_SELLADO);
     return d_sellado;
 }
-public List<Cuenta_detalle> detalleComision(Float monto,Integer cuotas,String fecha){
+public List<Cuenta_detalle> detalleComision(Float monto,Integer cuotas,String desde){
     ArrayList<Cuenta_detalle> lstDetalle = new ArrayList<Cuenta_detalle>();    
+        LocalDate fecha = new LocalDate(desde);
         for(int i=1;i<=cuotas;i++){
             Cuenta_detalle d_comision = new Cuenta_detalle();            
             d_comision.setConcepto(String.format("Comisión cuota %s",i));
             d_comision.setDebe( monto / cuotas);
-            d_comision.setFecha(fecha);
+            d_comision.setFecha(TFecha.formatearFecha(fecha.toDate(), TFecha.formatoBD));
             d_comision.setId_concepto(OptionsCfg.CONCEPTO_GASTO_COMISION);;
+            fecha = fecha.plusMonths(1).withDayOfMonth(1);            
             lstDetalle.add(d_comision);
         }
         return lstDetalle;
@@ -252,7 +269,7 @@ private static Contrato getContrato(){
   }
   public List<Cuenta_detalle> detalleInquilino(Contrato contrato, ArrayList<Contrato_valor> lstValor,  ArrayList<Contrato_gasto> lstGasto){
        ArrayList<Cuenta_detalle> lstDetalle = new ArrayList<Cuenta_detalle>();
-       lstDetalle.addAll(this.crearDetalle(lstValor.toArray(new Contrato_valor[lstValor.size()])));
+       lstDetalle.addAll(this.crearDetalle(contrato,lstValor.toArray(new Contrato_valor[lstValor.size()]),OptionsCfg.CLIENTE_TIPO_INQUILINO));
        lstDetalle.addAll(this.crearDetalleInquilino(contrato));
        //lstDetalle.addAll(this.crearDetalle(lstDocum.toArray(new Contrato_documento[lstDocum.size()]), OptionsCfg.CLIENTE_TIPO_INQUILINO));
        lstDetalle.addAll(this.crearDetalle(lstGasto.toArray(new Contrato_gasto[lstGasto.size()]),contrato.getFecha_inicio()));
@@ -263,10 +280,11 @@ private static Contrato getContrato(){
        lstDetalle.addAll(this.crearDetalle(lstDocum.toArray(new Contrato_documento[lstDocum.size()]),OptionsCfg.CLIENTE_TIPO_INQUILINO));
        return lstDetalle;
   }
-  public List<Cuenta_detalle> detallePropietario(Contrato contrato, ArrayList<Contrato_gasto> lstGasto){
-       ArrayList<Cuenta_detalle> lstDetalle = new ArrayList<Cuenta_detalle>();       
+  public List<Cuenta_detalle> detallePropietario(Contrato contrato,ArrayList<Contrato_valor> lstValor, ArrayList<Contrato_gasto> lstGasto){
+       ArrayList<Cuenta_detalle> lstDetalle = new ArrayList<Cuenta_detalle>();
+       lstDetalle.addAll(this.crearDetalle(contrato,lstValor.toArray(new Contrato_valor[lstValor.size()]),OptionsCfg.CLIENTE_TIPO_PROPIETARIO));
        lstDetalle.addAll(this.crearDetalle(lstGasto.toArray(new Contrato_gasto[lstGasto.size()]),contrato.getFecha_inicio()));
-       lstDetalle.addAll(this.crearDetalleInquilino(contrato));
+       lstDetalle.addAll(this.crearDetallePropietario(contrato));
        return lstDetalle;
   }
   public List<Cuenta_detalle> detallePropietario( ArrayList<Contrato_documento> lstDocum){
@@ -296,6 +314,12 @@ private static Contrato getContrato(){
 //                
 //            }
 public static void main(String[] args){
+    
+     HashMap<String,String> mapFiltro = new HashMap<String,String>();
+     TCuenta_detalle     tcd = new TCuenta_detalle();
+     mapFiltro.put("id_contrato","");
+    List<Cuenta_detalle> listaDetalle = tcd.getListFiltro(mapFiltro);
+    
 //            Cuenta cuenta = new TCuenta().getById(27);
 //            System.out.print("Fecha Liquidacion: ");
 //            System.out.println(cuenta.getFecha_liquidacion());

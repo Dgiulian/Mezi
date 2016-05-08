@@ -16,25 +16,26 @@
                
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="ajFecha">Fecha</label>
-                    <div class="col-md-8">
-                    <input id="ajFecha" name="ajFecha" type="text" class="form-control input-md date-picker" value="">
+                    <div class="col-md-8 input-group date date-picker">
+                    <input id="ajFecha" name="ajFecha" type="text" class="form-control input-md " value="">
+                    <span class="input-group-addon"><span class="fa fa-calendar"></span></span>  
                     </div>
                 </div>
                  <div class="form-group">
                     <label class="col-md-4 control-label" for="ajConcepto">Concepto</label>
-                    <div class="col-md-8">
+                    <div class="col-md-8 input-group">
                     <input id="ajConcepto" name="ajConcepto" type="text" class="form-control input-md" value="">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="ajMonto">Monto</label>
-                    <div class="col-md-8">
+                    <div class="col-md-8 input-group">
                     <input id="ajMonto" name="ajMonto" type="text" class="form-control input-md numeric" value="">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="">Tipo</label>
-                    <div class="col-md-8"> 
+                    <div class="col-md-8 input-group"> 
                         <input id="ajTipoDebe"  name="ajTipo" type="radio" class="radio-inline input-md" value="1">Debe                    
                         <input id="ajTipoHaber" name="ajTipo" type="radio" class="radio-inline input-md" value="2">Haber
                     </div>

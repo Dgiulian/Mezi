@@ -47,8 +47,9 @@ public abstract class BasePdf {
     }
     protected void addText(PdfContentByte cb, float x, float y, String text){
         cb.beginText();
-        cb.setFontAndSize(bf, 7);
+        cb.setFontAndSize(bf, 8);
         cb.setTextMatrix(x,y);
+        
         cb.showText(text.trim());
         cb.endText();
     }

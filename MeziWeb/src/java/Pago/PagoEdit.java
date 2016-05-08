@@ -140,7 +140,7 @@ public class PagoEdit extends HttpServlet {
             
             cuenta = tc.getById(id_cuenta);
             
-            if(cuenta==null) throw new BaseException("ERROR","Debe indicar la cuenta a ajustar");
+            if(cuenta==null) throw new BaseException("ERROR","Debe indicar la cuenta a liquidar");
             filtroCuenta.put("id_cuenta", cuenta.getId().toString());
             p = new Pago();
             p.setId_cuenta(cuenta.getId());
@@ -200,8 +200,9 @@ public class PagoEdit extends HttpServlet {
             cd.setFecha_creacion(TFecha.ahora(TFecha.formatoBD));
             cd.setConcepto(String.format("Pago %s",request.getParameter("fecha")));
             cd.setId_concepto(OptionsCfg.CONCEPTO_PAGO);
+            
             cd.setId_referencia(id_pago);
-            cd.setHaber(total);
+            cd.setHaber(total);            
             saldo = saldo - total;
             listaPunitorio.add(cd);
             if(saldo!=0){ // Si existe un saldo. Lo cargamos en la cuenta.
@@ -245,7 +246,10 @@ public class PagoEdit extends HttpServlet {
                     rd.setFecha(cuenta_detalle.getFecha());
                     rd.setDebe(cuenta_detalle.getDebe());
                     rd.setHaber(cuenta_detalle.getHaber());
-                    rd.setSaldo(cuenta_detalle.getDebe() - cuenta_detalle.getHaber());
+                    if(cuenta_detalle.getId_concepto()==OptionsCfg.CONCEPTO_PAGO)
+                        rd.setSaldo(0f);
+                    else rd.setSaldo(cuenta_detalle.getDebe() - cuenta_detalle.getHaber());
+                    rd.setId_concepto(cuenta_detalle.getId_concepto());
                     trd.alta(rd);
             }
             if(id_pago!=0){

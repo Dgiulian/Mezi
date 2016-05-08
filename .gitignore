@@ -1,0 +1,29 @@
+# Created by http://www.gitignore.io
+
+### MeziBD  ###
+MeziBD/nbproject/private/
+MeziBD/nbproject/
+MeziBD/build/
+MeziBD/nbbuild/
+MeziBD/dist/
+MeziBD/nbdist/
+MeziBD/nbactions.xml
+MeziBD/nb-configuration.xml
+
+
+### EventPassWeb2 ###
+MeziWeb/nbproject/private/
+MeziWeb/build/
+MeziWeb/nbbuild/
+MeziWeb/dist/
+MeziWeb/nbdist/
+MeziWeb/nbactions.xml
+MeziWeb/nb-configuration.xml
+
+# Class Files #
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear

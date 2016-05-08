@@ -15,10 +15,19 @@
                 <form class="form-vertical">
                 <input id="liq_id_cuenta" name="liq_id_cuenta" type="hidden" class="" value="" >                
                <div class="col-md-7">
-                    <div class="form-group">
+                    <div class="form-group row">
+                        <label class="col-md-6 control-label" for="liq_mnt">Saldo a pagar</label>
+                        <div class="input-group ">
+                            <input id="liq_mnt" name="liq_mnt" type="text" class="form-control input-md numeric" value="" disabled>
+                        </div>
+                    </div>
+               </div>
+               <div class="col-md-7">
+                    <div class="form-group row">
                         <label class="col-md-4 control-label" for="liqFecha">Fecha</label>
-                        <div class="col-md-8">
-                            <input id="liqFecha" name="liqFecha" type="text" class="form-control input-md date-picker" value="<%=TFecha.ahora(TFecha.formatoVista)%>">
+                        <div class="input-group date date-picker">
+                            <input id="liqFecha" name="liqFecha" type="text" class="form-control input-md date-input" value="<%=TFecha.ahora(TFecha.formatoVista)%>">
+                            <span class="input-group-addon"><span class="fa fa-calendar"></span></span>  
                         </div>
                     </div>
                 </div>
@@ -83,7 +92,24 @@
         $('#mdlLiquidar').on('shown.bs.modal',function(e){
             var invoker = $(e.relatedTarget);
             var id_cuenta  = invoker.data('id_cuenta');
+            var mnt_liq  = invoker.data('mnt_liq');
+            if(isNaN(parseInt(id_cuenta))) {
+                bootbox.alert("Primero debe seleccionar una cuenta");
+                $('#mdlLiquidar').modal('hide');
+            }
+            mnt_liq = isNaN(mnt_liq)?0:mnt_liq;
+            
+            $('#liq_mnt').val(mnt_liq);
             $('#liq_id_cuenta').val(id_cuenta);
+
+            $('#liqFecha').val("");
+            $('#liqEfeMnt').val("");
+            $('#liqChkMnt').val("");
+            $('#liqChkBan').val("");
+            $('#liqChkNum').val("");
+            $('#liqTraMnt').val("");
+            $('#liqTraNum').val("");
+            $('#liqTotal').val("");
         });
         
         $('#btnGuardarLiq').click(function(){
@@ -108,10 +134,10 @@
             var fecha     = $('#liqFecha').val();            
             var liqEfeMnt = parsearFloat($('#liqEfeMnt').val());
             var liqChkMnt = parsearFloat($('#liqChkMnt').val());
-            var liqChkBan = parsearFloat($('#liqChkBan').val());
-            var liqChkNum = parsearFloat($('#liqChkNum').val());
+            var liqChkBan = $('#liqChkBan').val();
+            var liqChkNum = $('#liqChkNum').val();
             var liqTraMnt = parsearFloat($('#liqTraMnt').val());
-            var liqTraNum = parsearFloat($('#liqTraNum').val());
+            var liqTraNum = $('#liqTraNum').val();
             
             
             var data = { id_cuenta: id_cuenta,

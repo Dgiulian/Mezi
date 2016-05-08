@@ -5,6 +5,7 @@ public class Recibo_detalleBase {
 	public Integer id_recibo = 0;
 	public Integer id_cuenta_detalle = 0;
 	public String fecha = "";
+	public Integer id_concepto = 0;
 	public String concepto = "";
 	public Float debe = 0f;
 	public Float haber = 0f;
@@ -18,6 +19,7 @@ public class Recibo_detalleBase {
 		this.id_recibo = recibo_detallebase.getId_recibo();
 		this.id_cuenta_detalle = recibo_detallebase.getId_cuenta_detalle();
 		this.fecha = recibo_detallebase.getFecha();
+		this.id_concepto = recibo_detallebase.getId_concepto();
 		this.concepto = recibo_detallebase.getConcepto();
 		this.debe = recibo_detallebase.getDebe();
 		this.haber = recibo_detallebase.getHaber();
@@ -57,6 +59,15 @@ public class Recibo_detalleBase {
 
 	public Recibo_detalleBase setFecha(String fecha) {
 		this.fecha = fecha;
+		return this;
+	}
+
+	public Integer getId_concepto() {
+		return this.id_concepto;
+	}
+
+	public Recibo_detalleBase setId_concepto(Integer id_concepto) {
+		this.id_concepto = id_concepto;
 		return this;
 	}
 

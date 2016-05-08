@@ -45,7 +45,7 @@
                                         <div class="col-lg-12   ">
                                         <div class="col-lg-6 nopadding">
                                              <fieldset>
-                                                    <legend>Datos del cliente  <%if (!con_cliente) {%><span class="btn btn-primary" data-toggle="modal" data-target="#mdlCliente">Seleccionar</span> <% } %></legend>
+                                                    <legend>Datos del cliente  <%if (!con_cliente) {%><span class="btn btn-sm btn-primary" data-toggle="modal" data-target="#mdlCliente">Seleccionar</span> <% } %></legend>
                                                     <input type="hidden" name="id_tipo_cliente" id="id_tipo_cliente" value="<%=id_tipo_cliente%>">
                                                         <div class="form-group row">
                                                                 <div class="col-lg-2 nopadding">
@@ -72,31 +72,33 @@
                                                                           </div>
                                                                     </div>
                                                                 </div>
-
                                                         </div><!-- row -->
                                                         </fieldset>
-                                                        <div class="col-lg-3 ">
+                                                                          
+                                                        <div class="col-lg-5">
                                                             <div class="controls">
                                                                 <label class="control-label" for="fecha_desde_oficial">Fecha desde</label>
-                                                                  <div class="input-group ">
-                                                                      <input type="text" class="form-control date-picker" id="fecha_desde_oficial" name="fecha_desde_oficial" >
-                                                                  </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-3 ">
-                                                            <div class="controls">
-                                                                <label class="control-label" for="fecha_hasta_oficial">Fecha hasta</label>
-                                                                  <div class="input-group ">
-                                                                      <input type="text" class="form-control date-picker" id="fecha_hasta_oficial" name="fecha_hasta_oficial" value="<%=fecha_consulta%>">
+                                                                  <div class="input-group date  date-picker">
+                                                                      <input type="text" class="form-control date-input" id="fecha_desde_oficial" name="fecha_desde_oficial" >
+                                                                      <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
                                                                   </div>
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-5 ">
                                                             <div class="controls">
+                                                                <label class="control-label" for="fecha_hasta_oficial">Fecha hasta</label>
+                                                                  <div class="input-group date date-picker">
+                                                                      <input type="text" class="form-control date-input" id="fecha_hasta_oficial" name="fecha_hasta_oficial" value="<%=fecha_consulta%>">
+                                                                      <span class="input-group-addon"><span class="fa fa-calendar"></span></span>  
+                                                                  </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12 ">
+                                                            <div class="controls">
                                                                 <label class="control-label" for="">&nbsp;</label>
                                                                 <div class="controls ">
-                                                                <span class="btn btn-primary" id="btnActualizarOficial" >Actualizar </span>
-                                                                <span class="btn btn-primary" id="btnImprimirOficial">Imprimir</span>
+                                                                <span class="btn btn-sm btn-primary" id="btnActualizarOficial" >Actualizar </span>
+                                                                <span class="btn btn-sm btn-primary" id="btnImprimirOficial">Imprimir</span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -107,60 +109,44 @@
                                                     <legend>Datos del inmueble</legend>
                                                      <div class="col-lg-12" >
                                                          <input type="hidden" name="id_propiedad" id="id_propiedad" value="<%=propiedad.getId()%>">
-                                                         <table class="table table-condensed table-striped" id="tblContrato">
-                                                            
+                                                         <table class="table table-condensed table-striped" id="tblContrato">                                                            
                                                              <thead>
                                                                  <tr>
-                                                                     <td>Direcci&oacute;n</td>
+                                                                     <th>Domicilios</th>
                                                                  </tr>
                                                              </thead>
                                                              <tbody></tbody>
                                                          </table>
-<!--                                                        <div class="form-group row">
-                                                                <div class="col-lg-12 nopadding">
-                                                                    <div class="controls">
-                                                                        <label class="control-label" for="calle">Direcci&oacute;n</label>
-                                                                          <div class="input-group col-lg-12 ">
-                                                                            <input type="text" id="direccion" name="calle" class="form-control" value="<%=propiedad.getDireccion()%>"  readonly>
-                                                                          </div>
-                                                                    </div>
-                                                                </div>                                                                
-                                                            <% if(!con_propiedad) {%>
-                                                                <div class="col-lg-2 ">
-                                                                    <div class="controls">
-                                                                        <label class="control-label" for="id_propiedad">&nbsp;</label>
-                                                                          <div class="input-group ">
-                                                                            <span class="btn btn-primary" data-toggle="modal" data-target="#mdlPropiedad">Seleccionar</span>
-                                                                          </div>
-                                                                    </div>
-                                                                </div>
-                                                            <% } %>
-                                                        </div> row -->
                                                      </div> <!-- col-lg-12 -->
                                                     </fieldset>
-                                                        <div class="col-lg-3 ">
+                                                         <div class="col-lg-12 nopadding">
+                                                              
+                                                        <div class="col-lg-5 ">
                                                             <div class="controls">
                                                                 <label class="control-label" for="fecha_desde_no_oficial">Fecha desde</label>
-                                                                  <div class="input-group ">
-                                                                      <input type="text" class="form-control date-picker" id="fecha_desde_no_oficial" name="fecha_desde_no_oficial" >
-                                                                  </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-3 ">
-                                                            <div class="controls">
-                                                                <label class="control-label" for="fecha_hasta_no_oficial">Fecha hasta</label>
-                                                                  <div class="input-group ">
-                                                                      <input type="text" class="form-control date-picker" id="fecha_hasta_no_oficial" name="fecha_hasta_no_oficial" value="<%=fecha_consulta%>">
+                                                                  <div class="input-group  date date-picker">
+                                                                      <input type="text" class="form-control date-input" id="fecha_desde_no_oficial" name="fecha_desde_no_oficial" >
+                                                                      <span class="input-group-addon"><span class="fa fa-calendar"></span></span>  
                                                                   </div>
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-5 ">
+                                                            <div class="controls">
+                                                                <label class="control-label" for="fecha_hasta_no_oficial">Fecha hasta</label>
+                                                                  <div class="input-group date date-picker"">
+                                                                      <input type="text" class="form-control date-input" id="fecha_hasta_no_oficial" name="fecha_hasta_no_oficial" value="<%=fecha_consulta%>">
+                                                                      <span class="input-group-addon"><span class="fa fa-calendar"></span></span>  
+                                                                  </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12 ">
                                                             <label class="control-label" for="">&nbsp;</label>
                                                             <div class="controls">                                                                
-                                                                <span class="btn btn-primary" id="btnActualizarNoOficial" sytle="margin-right:2px;">Actualizar </span> 
-                                                                <span class="btn btn-primary" id="btnImprimirNoOficial">Imprimir</span>
+                                                                <span class="btn btn-sm btn-primary" id="btnActualizarNoOficial" sytle="margin-right:2px;">Actualizar </span> 
+                                                                <span class="btn btn-sm btn-primary" id="btnImprimirNoOficial">Imprimir</span>
                                                                 
                                                             </div>
+                                                        </div>
                                                         </div>
                                                 </div>
                                     </div>
@@ -173,8 +159,8 @@
                                         <div class="col-lg-6">
                                             <h2><i class="fa fa-edit"></i>Cuenta Oficial 
                                                 <input type="hidden" name="id_cuenta_oficial" id="id_cuenta_oficial" >
-                                                <span class="btn btn-primary" id="btnAjOficial"  data-id_cuenta='' data-toggle="modal" data-target="#mdlConcepto">Ajustar</span>                                             
-                                                <span class="btn btn-primary" id="btnLiqOficial" data-id_cuenta='' data-toggle="modal" data-target="#mdlLiquidar" id="btnLiquidar">Liquidar</span>
+                                                <span class="btn btn-sm btn-primary" id="btnAjOficial"  data-id_cuenta='' data-toggle="modal" data-target="#mdlConcepto">Ajustar</span>                                             
+                                                <span class="btn btn-sm btn-primary" id="btnLiqOficial" data-id_cuenta='' data-toggle="modal" data-target="#mdlLiquidar" id="btnLiquidar">Liquidar</span>
                                             </h2>
                                             <table class="table table-bordered table-condensed table-striped" id="tblCuentaOficial">
                                                     <colgroup>
@@ -207,8 +193,8 @@
                                         <div class="col-lg-6">
                                             <h2><i class="fa fa-edit"></i>Cuenta no oficial 
                                                 <input type="hidden" name="id_cuenta_no_oficial" id="id_cuenta_no_oficial" >
-                                                <span class="btn btn-primary" id="btnAjNoOficial"  data-id_cuenta='' data-toggle="modal" data-target="#mdlConcepto">Ajustar</span>
-                                                <span class="btn btn-primary" id="btnLiqNoOficial" data-id_cuenta='' data-toggle="modal" data-target="#mdlLiquidar" id="btnLiquidar">Liquidar</span></h2>
+                                                <span class="btn btn-sm btn-primary" id="btnAjNoOficial"  data-id_cuenta='' data-toggle="modal" data-target="#mdlConcepto">Ajustar</span>
+                                                <span class="btn btn-sm btn-primary" id="btnLiqNoOficial" data-id_cuenta='' data-toggle="modal" data-target="#mdlLiquidar" id="btnLiquidar">Liquidar</span></h2>
                                             <table class="table table-bordered table-condensed table-striped" id="tblCuentaNoOficial">
                                                     <colgroup>
                                                         <col style="width:10%">
@@ -442,6 +428,8 @@
                        $tabla.find('tbody').html(createTableCuenta(result.Records));                       
                        $btnAjustar.data('id_cuenta',result.Record.id);
                        $btnLiquidar.data('id_cuenta',result.Record.id);
+                       var mnt_liq = parseFloat($('#tblCuentaOficial').find('tr:last').find('td:last').text());
+                       $btnLiquidar.data('mnt_liq',mnt_liq);
                    } else { 
                        var  html = result.Message;
                        html = "<td colspan='5' style='text-align:center'>" + html + "</td>";
@@ -501,8 +489,6 @@
             id_propiedad: id_propiedad,
         
         });
-//        loadData(data);
-
    }
    function completarCliente(data){
         $('#id_inquilino').val(data.id);

@@ -391,14 +391,30 @@ public class TransaccionRS {
         StringBuffer query = new StringBuffer();
         query.append("delete from  " + tabla + " where ");
         if (atributos.length > 0) {
-            query.append(atributos[0].getName());
-        
+            int i = 0;
+            Field field;
+            field = atributos[i];
+            while( !"id".equals(field.getName())){
+                i++;
+                if (i>=atributos.length) break;
+                field = atributos[i];
+            };
+            
+            if (i==atributos.length) field = atributos[0];
+            
+            
+            
+            if (java.lang.reflect.Modifier.isStatic(field.getModifiers())) return false;
+            query.append(field.getName());
+            
             query.append(" = ");
-
+            
             try {
-                Class tipoClass = atributos[0].getType();
+               
+                //.getName().equalsIgnoreCase("id");
+                Class tipoClass = field.getType();
                 String tipo = tipoClass.getSimpleName();
-                String getNombre = atributos[0].getName();
+                String getNombre = field.getName();
                 getNombre = getNombre.substring(0, 1).toUpperCase() + getNombre.substring(1, getNombre.length());
                 Method getter = objeto.getClass().getMethod("get" + getNombre);
                 if (tipo.equals("String") == true) {

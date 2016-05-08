@@ -15,6 +15,7 @@ import bd.Parametro;
 import bd.Propiedad;
 import bd.Vendedor;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -68,6 +69,7 @@ public class ContratoEdit extends HttpServlet {
         String entorno       = request.getParameter("entorno");
         
         Contrato contrato = new Contrato();
+        contrato.setComision_mensual_propietario(10f);
         List<Contrato_valor>     contrato_valor     = new ArrayList<Contrato_valor>();
         List<Contrato_gasto>     contrato_gasto     = new ArrayList<Contrato_gasto>();
         List<Contrato_documento> contrato_documento = new ArrayList<Contrato_documento>();
@@ -159,10 +161,20 @@ public class ContratoEdit extends HttpServlet {
         String[] arr_gasto_concepto            = request.getParameterValues("gasto_concepto");
         String[] arr_gasto_aplica              = request.getParameterValues("gasto_aplica");
         String[] arr_gasto_importe             = request.getParameterValues("gasto_importe");
-        String[] arr_gasto_cuota             = request.getParameterValues("gasto_cuota");
+        String[] arr_gasto_cuota               = request.getParameterValues("gasto_cuota");
+        if (arr_valor_desde == null)    arr_valor_desde    = new String[0];
+        if (arr_valor_hasta == null)    arr_valor_hasta    = new String[0];
+        if (arr_valor_monto == null)    arr_valor_monto    = new String[0];
+        if (arr_docum_desde == null)    arr_docum_desde    = new String[0];
+        if (arr_docum_hasta == null)    arr_docum_hasta    = new String[0];
+        if (arr_docum_monto == null)    arr_docum_monto    = new String[0];
+        if (arr_gasto_concepto == null) arr_gasto_concepto = new String[0];
+        if (arr_gasto_aplica == null)   arr_gasto_aplica   = new String[0];
+        if (arr_gasto_importe == null)  arr_gasto_importe  = new String[0];
+        if (arr_gasto_cuota == null)    arr_gasto_cuota    = new String[0];
         
-        ArrayList<Contrato_valor>     lstValor  =  new ArrayList<Contrato_valor>();
-        ArrayList<Contrato_documento> lstDocum  =  new ArrayList<Contrato_documento>();
+        ArrayList<Contrato_valor>     lstValor      =  new ArrayList<Contrato_valor>();
+        ArrayList<Contrato_documento> lstDocum      =  new ArrayList<Contrato_documento>();
         ArrayList<Contrato_gasto>     lstGastoInq   =  new ArrayList<Contrato_gasto>();
         ArrayList<Contrato_gasto>     lstGastoProp  =  new ArrayList<Contrato_gasto>();
         
@@ -274,7 +286,7 @@ public class ContratoEdit extends HttpServlet {
                      gasto.setId_contrato(id_contrato);
                      gasto.setId_aplica(gasto_aplica);
                      gasto.setImporte(gasto_importe);
-                     gasto.setCuotas(gasto_cuota);
+                     gasto.setCuotas(gasto_cuota!=0?gasto_cuota:1);
                      if (gasto_aplica==1) 
                          lstGastoInq.add(gasto);
                      else if(gasto_aplica==2) lstGastoProp.add(gasto);
@@ -323,7 +335,7 @@ public class ContratoEdit extends HttpServlet {
                List<Cuenta_detalle> detalleInquilino_o    = tcd.detalleInquilino(contrato, lstValor, lstGastoInq);
                List<Cuenta_detalle> detalleInquilino_no   = tcd.detalleInquilino(lstDocum);
                
-               List<Cuenta_detalle> detallePropietario_o  = tcd.detallePropietario(contrato, lstGastoProp);
+               List<Cuenta_detalle> detallePropietario_o  = tcd.detallePropietario(contrato, lstValor, lstGastoProp);
                List<Cuenta_detalle> detallePropietario_no = tcd.detallePropietario(lstDocum);
                
                if(id_cc_inquilino_o!=0) {

@@ -8,6 +8,7 @@ import bd.Contrato;
 import bd.Contrato_documento;
 import bd.Contrato_gasto;
 import bd.Contrato_valor;
+import bd.Cuenta;
 import bd.Cuenta_detalle;
 import bd.Propiedad;
 import com.google.gson.Gson;
@@ -25,8 +26,11 @@ import transaccion.TContrato;
 import transaccion.TContrato_documento;
 import transaccion.TContrato_gasto;
 import transaccion.TContrato_valor;
+import transaccion.TCuenta;
 import transaccion.TCuenta_detalle;
+import transaccion.TInquilino;
 import transaccion.TPropiedad;
+import transaccion.TPropietario;
 import utils.BaseException;
 import utils.JsonRespuesta;
 import utils.OptionsCfg;
@@ -105,7 +109,9 @@ public class ContratoDel extends HttpServlet {
         TContrato_documento td  = new TContrato_documento();
         TContrato_gasto     tg  = new TContrato_gasto();
         TCuenta_detalle     tcd = new TCuenta_detalle();
+        TCuenta             tcu = new TCuenta();
         HashMap<String,String> mapFiltro = new HashMap<String,String>();
+        HashMap<String,String> filtroCuenta = new HashMap<String,String>();
         try {           
            Integer id = Parser.parseInt(request.getParameter("id"));
            Contrato contrato = tc.getById(id);
@@ -116,7 +122,8 @@ public class ContratoDel extends HttpServlet {
            boolean baja = tc.baja(contrato);
            if ( !baja)throw new BaseException("ERROR","Ocurrio un error al eliminar el registro");
                 Propiedad propiedad = tp.getById(contrato.getId_propiedad());
-                List<Cuenta_detalle> listaDetalle = tcd.getListFiltro(mapFiltro);
+                
+                List<Cuenta> listaCuenta          = tcu.getListFiltro(mapFiltro);
                 List<Contrato_valor>     lstValor = tv.getListFiltro(mapFiltro);
                 List<Contrato_documento> lstDocum = td.getListFiltro(mapFiltro);
                 List<Contrato_gasto>    lstGastos = tg.getListFiltro(mapFiltro);
@@ -124,10 +131,21 @@ public class ContratoDel extends HttpServlet {
                     propiedad.setId_estado(OptionsCfg.PROPIEDAD_DISPONIBLE);
                     tp.actualizar(propiedad);
                 }
-                for(Cuenta_detalle cd: listaDetalle)   tcd.baja(cd);           
+                
+                for(Cuenta cuenta: listaCuenta) {  
+                    filtroCuenta.put("id_cuenta",cuenta.getId().toString());
+                    for(Cuenta_detalle cd:tcd.getListFiltro(filtroCuenta)){
+                        tcd.baja(cd);
+                    }
+                    tcu.baja(cuenta);
+                    
+                }
                 for(Contrato_valor valor:lstValor)     tv.baja(valor);
                 for(Contrato_documento docum:lstDocum) td.baja(docum);
                 for(Contrato_gasto gasto:lstGastos)    tg.baja(gasto);
+                new TInquilino().baja(contrato.getId_inquilino());
+                new TPropietario().baja(contrato.getId_propietario());
+                
                 jr.setResult("OK");
                 Integer id_usuario = 0;
                 Integer id_tipo_usuario = 0;

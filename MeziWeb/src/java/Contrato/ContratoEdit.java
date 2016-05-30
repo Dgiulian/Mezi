@@ -312,8 +312,11 @@ public class ContratoEdit extends HttpServlet {
                cc_inquilino_o.setId_usuario(0);
                cc_inquilino_o.setFecha_creacion(TFecha.ahora(TFecha.formatoBD+ " " + TFecha.formatoHora));
                cc_inquilino_o.setId_tipo(OptionsCfg.CUENTA_OFICIAL);
+               cc_inquilino_o.setId_tipo_cliente(OptionsCfg.CLIENTE_TIPO_INQUILINO);
+               
                Cuenta cc_inquilino_no = new Cuenta(cc_inquilino_o);
                cc_inquilino_no.setId_tipo(OptionsCfg.CUENTA_NO_OFICIAL);
+               cc_inquilino_no.setId_tipo_cliente(OptionsCfg.CLIENTE_TIPO_INQUILINO);
                
                Cuenta cc_propietario_o = new Cuenta();
                cc_propietario_o.setId_cliente(contrato.getId_propietario());
@@ -321,9 +324,10 @@ public class ContratoEdit extends HttpServlet {
                cc_propietario_o.setFecha_creacion(TFecha.ahora(TFecha.formatoBD + " " + TFecha.formatoHora));
                cc_propietario_o.setId_usuario(0);
                cc_propietario_o.setId_tipo(OptionsCfg.CUENTA_OFICIAL);
-               
+               cc_propietario_o.setId_tipo_cliente(OptionsCfg.CLIENTE_TIPO_PROPIETARIO);
                Cuenta cc_propietario_no = new Cuenta(cc_propietario_o);
                cc_propietario_no.setId_tipo(OptionsCfg.CUENTA_NO_OFICIAL);
+               cc_propietario_no.setId_tipo_cliente(OptionsCfg.CLIENTE_TIPO_PROPIETARIO);
                
                TCuenta tc = new TCuenta();
                TCuenta_detalle tcd = new TCuenta_detalle();

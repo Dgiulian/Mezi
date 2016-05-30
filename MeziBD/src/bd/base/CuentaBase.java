@@ -3,12 +3,13 @@ public class CuentaBase {
 
 	public Integer id = 0;
 	public Integer id_cliente = 0;
+	public Integer id_tipo_cliente = 0;
 	public String descripcion = "";
 	public Integer id_contrato = 0;
 	public Integer id_usuario = 0;
 	public Integer id_tipo = 0;
 	public String fecha_creacion = "";
-	public String fecha_liquidacion = "0000-00-00";
+	public String fecha_liquidacion = "";
 
 	public CuentaBase() {
 	}
@@ -16,6 +17,7 @@ public class CuentaBase {
 	public CuentaBase(CuentaBase cuentabase) {
 		this.id = cuentabase.getId();
 		this.id_cliente = cuentabase.getId_cliente();
+		this.id_tipo_cliente = cuentabase.getId_tipo_cliente();
 		this.descripcion = cuentabase.getDescripcion();
 		this.id_contrato = cuentabase.getId_contrato();
 		this.id_usuario = cuentabase.getId_usuario();
@@ -39,6 +41,15 @@ public class CuentaBase {
 
 	public CuentaBase setId_cliente(Integer id_cliente) {
 		this.id_cliente = id_cliente;
+		return this;
+	}
+
+	public Integer getId_tipo_cliente() {
+		return this.id_tipo_cliente;
+	}
+
+	public CuentaBase setId_tipo_cliente(Integer id_tipo_cliente) {
+		this.id_tipo_cliente = id_tipo_cliente;
 		return this;
 	}
 

@@ -105,6 +105,8 @@ public class CuentaDetList extends HttpServlet {
                     if  (fecha.isAfter(fecha_consulta)) continue;
                     listaDetalle.add(cd);
                     if(fecha.isBefore(fecha_liquidacion)) continue;
+                    if (cuenta.getId_tipo_cliente()==OptionsCfg.CLIENTE_TIPO_PROPIETARIO) continue; // No se considera punitorios para los propietarios
+                    
                     if (cd.getId_concepto()==OptionsCfg.CONCEPTO_ALQUILER || cd.getId_concepto()==OptionsCfg.CONCEPTO_DOCUMENTO){
                         int days = Days.daysBetween(fecha, fecha_consulta).getDays() - 1;
                         if (days >=contrato.getPunitorio_desde()){

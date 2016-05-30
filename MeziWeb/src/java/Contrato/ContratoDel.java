@@ -61,18 +61,18 @@ public class ContratoDel extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ContratoDel</title>");            
+            out.println("<title>Servlet ContratoDel</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet ContratoDel at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
-        } finally {            
+        } finally {
             out.close();
         }
     }
 
-    
+
     /**
      * Handles the HTTP
      * <code>GET</code> method.
@@ -112,17 +112,17 @@ public class ContratoDel extends HttpServlet {
         TCuenta             tcu = new TCuenta();
         HashMap<String,String> mapFiltro = new HashMap<String,String>();
         HashMap<String,String> filtroCuenta = new HashMap<String,String>();
-        try {           
+        try {
            Integer id = Parser.parseInt(request.getParameter("id"));
            Contrato contrato = tc.getById(id);
            if (contrato==null) throw new BaseException("ERROR","No existe el registro");
            mapFiltro.put("id_contrato",contrato.getId().toString());
 
-           
+
            boolean baja = tc.baja(contrato);
            if ( !baja)throw new BaseException("ERROR","Ocurrio un error al eliminar el registro");
                 Propiedad propiedad = tp.getById(contrato.getId_propiedad());
-                
+
                 List<Cuenta> listaCuenta          = tcu.getListFiltro(mapFiltro);
                 List<Contrato_valor>     lstValor = tv.getListFiltro(mapFiltro);
                 List<Contrato_documento> lstDocum = td.getListFiltro(mapFiltro);
@@ -131,21 +131,21 @@ public class ContratoDel extends HttpServlet {
                     propiedad.setId_estado(OptionsCfg.PROPIEDAD_DISPONIBLE);
                     tp.actualizar(propiedad);
                 }
-                
-                for(Cuenta cuenta: listaCuenta) {  
+
+                for(Cuenta cuenta: listaCuenta) {
                     filtroCuenta.put("id_cuenta",cuenta.getId().toString());
                     for(Cuenta_detalle cd:tcd.getListFiltro(filtroCuenta)){
                         tcd.baja(cd);
                     }
                     tcu.baja(cuenta);
-                    
+
                 }
                 for(Contrato_valor valor:lstValor)     tv.baja(valor);
                 for(Contrato_documento docum:lstDocum) td.baja(docum);
                 for(Contrato_gasto gasto:lstGastos)    tg.baja(gasto);
                 new TInquilino().baja(contrato.getId_inquilino());
-                new TPropietario().baja(contrato.getId_propietario());
-                
+                //new TPropietario().baja(contrato.getId_propietario());
+
                 jr.setResult("OK");
                 Integer id_usuario = 0;
                 Integer id_tipo_usuario = 0;
@@ -153,10 +153,10 @@ public class ContratoDel extends HttpServlet {
                 id_usuario = (Integer) session.getAttribute("id_usuario");
                 id_tipo_usuario = (Integer) session.getAttribute("id_tipo_usuario");
                 TAuditoria.guardar(id_usuario,id_tipo_usuario,OptionsCfg.MODULO_CONTRATO,OptionsCfg.ACCION_BAJA,contrato.getId(),tc.auditar(contrato));
-           
+
         }  catch (BaseException ex) {
             jr.setResult(ex.getResult());
-            jr.setMessage(ex.getMessage());            
+            jr.setMessage(ex.getMessage());
         }
         finally {
             out.print(new Gson().toJson(jr));

@@ -44,6 +44,7 @@ public class CuentaSearch extends HttpServlet {
       Integer id_cliente   = Parser.parseInt(request.getParameter("id_cliente"));
       Integer id_contrato  = Parser.parseInt(request.getParameter("id_contrato"));
       Integer id_propiedad = Parser.parseInt(request.getParameter("id_propiedad"));
+      Integer id_tipo_cliente = Parser.parseInt(request.getParameter("id_tipo_cliente"));
       Integer id_tipo = Parser.parseInt(request.getParameter("id_tipo"));
       Integer page = Parser.parseInt(request.getParameter("pagNro"));
       

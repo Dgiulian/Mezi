@@ -597,6 +597,16 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <div class="col-lg-12">
+                                                                <div class="col-lg-4 row">
+                                                                    <label class="control-label" for="comision_mensual_propietario">Comisi&oacute;n mensual</label>
+                                                                <div class="controls">
+                                                                    <div class="input-group">
+                                                                      <input type="text" id="comision_mensual_propietario" name="comision_mensual_propietario" class="form-control  numeric"  value="<%=contrato.getComision_mensual_propietario()%>" >
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </fielset>
                                                 </div><!--Gastos propietario-->
                                                 <div class="col-lg-12 ">

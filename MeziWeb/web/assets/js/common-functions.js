@@ -436,9 +436,9 @@ function calcularHasta(fecha,meses){
     var m = moment(fecha, 'DD/MM/YYYY');
 
     if (m.isValid()){
-        if(meses===12) m.add(meses - 1,'M').endOf('month');
-        else m.add(meses,'M').endOf('month');        
-        console.log(m.format("DD/MM/YYYY"));
+//        if(meses===12) m.add(meses - 1,'months').endOf('month');
+//        else m.add(meses,'months').endOf('month');      
+        m.startOf('month').add(meses,'months').subtract(1,'days');        
         return m.format("DD/MM/YYYY");
     }
     else return "";

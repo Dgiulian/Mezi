@@ -12,15 +12,12 @@ import bd.Parametro;
 import bd.Propiedad;
 import bd.Recibo;
 import bd.Recibo_detalle;
-import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Image;
-import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.draw.DottedLineSeparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -67,7 +64,7 @@ public class ReciboPdf extends BasePdf{
     @Override
     protected void addContent(Document document) {
         document.setMargins(10, 10, 10, 10);
-        Rectangle pageSize = document.getPageSize();        
+//        Rectangle pageSize = document.getPageSize();        
         document.newPage();
             
         PdfContentByte cb = docWriter.getDirectContent();
@@ -108,7 +105,7 @@ public class ReciboPdf extends BasePdf{
        }
        lineStart -= 20;
        Integer colStart = 45;
-       addText(cb, colStart,lineStart, "FORMAS DE PAGO:");
+       createHeadings(cb, colStart,lineStart, "FORMAS DE PAGO:");
         if(pago.getCheque_mnt()> 0) {
             lineStart -= 20;
             addText(cb, colStart,lineStart, "EFECTIVO:");

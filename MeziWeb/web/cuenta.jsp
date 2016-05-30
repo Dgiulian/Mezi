@@ -181,13 +181,13 @@
                                                     </thead>    
                                                     <tbody>                                                                                                                        
                                                     </tbody>
-<!--                                                    <tfoot>
+<!--                                                <tfoot>
                                                     <th>
                                                         <td colspan=""></td>     
-                                                        <td colspan="2"></td>
-                                                        <td colspan=""></td>                                                        
+                                                        <td colspan="2"><b style="text-align: right">Saldo Total</b></td>
+                                                        <td colspan="" id="saldoOficial"></td>                                                        
                                                     </th>
-                                                    </tfoot>-->
+                                              </tfoot>-->
                                             </table>
                                         </div>
                                         <div class="col-lg-6">
@@ -217,10 +217,10 @@
 <!--                                              <tfoot>
                                                     <th>
                                                         <td colspan=""></td>     
-                                                        <td colspan="2"></td>
-                                                        <td colspan=""></td>                                                        
+                                                        <td colspan="2"><b style="text-align: right">Saldo Total</b></td>
+                                                        <td colspan="" id="saldoNoOficial"></td>                                                        
                                                     </th>
-                                                  </tfoot>-->
+                                              </tfoot>-->
                                             </table>
                                         </div>
                                     </div>
@@ -409,6 +409,7 @@
                $tabla       = $('#tblCuentaOficial');
                $btnAjustar  = $('#btnAjOficial');
                $btnLiquidar = $('#btnLiqOficial');
+               $saldoTotal = $('#')
                
             }
             
@@ -428,7 +429,7 @@
                        $tabla.find('tbody').html(createTableCuenta(result.Records));                       
                        $btnAjustar.data('id_cuenta',result.Record.id);
                        $btnLiquidar.data('id_cuenta',result.Record.id);
-                       var mnt_liq = parseFloat($('#tblCuentaOficial').find('tr:last').find('td:last').text());
+                       var mnt_liq = parseFloat($tabla.find('tr:last').find('td:last').text());
                        $btnLiquidar.data('mnt_liq',mnt_liq);
                    } else { 
                        var  html = result.Message;
@@ -439,13 +440,17 @@
                }
            });
     }
+    
    function createTableCuenta(data){
         var html = "";
         var saldo = 0;
         for(var i = 0;i< data.length;i++){
            html +="<tr class=''>";
            var d = data[i];
-           
+          var id_tipo_cliente = $('#id_tipo_cliente').val();
+          if(parseInt(id_tipo_cliente)===<%=OptionsCfg.CLIENTE_TIPO_PROPIETARIO%>)
+            saldo += d.haber.toFixed(2) - d.debe.toFixed(2);
+          else 
            saldo += d.debe.toFixed(2) - d.haber.toFixed(2);
            if(d.id_concepto ===<%=OptionsCfg.CONCEPTO_PAGO%>) saldo = 0;
            html += wrapTag('td',convertirFecha(d.fecha),'');
@@ -463,7 +468,8 @@
     function filtrar_cuenta(){            
         var id_cliente    = $('#id_inquilino').val();
         var id_contrato   = $('#id_contrato').val();
-        var id_propiedad  = $('#id_propiedad').val();                
+        var id_propiedad  = $('#id_propiedad').val();   
+        var id_tipo_cliente = $('#id_tipo_cliente').val();
 //        var data = {
 //            id_cliente: id_cliente,
 //            id_tipo: 1,
@@ -476,7 +482,7 @@
         buscar_cuenta({
             id_cliente: id_cliente,
             id_tipo: 1,
-            id_tipo_cliente:1,
+            id_tipo_cliente:id_tipo_cliente,
             id_contrato: id_contrato,
             id_propiedad: id_propiedad,
         
@@ -484,7 +490,7 @@
         buscar_cuenta({
             id_cliente: id_cliente,
             id_tipo: 2,
-            id_tipo_cliente:1,
+            id_tipo_cliente:id_tipo_cliente,
             id_contrato: id_contrato,
             id_propiedad: id_propiedad,
         

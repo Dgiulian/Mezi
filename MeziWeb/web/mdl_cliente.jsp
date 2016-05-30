@@ -150,7 +150,7 @@
        d = data[i];
 
        html += wrapTag('td',d.id,'');
-       html += wrapTag('td',d.nombre + ", " + d.apellido,'');
+       html += wrapTag('td',d.apellido+ ", " + d.nombre  ,'');
        html += wrapTag('td',d.dni,'');
 
         var htmlSel = "<span href='' data-index='"+ d.id + "' data-nombre='"+ d.nombre + "' data-apellido='"+ d.apellido + "'  class='btn btn-xs btn-primary btn-circle btnSelCliente'><span class='fa fa-plus'></span></span>";

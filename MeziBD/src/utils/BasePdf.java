@@ -8,6 +8,7 @@ import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.Barcode39;
 import com.itextpdf.text.pdf.BaseFont;
@@ -67,7 +68,9 @@ public abstract class BasePdf {
         cb.showTextAligned(align, text.trim(), x, y, 0);
         cb.endText();
    }    
-
+protected void addTextAlignedRight(PdfContentByte cb, float x, float y, Integer size,String text){
+        addTextAligned(cb, x,y, size,text,Element.ALIGN_RIGHT);        
+   }   
     public BasePdf(){        
     }
      public boolean createPdf(String fileName){

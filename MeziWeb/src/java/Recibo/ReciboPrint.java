@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -22,7 +21,9 @@ import transaccion.TParametro;
 import transaccion.TRecibo;
 import utils.BaseException;
 import utils.OptionsCfg;
-import utils.ReciboPdf;
+import utils.ReciboInquilinoPdf;
+import utils.ReciboPropietarioPdf;
+
 
 /**
  *
@@ -52,26 +53,32 @@ public class ReciboPrint extends HttpServlet {
             } catch (NumberFormatException ex){
                 throw new BaseException( "Error" ,"No se ha encontrado el recibo");                
             }
-            ReciboPdf reciboPdf = new ReciboPdf(recibo);
+            
             Cliente cliente = new TCliente().getById(recibo.getId_cliente());
-            
             String fileName = String.format("Recibo_%d_%s.pdf",cliente.getCarpeta(),recibo.getFecha());
-            
             String filePath;
-            if(parametro!=null)
-            filePath = parametro.getValor() + File.separator + fileName;
-            else filePath = "c:\\" + File.separator + fileName;
             
-            boolean generado = reciboPdf.createPdf(filePath);
+            filePath = (parametro!=null)? parametro.getValor():"c:\\";            
+            filePath += File.separator + fileName;
+            boolean generado = false;
+            if(recibo.getId_tipo_recibo()==OptionsCfg.CLIENTE_TIPO_INQUILINO) {
+                ReciboInquilinoPdf reciboPdf = new ReciboInquilinoPdf(recibo);
+                generado = reciboPdf.createPdf(filePath);
+            } else {
+                ReciboPropietarioPdf reciboPdf = new ReciboPropietarioPdf(recibo);
+                generado = reciboPdf.createPdf(filePath);
+            }
+            
+            
+
+
             if (generado) {
-                //reciboPdf.imprimir(fileName);             
                 // reads input file from an absolute path        
                 File downloadFile = new File(filePath);
                 FileInputStream inStream = new FileInputStream(downloadFile);
 
                 // if you want to use a relative path to context root:
-                String relativePath = getServletContext().getRealPath("");
-                System.out.println("relativePath = " + relativePath);
+                String relativePath = getServletContext().getRealPath("");                
 
                 // obtains ServletContext
                 ServletContext context = getServletContext();
@@ -81,8 +88,7 @@ public class ReciboPrint extends HttpServlet {
                 if (mimeType == null) {
                     // set to binary type if MIME mapping not found
                     mimeType = "application/octet-stream";
-                }
-                System.out.println("MIME type: " + mimeType);
+                }                
 
                 // modifies response
                 response.setContentType(mimeType);

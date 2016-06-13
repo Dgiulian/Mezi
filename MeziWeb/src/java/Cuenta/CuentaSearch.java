@@ -58,7 +58,8 @@ public class CuentaSearch extends HttpServlet {
             cuenta = tc.getById(id);
             if(cuenta==null) {
                 if(id_cliente == 0 && id_contrato ==0) throw new BaseException("ERROR","Debe seleccionar alg&uacute;n criterio para la busqueda de cuenta corriente");
-                cuenta = tc.getBydClienteContrato(id_cliente,id_contrato,id_tipo);
+                System.out.println(String.format("Id_cliente:%d\nid_contrato:%d\nid_tipo:%d,id_tipo_cliente:%d",id_cliente,id_contrato,id_tipo,id_tipo_cliente));
+                cuenta = tc.getBydClienteContrato(id_cliente,id_contrato,id_tipo,id_tipo_cliente);
             }
             if(cuenta==null) throw new BaseException("ERROR","No se encontr&oacute; la cuenta corriente");
             

@@ -163,6 +163,7 @@ public class PagoEdit extends HttpServlet {
             recibo.setId_contrato(cuenta.getId_contrato());
             recibo.setFecha(p.getFecha());
             recibo.setNumero(0);
+            recibo.setId_tipo_recibo(cuenta.getId_tipo_cliente());
             recibo.setFecha_creacion(TFecha.ahora(TFecha.formatoBD_Hora));
             recibo.setId_cliente(cuenta.getId_cliente());            
             Integer id_recibo = tr.alta(recibo );   

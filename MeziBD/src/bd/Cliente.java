@@ -37,6 +37,8 @@ public class Cliente extends ClienteBase {
 		this.id_tipo_persona = propietario.getId_tipo_persona();
 		this.calificacion = propietario.getCalificacion();
 		this.observaciones = propietario.getObservaciones();
-
 	}
+        public String getApellidoyNombre(){
+            return this.getApellido() + ", " + this.getNombre();
+        }
 }

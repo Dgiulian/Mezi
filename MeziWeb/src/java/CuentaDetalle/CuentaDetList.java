@@ -50,15 +50,16 @@ public class CuentaDetList extends HttpServlet {
       
       response.setContentType("application/json;charset=UTF-8");
       PrintWriter out = response.getWriter();
-      Integer id_cuenta     = Parser.parseInt(request.getParameter("id_cuenta"));
-      Integer id_cliente    = Parser.parseInt(request.getParameter("id_cliente"));
-      Integer id_contrato   = Parser.parseInt(request.getParameter("id_contrato"));
-      Integer id_propiedad  = Parser.parseInt(request.getParameter("id_propiedad"));
-      Integer id_tipo       = Parser.parseInt(request.getParameter("id_tipo"));
-      String strFecha_desde    = TFecha.formatearFechaVistaBd(request.getParameter("fecha_desde"));
-      String fecha_hasta    = TFecha.formatearFechaVistaBd(request.getParameter("fecha_hasta"));
+      Integer id_cuenta       = Parser.parseInt(request.getParameter("id_cuenta"));
+      Integer id_cliente      = Parser.parseInt(request.getParameter("id_cliente"));
+      Integer id_contrato     = Parser.parseInt(request.getParameter("id_contrato"));
+      Integer id_propiedad    = Parser.parseInt(request.getParameter("id_propiedad"));
+      Integer id_tipo         = Parser.parseInt(request.getParameter("id_tipo"));
+      Integer id_tipo_cliente = Parser.parseInt(request.getParameter("id_tipo_cliente"));
+      String strFecha_desde   = TFecha.formatearFechaVistaBd(request.getParameter("fecha_desde"));
+      String fecha_hasta      =  TFecha.formatearFechaVistaBd(request.getParameter("fecha_hasta"));
 //      String fecha_consulta = request.getParameter("fecha_consulta");
-      Integer page          = Parser.parseInt(request.getParameter("pagNro"));
+      Integer page            = Parser.parseInt(request.getParameter("pagNro"));
       Cuenta cuenta;
       JsonRespuesta jr = new JsonRespuesta();
         try {            
@@ -72,10 +73,13 @@ public class CuentaDetList extends HttpServlet {
                 if(id_tipo==0) throw new BaseException("ERROR","Indique el tipo de cuenta que desea listar");
 
                 if(id_cliente == 0 && id_contrato ==0) throw new BaseException("ERROR","Debe seleccionar alg&uacute;n criterio para la busqueda de cuenta corriente");            
-                 cuenta = tc.getBydClienteContrato(id_cliente,id_contrato,id_tipo);
+                System.out.println(String.format("Id_cliente:%d\nid_contrato:%d\nid_tipo:%d,id_tipo_cliente:%d",id_cliente,id_contrato,id_tipo,id_tipo_cliente));
+                 cuenta = tc.getBydClienteContrato(id_cliente,id_contrato,id_tipo,id_tipo_cliente);
             }
              if(cuenta==null) throw new BaseException("ERROR","No se encontr&oacute; la cuenta corriente");
+             System.out.println("Procesando cuenta: " + cuenta.getId());
             filtroCuenta.put("id_cuenta", cuenta.getId().toString());
+//            filtroCuenta.put("id_tipo_cliente", id_tipo_cliente.toString());
             List<Cuenta_detalle> lista = tcd.setOrderBy("fecha,id_concepto").getListFiltro(filtroCuenta);
             
             if (lista != null) {

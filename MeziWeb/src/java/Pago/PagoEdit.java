@@ -116,6 +116,7 @@ public class PagoEdit extends HttpServlet {
         Float liqChkMnt   = Parser.parseFloat(request.getParameter("liqChkMnt"));
         String liqChkBan  = request.getParameter("liqChkBan");
         String liqChkNum  = request.getParameter("liqChkNum");
+        String liqChkVto  = TFecha.formatearFechaVistaBd(request.getParameter("liqChkVto"));
         Float liqTraMnt   = Parser.parseFloat(request.getParameter("liqTraMnt"));
         String liqTraNum  = request.getParameter("liqTraNum");
         
@@ -151,6 +152,9 @@ public class PagoEdit extends HttpServlet {
             p.setCheque_mnt(liqChkMnt);
             p.setCheque_ban(liqChkBan);
             p.setCheque_num(liqChkNum);
+            if(!"".equals(liqChkVto))
+                p.setCheque_vto(liqChkVto);
+            
             
             p.setTransf_mnt(liqTraMnt);
             p.setTransf_num(liqTraNum);
@@ -195,9 +199,6 @@ public class PagoEdit extends HttpServlet {
                 } else{
                     saldo += cuenta_detalle.getDebe() - cuenta_detalle.getHaber();
                 }
-                
-                
-                
                 
                 if (cuenta.getId_tipo_cliente()==OptionsCfg.CLIENTE_TIPO_PROPIETARIO) continue;
                 

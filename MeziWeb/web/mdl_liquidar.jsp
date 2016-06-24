@@ -35,7 +35,7 @@
                   <table class="table table-bordered">
                      <tr>
                       <div class="form-inline">
-                        <td colspan="3"><label class="control-label form-inline" for="liqEfeMnt">Efectivo</label>
+                        <td colspan="4"><label class="control-label form-inline" for="liqEfeMnt">Efectivo</label>
                         <input id="liqEfeMnt" name="liqEfeMnt" type="text" class="form-control input-md numeric" value=""></td>
                       </div>
                     </tr>
@@ -52,13 +52,21 @@
                             <label class="control-label" for="liqChkNum">N&uacute;mero</label>
                             <input id="liqChkNum" name="liqChkNum" type="text" class="form-control input-md numeric" value="">
                         </td>
+                        <td><label class="control-label" for="liqChkVto">Vencimiento</label>
+<!--                            <div class="input-group date date-picker">-->
+                            <input id="liqChkVto" name="liqChkVto" type="text" class="form-control input-md date-picker" value="" >
+                            <!--<span class="input-group-addon"><span class="fa fa-calendar"></span></span>-->  
+                        </div>
+                            
+                            <!--<input id="liqChkVto" name="liqChkVto" type="text" class="form-control input-md date-picker" value="">-->
+                        </td>
                     </tr>
                      <tr>
                         <td>
                             <label class="control-label" for="liqTraMnt">Tranferencia</label>
                             <input id="liqTraMnt" name="liqTraMnt" type="text" class="form-control input-md numeric" value="">
                         </td>
-                        <td colspan="2">
+                        <td colspan="3">
                             <label class="control-label" for="liqTraNum">N&uacute;mero</label>
                             <input id="liqTraNum" name="liqTraNum" type="text" class="form-control input-md numeric" value="">
                         </td>
@@ -107,6 +115,7 @@
             $('#liqChkMnt').val("");
             $('#liqChkBan').val("");
             $('#liqChkNum').val("");
+            $('#liqChkVto').val("");
             $('#liqTraMnt').val("");
             $('#liqTraNum').val("");
             $('#liqTotal').val("");
@@ -136,6 +145,7 @@
             var liqChkMnt = parsearFloat($('#liqChkMnt').val());
             var liqChkBan = $('#liqChkBan').val();
             var liqChkNum = $('#liqChkNum').val();
+            var liqChkVto = $('#liqChkVto').val();
             var liqTraMnt = parsearFloat($('#liqTraMnt').val());
             var liqTraNum = $('#liqTraNum').val();
             
@@ -146,6 +156,7 @@
             liqChkMnt: liqChkMnt,
             liqChkBan: liqChkBan,
             liqChkNum: liqChkNum,
+            liqChkVto: liqChkVto,
             liqTraMnt: liqTraMnt,
             liqTraNum: liqTraNum};
             

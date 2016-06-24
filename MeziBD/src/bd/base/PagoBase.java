@@ -11,6 +11,9 @@ public class PagoBase {
 	public Float cheque_mnt = 0f;
 	public String cheque_ban = "";
 	public String cheque_num = "";
+        public String cheque_vto = "";
+
+    
 	public Float transf_mnt = 0f;
 	public String transf_ban = "";
 	public String transf_num = "";
@@ -123,7 +126,14 @@ public class PagoBase {
 		this.cheque_num = cheque_num;
 		return this;
 	}
+        
+        public String getCheque_vto() {
+             return cheque_vto;
+         }
 
+         public void setCheque_vto(String cheque_vto) {
+             this.cheque_vto = cheque_vto;
+         }
 	public Float getTransf_mnt() {
 		return this.transf_mnt;
 	}
@@ -150,4 +160,5 @@ public class PagoBase {
 		this.transf_num = transf_num;
 		return this;
 	}
+     
 }

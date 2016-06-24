@@ -320,17 +320,17 @@ public class TransaccionRS {
         String clase = objeto.getClass().getSimpleName();
         String tabla = clase.toLowerCase();
         Field[] atributos = objeto.getClass().getFields();
-        StringBuffer query = new StringBuffer();
-        query.append("insert into " + tabla + " (");
+        String query = "";
+        query += "insert into " + tabla + " (";
         for (int i = 0; i <= atributos.length - 1; i++) {
             Field field = atributos[i];
             if (java.lang.reflect.Modifier.isStatic(field.getModifiers())) continue;
-            query.append(field.getName());
+            query +=field.getName();
             if (i != atributos.length - 1) {
-                query.append(",");
+                query += ",";
             }
         }
-        query.append(") values (");
+        query += ") values (";
         for (int i = 0; i <= atributos.length - 1; i++) {
             try {
                 Class tipoClass = atributos[i].getType();
@@ -341,7 +341,7 @@ public class TransaccionRS {
                 if (tipo.equals("String") == true) {
                     try {
                         Object valor = getter.invoke(objeto, new Object[0]);
-                        query.append("'" + valor + "'");
+                        query +="'" + valor + "'";
                     } catch (IllegalAccessException ex) {
                         Logger.getLogger(TransaccionRS.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (IllegalArgumentException ex) {
@@ -350,11 +350,11 @@ public class TransaccionRS {
                         Logger.getLogger(TransaccionRS.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 } else if (tipo.equals("Integer") == true || tipo.equals("int") == true
-                        || tipo.equals("Float") == true || tipo.equals("float") == true
-                        || tipo.equals("Double") == true || tipo.equals("double") == true) {
+                        || tipo.equals("Float") == true   || tipo.equals("float") == true
+                        || tipo.equals("Double") == true  || tipo.equals("double") == true) {
                     try {
                         Object valor = getter.invoke(objeto, new Object[0]);
-                        query.append(valor);
+                        query+=valor;
                     } catch (IllegalAccessException ex) {
                         Logger.getLogger(TransaccionRS.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (IllegalArgumentException ex) {
@@ -364,7 +364,7 @@ public class TransaccionRS {
                     }
                 }
                 if (i != atributos.length - 1) {
-                    query.append(",");
+                    query+=",";
                 }
             } catch (NoSuchMethodException ex) {
                 Logger.getLogger(TransaccionRS.class.getName()).log(Level.SEVERE, null, ex);
@@ -372,7 +372,7 @@ public class TransaccionRS {
                 Logger.getLogger(TransaccionRS.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        query.append(")");
+        query+=")";
         String sql = query.toString();
         System.out.println(sql);
         Conexion conexion = new Conexion();

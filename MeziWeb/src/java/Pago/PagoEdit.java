@@ -227,7 +227,13 @@ public class PagoEdit extends HttpServlet {
             cd.setId_concepto(OptionsCfg.CONCEPTO_PAGO);
             
             cd.setId_referencia(id_pago);
-            cd.setHaber(total);            
+            if (cuenta.getId_tipo_cliente()==OptionsCfg.CLIENTE_TIPO_PROPIETARIO) {
+                cd.setDebe(total);
+            }
+            else {
+                cd.setHaber(total);
+            }
+            
             saldo = saldo - total;
             listaPunitorio.add(cd);
             if(saldo!=0){ // Si existe un saldo. Lo cargamos en la cuenta.
@@ -251,6 +257,8 @@ public class PagoEdit extends HttpServlet {
             }
 
             lista = tcd.setOrderBy("fecha,id_concepto").getListFiltro(filtroCuenta);
+            Float saldo_recibo = 0f;
+            
             for(Cuenta_detalle cuenta_detalle:lista) { // Calculo los punitorios
                 LocalDate fecha_det = new LocalDate(cuenta_detalle.getFecha());
                 if (ult_liquidacion!=null && fecha_det.isBefore(fecha_liquidacion) ) continue;
@@ -261,9 +269,15 @@ public class PagoEdit extends HttpServlet {
                     rd.setFecha(cuenta_detalle.getFecha());
                     rd.setDebe(cuenta_detalle.getDebe());
                     rd.setHaber(cuenta_detalle.getHaber());
-                    if(cuenta_detalle.getId_concepto()==OptionsCfg.CONCEPTO_PAGO)
-                        rd.setSaldo(0f);
-                    else rd.setSaldo(cuenta_detalle.getDebe() - cuenta_detalle.getHaber());
+                    
+                     if (cuenta.getId_tipo_cliente()==OptionsCfg.CLIENTE_TIPO_PROPIETARIO) {
+                        saldo_recibo += cuenta_detalle.getHaber() - cuenta_detalle.getDebe() ;
+                    } else{
+                        saldo_recibo += cuenta_detalle.getDebe() - cuenta_detalle.getHaber();
+                    }
+                    if(cuenta_detalle.getId_concepto()==OptionsCfg.CONCEPTO_PAGO) saldo_recibo = 0f;                    
+                    rd.setSaldo(saldo_recibo);
+                    
                     rd.setId_concepto(cuenta_detalle.getId_concepto());
                     trd.alta(rd);
             }

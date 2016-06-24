@@ -96,7 +96,7 @@
                                                                         <select type="text" name="id_localidad" id="id_localidad" class="form-control " >
                                                                             <option value="0"></option>
                                                                             <% for(Localidad l:lstLoc) {
-                                                                                String selLocalidad = (cliente.getId_localidad()==l.getId())?"selected":"";
+                                                                                String selLocalidad = (cliente.getId_localidad().equals(l.getId()))?"selected":"";
                                                                             %>
                                                                             <option value="<%=l.getId()%>" <%=selLocalidad%>><%=l.getDescripcion()%></option>
                                                                         <% } %>
@@ -313,7 +313,7 @@
         todoOk &= validarCampo($nombre,"Ingrese el nombre del cliente",function(){return false;});
         todoOk &= validarCampo($apellido,"Ingrese el apellido del cliente",function(){return false;});
         todoOk &= validarCampo($dni,"Ingrese el dni del cliente",function(){return false;});
-        todoOk &= validarCampo($cuil,"Ingrese el cuil del cliente",function(e){ return !validaCuit(e.val());});
+//        todoOk &= validarCampo($cuil,"Ingrese el cuil del cliente",function(e){ return !validaCuit(e.val());});
         console.log(todoOk);
         return todoOk;
     }

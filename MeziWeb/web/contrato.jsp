@@ -74,11 +74,9 @@
                                                         <th>N&uacute;mero</th>
                                                         <th>Tipo</th>
                                                         <th>Direcci&oacute;n</th>
-                                                        <th>Precio</th>                                                        
                                                         <th>Inquilino</th>
                                                         <th>Estado</th>
                                                         <th>Propietario</th>
-                                                        <th>Detalles</th>
                                                         <th>Acciones</th>
                                                     </tr>
                                                 </thead>
@@ -225,13 +223,9 @@
            html += wrapTag('td',d.numero,'');
            html += wrapTag('td',d.tipo_contrato,'');
            html += wrapTag('td',d.direccion,'');
-           html += wrapTag('td',"",'');
            html += wrapTag('td',d.inquilino,'');
            html += wrapTag('td',d.estado_contrato,'');
            html += wrapTag('td',d.propietario,'');
-           html += wrapTag('td',d.detalles,'');
-           
-           
             //var htmlEdit = "<a href='<%= PathCfg.CONTRATO_EDIT%>?id="+ d.id +"' class='btn btn-xs btn-circle  btn-warning'><span class='fa fa-edit fw'></span></a> ";
             var htmlView = "<a href='<%= PathCfg.CONTRATO_VIEW%>?id="+ d.id +"' class='btn btn-xs btn-circle  btn-primary'><span class='fa fa-search fw'></span></a> ";
             var htmlDel = "<span href='' data-index='"+ d.id + "' class='btn btn-xs btn-danger btn-circle btn-del'><span class='fa fa-trash-o'></span></span>";

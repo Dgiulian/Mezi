@@ -24,7 +24,7 @@ public class TPropietario extends TransaccionBase<Propietario> {
         public int alta(Propietario prop){        
             Cliente_tipo tipo = new Cliente_tipo();
             tipo.setId_cliente(prop.getId());
-            tipo.setId_tipo_cliente(Cliente_tipo.PROPIETARIO);
+            tipo.setId_tipo_cliente(OptionsCfg.CLIENTE_TIPO_PROPIETARIO);
             return new TCliente_tipo().alta(tipo);
         }
         public Integer alta(Integer id_propietario){

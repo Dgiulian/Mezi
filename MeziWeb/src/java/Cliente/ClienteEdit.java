@@ -80,6 +80,7 @@ public class ClienteEdit extends HttpServlet {
         String lugar_trabajo = request.getParameter("lugar_trabajo");
         String telefono = request.getParameter("telefono");
         
+        Integer id_localidad    = Parser.parseInt(request.getParameter("id_localidad"));
         Integer id_tipo_persona = Parser.parseInt(request.getParameter("id_tipo_persona"));
         Integer calificacion = Parser.parseInt(request.getParameter("calificacion"));
         String observaciones = request.getParameter("observaciones");
@@ -98,6 +99,7 @@ public class ClienteEdit extends HttpServlet {
             cliente.setApellido(apellido);
             cliente.setDni(dni);
             cliente.setCuil(cuit);
+            cliente.setId_localidad(id_localidad);
             cliente.setId_tipo_persona(id_tipo_persona);
             cliente.setDireccion(direccion);
             cliente.setLugar_trabajo(lugar_trabajo);

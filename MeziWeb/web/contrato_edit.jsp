@@ -1088,12 +1088,12 @@ function validar(data){
     var $meses = $('#meses');
     var $numero = $('#numero');
 
-    todoOk &= validarCampo($id_inquilino,"Debe seleccionar el inquilino",validarNoCero);
-    todoOk &= validarCampo($id_propiedad,"Debe seleccionar la propiedad",validarNoCero);
+    todoOk &= validarCampo($id_inquilino,"Debe seleccionar el inquilino",validarCero);
+    todoOk &= validarCampo($id_propiedad,"Debe seleccionar la propiedad",validarCero);
     todoOk &= validarCampo($fecha_inicio,"Ingrese la fecha de inicio del contrato",validarCampoFecha);
     todoOk &= validarCampo($fecha_fin,"Ingrese la fecha de fin del contrato",validarCampoFecha);
-    todoOk &= validarNoNulo($meses,"Ingrese la cantidad de meses del contrato",validarNoCero);
-    todoOk &= validarCampo($id_vendedor,"Debe seleccionar el vendedor",validarNoCero);
+    todoOk &= validarNoNulo($meses,"Ingrese la cantidad de meses del contrato",validarCero);
+    todoOk &= validarCampo($id_vendedor,"Debe seleccionar el vendedor",validarCero);
 
     return todoOk;
 }
@@ -1106,7 +1106,6 @@ function validarValores(){
         var fecha_inicio = $(f[0]);
         var fecha_fin = $(f[1]);
         var importe = $(f[2]);
-
     }
 
 }

@@ -91,19 +91,26 @@ public class CuentaDetEdit extends HttpServlet {
             
             
             if(cuenta==null) throw new BaseException("ERROR","Debe indicar la cuenta a ajustar");            
+            
+            Contrato contrato = new TContrato().getById(cuenta.getId_contrato());
+            if(contrato==null) throw new BaseException("ERROR","No se encontr&oacute; el contrato");
+            
             /*
              * La fecha de ajuste no puede ser anterior a la ultima liquidación.
              * Si no existiera ninguna liquidación, la fecha no debe ser anterior a la fecha de inicio del contrato.
-             *
+             * Si es un contrato nuevo (no tiene liquidacion), se permite ajustar solo a partir de la fecha de Inicio
              */
+            
             String fecha_inicio = cuenta.getFecha_liquidacion();
+            boolean contrato_nuevo = false;
             if(fecha_inicio==null || fecha_inicio.equals("")){
-                Contrato contrato = new TContrato().getById(cuenta.getId_contrato());
-                if(contrato!=null) fecha_inicio = contrato.getFecha_inicio();
+                 fecha_inicio = contrato.getFecha_inicio();
+                 contrato_nuevo = true;
             }
-            
-            
-            if(new LocalDate(fecha).isBefore(new LocalDate(fecha_inicio))) throw new BaseException("ERROR","La fecha del ajuste debe ser posterior a la fecha actual");
+            LocalDate fecha_ajuste = new LocalDate(fecha);
+            LocalDate localDate = new LocalDate(fecha_inicio);
+            if(fecha_ajuste.isBefore(localDate) || 
+              (fecha_ajuste.isEqual(localDate) && !contrato_nuevo) ) throw new BaseException("ERROR","La fecha del ajuste debe ser posterior a la fecha actual");
             
             Cuenta_detalle cd = new Cuenta_detalle();
             cd.setId_cuenta(cuenta.getId());

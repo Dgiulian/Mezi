@@ -310,9 +310,9 @@
         var $dni = $('#dni');
         var $cuil = $('#cuil');
         var todoOk = true;
-        todoOk &= validarCampo($nombre,"Ingrese el nombre del cliente",function(){return false;});
-        todoOk &= validarCampo($apellido,"Ingrese el apellido del cliente",function(){return false;});
-        todoOk &= validarCampo($dni,"Ingrese el dni del cliente",function(){return false;});
+        todoOk &= validarCampo($nombre,"Ingrese el nombre del cliente",function(){return true;});
+        todoOk &= validarCampo($apellido,"Ingrese el apellido del cliente",function(){return true;});
+        todoOk &= validarCampo($dni,"Ingrese el dni del cliente",function(){return true;});
 //        todoOk &= validarCampo($cuil,"Ingrese el cuil del cliente",function(e){ return !validaCuit(e.val());});
         console.log(todoOk);
         return todoOk;

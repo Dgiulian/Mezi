@@ -110,7 +110,7 @@ public class ReciboPdf extends BasePdf{
     }
     public void printFormaPago(PdfContentByte cb,Integer lineStart,Integer colStart){
        createHeadings(cb, colStart,lineStart, "FORMAS DE PAGO:");
-        if(pago.getCheque_mnt()> 0) {
+        if(pago.getEfectivo()> 0) {
             lineStart -= 20;
             addText(cb, colStart,lineStart, "EFECTIVO:");
             addTextAligned(cb, colStart + 120, lineStart, 8,String.format("$ %.2f",pago.getEfectivo()),Element.ALIGN_RIGHT);             

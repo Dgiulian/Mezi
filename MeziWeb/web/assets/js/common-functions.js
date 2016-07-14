@@ -252,7 +252,7 @@ $(document).ready(function(){
     
  function validarCampo (campo,mensajeError,check){     
     if(check ===undefined) { check = false;}          
-    if(campo ===undefined || campo.val()=== "" || check(campo)){
+    if(campo ===undefined || campo.val()=== "" || !check(campo)){
       if ($.notify){
           $.notify(mensajeError,"error");
       }else if (bootbox)
@@ -276,7 +276,7 @@ $(document).ready(function(){
 function validarCampoFecha(e){
     return !validarFecha(e.val());
 }
-function validarNoCero(e){return parseInt(e.val())===0}    
+function validarCero(e){return parseInt(e.val())===0}    
 
 function parsearInt(valor){
     var v = parseInt(valor);

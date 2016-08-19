@@ -41,6 +41,7 @@ public class Logout extends HttpServlet {
         session.removeAttribute("logged");
         session.removeAttribute("email");
         session.removeAttribute("id_tipo_usuario");
+        session.removeAttribute("id_caja");
         response.sendRedirect(PathCfg.LOGIN);
     }
 

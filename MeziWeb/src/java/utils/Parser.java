@@ -12,6 +12,7 @@ public class Parser {
     public static Integer parseInt(String valor){
         Integer valor_nuevo = 0;
         try{
+            if (valor==null) return valor_nuevo;
             valor_nuevo = Integer.parseInt(valor);
         } catch(NumberFormatException ex){
             valor_nuevo = 0;
@@ -20,7 +21,9 @@ public class Parser {
     }
      public static Float parseFloat(String valor){
         Float valor_nuevo = 0f;
+        
         try{
+            if (valor==null) return valor_nuevo;
             valor_nuevo = Float.parseFloat(valor);
         } catch(NumberFormatException ex){
             valor_nuevo = 0f;

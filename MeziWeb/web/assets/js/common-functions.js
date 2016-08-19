@@ -251,7 +251,7 @@ $(document).ready(function(){
 
     
  function validarCampo (campo,mensajeError,check){     
-    if(check ===undefined) { check = false;}          
+    if(check ===undefined) { check = function(){return true;}}
     if(campo ===undefined || campo.val()=== "" || !check(campo)){
       if ($.notify){
           $.notify(mensajeError,"error");
@@ -274,9 +274,10 @@ $(document).ready(function(){
 
 
 function validarCampoFecha(e){
-    return !validarFecha(e.val());
+    return validarFecha(e.val());
 }
 function validarCero(e){return parseInt(e.val())===0}    
+function validarNoCero(e){return parseInt(e.val())!==0}    
 
 function parsearInt(valor){
     var v = parseInt(valor);
@@ -444,3 +445,10 @@ function calcularHasta(fecha,meses){
     else return "";
  }
 //$('#nav-bar').width('50px'); $('$('.side - bar').width('50px');$('#page - wrapper').css('margin - left','50px')
+
+
+$(document).ready(function(){
+    if (window.Handlebars){
+       Handlebars.registerHelper("convertirFecha",convertirFecha);
+    }
+});

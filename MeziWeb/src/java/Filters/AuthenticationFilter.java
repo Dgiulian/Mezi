@@ -124,7 +124,7 @@ public class AuthenticationFilter implements Filter {
                !req.getRequestURI().endsWith(".ico") &&
                !req.getRequestURI().endsWith(".png") &&
                !req.getRequestURI().endsWith(".jpg")) {
-               HttpSession session = req.getSession();
+               HttpSession session = req.getSession(true);
                if (session==null) {
                     res.sendRedirect(redirect);
                     return;

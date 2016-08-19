@@ -4,6 +4,8 @@
  */
 package Pago;
 
+import bd.Caja;
+import bd.Caja_detalle;
 import bd.Contrato;
 import bd.Cuenta;
 import bd.Cuenta_detalle;
@@ -20,8 +22,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
+import transaccion.TCaja;
+import transaccion.TCaja_detalle;
 import transaccion.TContrato;
 import transaccion.TCuenta;
 import transaccion.TCuenta_detalle;
@@ -120,6 +125,9 @@ public class PagoEdit extends HttpServlet {
         Float liqTraMnt   = Parser.parseFloat(request.getParameter("liqTraMnt"));
         String liqTraNum  = request.getParameter("liqTraNum");
         
+        HttpSession sesion = request.getSession(false);
+        Integer id_usuario = (Integer) sesion.getAttribute("id_usuario");
+        Integer id_caja    = (Integer) sesion.getAttribute("id_caja");
         
         JsonRespuesta jr    = new JsonRespuesta();
         TCuenta tc          = new TCuenta();
@@ -135,6 +143,8 @@ public class PagoEdit extends HttpServlet {
         ArrayList<Cuenta_detalle> listaDetalle   = new ArrayList();
         ArrayList<Cuenta_detalle> listaPunitorio = new ArrayList();
         List<Cuenta_detalle> lista ;
+        TCaja tcaja = new TCaja();
+        TCaja_detalle tcaja_detalle = new TCaja_detalle();
         HashMap<String,String> filtroCuenta    = new HashMap<String,String>();
         Float saldo = 0f;
         try{            
@@ -142,6 +152,9 @@ public class PagoEdit extends HttpServlet {
             cuenta = tc.getById(id_cuenta);
             
             if(cuenta==null) throw new BaseException("ERROR","Debe indicar la cuenta a liquidar");
+            Caja caja = tcaja.getById(id_caja);
+            if(caja==null || caja.getId_estado()!=OptionsCfg.CAJA_ABIERTA) throw new BaseException("ERROR","No existe una caja abierta.");
+            
             filtroCuenta.put("id_cuenta", cuenta.getId().toString());
             p = new Pago();
             p.setId_cuenta(cuenta.getId());
@@ -172,8 +185,42 @@ public class PagoEdit extends HttpServlet {
             recibo.setId_cliente(cuenta.getId_cliente());            
             Integer id_recibo = tr.alta(recibo );   
             
-            
-            
+            if(liqEfeMnt>0){
+                Caja_detalle caja_detalle = new Caja_detalle();
+                caja_detalle.setId_caja(caja.getId());
+                caja_detalle.setId_forma(OptionsCfg.FORMA_EFECTIVO);
+                if (cuenta.getId_tipo_cliente()==OptionsCfg.CLIENTE_TIPO_PROPIETARIO) {
+                    caja_detalle.setImporte(-1 * liqEfeMnt);
+                } else{
+                    caja_detalle.setImporte(liqEfeMnt);
+                }                
+                caja_detalle.setConcepto(String.format("RECIBO NRO: %d" , recibo.getNumero()));
+                tcaja_detalle.alta(caja_detalle);
+            }
+            if(liqChkMnt>0){
+                Caja_detalle caja_detalle = new Caja_detalle();
+                caja_detalle.setId_caja(caja.getId());
+                caja_detalle.setId_forma(OptionsCfg.FORMA_CHEQUE);
+                if (cuenta.getId_tipo_cliente()==OptionsCfg.CLIENTE_TIPO_PROPIETARIO) {
+                    caja_detalle.setImporte(liqChkMnt);
+                } else{
+                    caja_detalle.setImporte(liqChkMnt);
+                }
+                caja_detalle.setConcepto(String.format("RECIBO NRO: %d", recibo.getNumero()));
+                tcaja_detalle.alta(caja_detalle);
+            }
+            if(liqTraMnt>0){
+                Caja_detalle caja_detalle = new Caja_detalle();
+                caja_detalle.setId_caja(caja.getId());
+                caja_detalle.setId_forma(OptionsCfg.FORMA_TRANSFERENCIA);
+                if (cuenta.getId_tipo_cliente()==OptionsCfg.CLIENTE_TIPO_PROPIETARIO) {
+                    caja_detalle.setImporte(liqTraMnt);
+                } else{
+                    caja_detalle.setImporte(liqTraMnt);
+                }
+                caja_detalle.setConcepto(String.format("RECIBO NRO: %d", recibo.getNumero()));
+                tcaja_detalle.alta(caja_detalle);
+            }
             lista = tcd.setOrderBy("fecha").getListFiltro(filtroCuenta);
             
              if (lista == null) throw new BaseException("ERROR","Ocurri&oacute; un error al editar la cuenta");

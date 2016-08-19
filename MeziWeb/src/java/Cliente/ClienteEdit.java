@@ -72,6 +72,7 @@ public class ClienteEdit extends HttpServlet {
             throws ServletException, IOException {
         
         Integer id = Parser.parseInt(request.getParameter("id"));        
+        Integer carpeta = Parser.parseInt(request.getParameter("carpeta"));        
         String nombre = request.getParameter("nombre");
         String apellido = request.getParameter("apellido");
         String dni = request.getParameter("dni");
@@ -94,7 +95,8 @@ public class ClienteEdit extends HttpServlet {
             if (cliente==null) {
                 cliente = new Cliente();                
                 nuevo = true;
-            }        
+            }
+            cliente.setCarpeta(carpeta);
             cliente.setNombre(nombre);
             cliente.setApellido(apellido);
             cliente.setDni(dni);

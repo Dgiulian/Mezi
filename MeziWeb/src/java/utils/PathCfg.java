@@ -108,4 +108,26 @@ public class PathCfg {
     
     public static final String RECIBO      = "Recibo";
     public static final String RECIBO_PRINT = RECIBO + "Print";
+    
+    
+    public static final String CAJA      = "Caja";
+    public static final String CAJA_LIST = CAJA + "List";
+    public static final String CAJA_EDIT = CAJA + "Edit";
+    public static final String CAJA_DEL  = CAJA + "Del";
+    public static final String CAJA_CIERRE = CAJA + "Cierre";
+    
+    public static final String CAJA_DETALLE     = "CajaDetalle";
+    public static final String CAJA_DETALLE_LIST = CAJA_DETALLE + "List";
+    public static final String CAJA_DETALLE_EDIT = CAJA_DETALLE + "Edit";
+    public static final String CAJA_DETALLE_DEL  = CAJA_DETALLE + "Del";
+    
+    public static final String CUENTA_INTERNA      = "CuentaInterna"; 
+    public static final String CUENTA_INTERNA_LIST = CUENTA_INTERNA + "List";
+    public static final String CUENTA_INTERNA_EDIT = CUENTA_INTERNA + "Edit";
+    public static final String CUENTA_INTERNA_DEL  = CUENTA_INTERNA + "Del";
+    
+    public static final String CUENTA_INTERNA_DETALLE      = "CuentaInternaDetalle"; 
+    public static final String CUENTA_INTERNA_DETALLE_LIST = CUENTA_INTERNA_DETALLE + "List";
+    public static final String CUENTA_INTERNA_DETALLE_EDIT = CUENTA_INTERNA_DETALLE + "Edit";
+    public static final String CUENTA_INTERNA_DETALLE_DEL  = CUENTA_INTERNA_DETALLE + "Del";
 }

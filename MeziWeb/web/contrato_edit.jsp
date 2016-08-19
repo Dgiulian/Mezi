@@ -644,9 +644,9 @@
                                                     <div class="col-lg-12">
                                                     <ul class="pager wizard">
                                                           <li class="previous first" style="display:none;"><a href="#">First</a></li>
-                                                          <li class="previous"><a href="#">Anterior</a></li>
+                                                          <li class="previous"><a href="#" id="btnAnterior">Anterior</a></li>
                                                           <li class="next last" style="display:none;"><a href="#">Last</a></li>
-                                                          <li class="next"><a href="#">Siguiente</a></li>
+                                                          <li class="next"><a href="#" id="btnSiguiente">Siguiente</a></li>
                                                   </ul>
                                                     </div>
                                               </div>
@@ -729,61 +729,45 @@
 
 	<script src="assets/js/bootstrap-timepicker.min.js"></script>
 	<script src="assets/js/moment.min.js"></script>
-	<!--<script src="assets/js/daterangepicker.min.js"></script>-->
-	<!--<script src="assets/js/jquery.hotkeys.min.js"></script>-->
-	<!--<script src="assets/js/bootstrap-wysiwyg.min.js"></script>-->
-	<!--<script src="assets/js/bootstrap-colorpicker.min.js"></script>-->
+	
 
 	<!-- theme scripts -->
 	<script src="assets/js/custom.min.js"></script>
 	<script src="assets/js/core.min.js"></script>
 
-	<!-- inline scripts related to this page -->
-	<!--<script src="assets/js/pages/form-elements.js"></script>-->
-
         <script src="assets/js/notify.min.js"></script>
-
-
         <script src="assets/js/jquery.bootstrap.wizard.min.js"></script>
 
         <script src="assets/js/bootbox.min.js"></script>
+        <script src="assets/js/handlebars.runtime-v4.0.5.js"></script>
+        
+        <script src="assets/templates/agregarGasto.js"></script>
+        <script src="assets/templates/agregarValor.js"></script>
+        <script src="assets/templates/agregarMonto.js"></script>
+        <script src="assets/templates/agregarLineaGasto.js"></script>
         <script src="assets/js/common-functions.js"></script>
 
-	<!-- end: JavaScript-->
-    <%--<%@include file="mdl_cliente.jsp" %>--%>
-    <%--<%@include file="mdl_propiedad.jsp" %>--%>
 <script>
     $(document).ready(function() {
   	$('#rootwizard').bootstrapWizard({
             onNext: mover,
             onPrevious:mover
         });
-        $('#btnBuscarCliente').click(function(){
-          var id = $('#id_inquilino_search').val();
-          if(id!=='') buscarCliente({id: id});
-          else {
-              var docum = $('#dni_search').val();
-              buscarCliente({documento: docum});
-          }
-
-        });
-        $('.btn-sel').click(function(){
-            var index = $(this).data('index');
-            buscarPropiedad({id:index});
-        });
+//        $('.btn-sel').click(function(){
+//            var index = $(this).data('index');
+//            buscarPropiedad({id:index});
+//        });
         $('#btnValor').click(function(){
             $('#target').val('Valor')
             $('#mdlValor').modal('show');
-            //agregarValor("Valor")
         });
         $('#btnDocumento').click(function(){
-            $('#target').val('Documento')
-            $('#mdlValor').modal('show');
-            //agregarValor("Documento")
+            $('#target').val('Documento');
+            $('#mdlDocumento').modal('show');            
         });
         $('#btnGasto').click(function(){agregarGasto("")});
         $('.btn-del').click(borrar);
-        $('#meses').focusout(function(){
+        $('#meses').focusout(function (){
             var fecha_inicio = $('#fecha_inicio').val();
             var meses = $('#meses').val();
             $('#fecha_fin').val(calcularHasta(fecha_inicio,meses));
@@ -794,29 +778,28 @@
 });
 
 
-function buscarCliente(data){
-    $.ajax({url: '<%=PathCfg.CLIENTE_SEARCH%>',
-            data: data,
-            method: 'POST',
-            dataType: 'json',
-            beforeSend:function(){
-                completarCliente({id_inquilino: '',
-                                  nombre: '',
-                                  apellido: '',
-                                  dni: '',
-                                  cuil: '',
-                                  id_tipo_persona: ''});
-            },
-            success:function(result){
-                console.log(result);
-                if(result.Result==='OK'){
-                    completarCliente(result.Record);
-                } else {
-                    //bootbox.alert(result.Message);
-                }
-            }
-    });
-}
+//function buscarCliente(data){
+//    $.ajax({url: '<%=PathCfg.CLIENTE_SEARCH%>',
+//            data: data,
+//            method: 'POST',
+//            dataType: 'json',
+//            beforeSend:function(){
+//                completarCliente({id_inquilino: '',
+//                                  nombre: '',
+//                                  apellido: '',
+//                                  dni: '',
+//                                  cuil: '',
+//                                  id_tipo_persona: ''});
+//            },
+//            success:function(result){
+//                if(result.Result==='OK'){
+//                    completarCliente(result.Record);
+//                } else {
+//                    //bootbox.alert(result.Message);
+//                }
+//            }
+//    });
+//}
 function completarCliente(data){
     $('#id_inquilino').val(data.id);
     $('#nombre').val(data.nombre);
@@ -824,30 +807,29 @@ function completarCliente(data){
     $('#dni').val(data.dni);
     $('#cuil').val(data.cuil);
 }
-function buscarPropiedad(data){
-    $.ajax({
-        url:'<%=PathCfg.PROPIEDAD_SEARCH%>',
-        data:data,
-        method:'POST',
-        dataType:'json',
-        beforeSend:function(){
-            completarPropiedad({id_propiedad: '',
-                                calle: '',
-                                numero: '',
-                                piso: '',
-                                dpto: '',
-                                barrio: '',
-                                localidad: ''});
-            },
-        success: function(result) {
-            if(result.Result==='OK'){
-                completarPropiedad(result.Record);
-            } else {
-                bootbox.alert(result.Message);
-            }
-        }
-    });
-}
+//function buscarPropiedad(data){
+//    completarPropiedad({id_propiedad: '',
+//                        calle: '',
+//                        numero: '',
+//                        piso: '',
+//                        dpto: '',
+//                        barrio: '',
+//                        localidad: ''});
+//    $.ajax({
+//        url:'<%=PathCfg.PROPIEDAD_SEARCH%>',
+//        data:data,
+//        method:'POST',
+//        dataType:'json',
+//        beforeSend:function(){},
+//        success: function(result) {
+//            if(result.Result==='OK'){
+//                completarPropiedad(result.Record);
+//            } else {
+//                bootbox.alert(result.Message);
+//            }
+//        }
+//    });
+//}
 function completarPropiedad(data){
     $('#id_propiedad').val(data.id);
     $('#calle').val(data.calle);
@@ -858,210 +840,119 @@ function completarPropiedad(data){
     $('#localidad').val(data.localidad);
 }
 
-function agregarValor(target){
-    var title = target==="Valor"?"Agregar valor de contrato":"Agregar Documento";
-    var table = target==="Valor"?"#tblValor":"#tblDocumento";
-
-    bootbox.dialog({
-                title: title,
-                message: '<div class="row">  ' +
-                    '<div class="col-md-12"> ' +
-                    '<form class="form-vertical"> ' +
-                     '<div class="form-group"> ' +
-                        '<label class="col-md-4 control-label" for="valor_fecha_inicio">Desde</label> ' +
-                        '<div class="col-md-8 input-group date date-picker"> ' +
-                        '<input id="valor_fecha_inicio" type="text" class="form-control input-md date-input" value=""> ' +
-                        '<span class="input-group-addon"><span class="fa fa-calendar"></span></span>' + 
-                        '</div>' +
-                     '</div>' +
-                     '<div class="form-group"> ' +
-                        '<label class="col-md-4 control-label" for="valor_meses">meses</label> ' +
-                        '<div class="col-md-8 input-group"> ' +
-                        '<input id="valor_meses" type="text" class="form-control input-md " value=""> ' +
-                        '</div>' +
-                     '</div>' +
-                     '<div class="form-group"> ' +
-                        '<label class="col-md-4 control-label" for="valor_fecha_fin">Hasta</label> ' +
-                        '<div class="col-md-8 input-group date date-picker"> ' +
-                        '<input id="valor_fecha_fin" type="text" class="form-control input-md date-input" value=""> ' +
-                        '<span class="input-group-addon"><span class="fa fa-calendar"></span></span>' + 
-                        '</div>' +
-                     '</div>' +
-
-                    '<div class="form-group"> ' +
-                        '<label class="col-md-4 control-label" for="valor_importe">Importe</label>' +
-                        '<div class="col-md-8 input-group"> ' +
-                        '<input id="valor_importe" type="text" class="form-control input-md" value=""> ' +
-                        '</div>' +
-                        '</div> ' +
-                    '</div>'+
-
-                      '</div> ' +
-                    '</form>' +
-                    '</div>'+
-                    '</div>',
-                buttons: {
-                    success: {
-                        label: "Guardar",
-                        className: "btn-success",
-                        callback: function () {
-                            var fecha_desde = $('#valor_fecha_inicio').val();
-                            var fecha_hasta = $('#valor_fecha_fin').val();
-                            var monto = $('#valor_importe').val();
-                            if (!validarAnterior(fecha_desde,fecha_hasta)){
-                                bootbox.alert("La fecha desde debe ser anterior a la fecha hasta");
-                                return;
-                            }
-                            if(target==="Valor"){
-                                var html_desde = fecha_desde + ' <input type="hidden" name="valor_desde" value="'+fecha_desde+'">';
-                                var html_hasta = fecha_hasta + ' <input type="hidden" name="valor_hasta" value="'+fecha_hasta+'">';
-                                var html_monto = monto + ' <input type="hidden" name="valor_monto" value="'+monto+'">';
-                            } else {
-                                var html_desde = fecha_desde +  ' <input type="hidden" name="documento_desde" value="'+fecha_desde+'">';
-                                var html_hasta = fecha_hasta + ' <input type="hidden" name="documento_hasta" value="'+fecha_hasta+'">';
-                                var html_monto = monto + ' <input type="hidden" name="documento_monto" value="'+monto+'">';
-                            }
-                            var html = '';
-                            html += wrapTag('td',html_desde,'');
-                            html += wrapTag('td',html_hasta,'');
-                            html += wrapTag('td',html_monto,'');
-                            var span = "<span class='btn btn-xs btn-danger btn-circle btn-del'><span class='fa fa-trash-o'></span>";
-                            html += wrapTag('td',span,'');
-                            html = wrapTag('tr',html,'');
-                            $(table).find('tbody').append(html);
-                            $('.btn-del').click(borrar);
-                        }
-                    },
-                    cancel: {
-                        label: "Cancelar",
-                        callback: function () {}
-                    }
-                }
-            }).init(function(){
-        if($().mask) {
-//            $('.date-picker').mask('99/99/9999');
-            $('.hora').mask('99:99:99');
-        }
-        if($().datepicker) {
-            $('.date-picker').datepicker({
-                language: 'es',
-                locale:'es-AR',
-                format:'dd/mm/yyyy',
-                dateFormat:'dd/mm/yyyy',
-                autoclose: true
-            });
-//             $('.date-picker').on('changeDate', function(ev){
-//                $(this).datepicker('hide');
+//function agregarValor(target){
+//    var title = target==="Valor"?"Agregar valor de contrato":"Agregar Documento";
+//    var table = target==="Valor"?"#tblValor":"#tblDocumento";
+//    var template = Handlebars.templates['agregarValor'];    
+//    bootbox.dialog({
+//                title: title,
+//                message: template({}),
+//                buttons: {
+//                    success: {
+//                        label: "Guardar",
+//                        className: "btn-success",
+//                        callback: function () {
+//                            var fecha_desde = $('#valor_fecha_inicio').val();
+//                            var fecha_hasta = $('#valor_fecha_fin').val();
+//                            var monto = $('#valor_importe').val();
+//                            if (!validarAnterior(fecha_desde,fecha_hasta)){
+//                                bootbox.alert("La fecha desde debe ser anterior a la fecha hasta");
+//                                return;
+//                            }
+//                            var html_desde, html_hasta,html_monto;
+//                            if(target==="Valor"){
+//                                html_desde = fecha_desde + ' <input type="hidden" name="valor_desde" value="'+fecha_desde+'">';
+//                                html_hasta = fecha_hasta + ' <input type="hidden" name="valor_hasta" value="'+fecha_hasta+'">';
+//                                html_monto = monto + ' <input type="hidden" name="valor_monto" value="'+monto+'">';
+//                            } else {
+//                                html_desde = fecha_desde +  ' <input type="hidden" name="documento_desde" value="'+fecha_desde+'">';
+//                                html_hasta = fecha_hasta + ' <input type="hidden" name="documento_hasta" value="'+fecha_hasta+'">';
+//                                html_monto = monto + ' <input type="hidden" name="documento_monto" value="'+monto+'">';
+//                            }
+//                            var html = '';
+//                            html += wrapTag('td',html_desde,'');
+//                            html += wrapTag('td',html_hasta,'');
+//                            html += wrapTag('td',html_monto,'');
+//                            var span = "<span class='btn btn-xs btn-danger btn-circle btn-del'><span class='fa fa-trash-o'></span>";
+//                            html += wrapTag('td',span,'');
+//                            html = wrapTag('tr',html,'');
+//                            $(table).find('tbody').append(html);
+//                            $('.btn-del').click(borrar);
+//                        }
+//                    },
+//                    cancel: {
+//                        label: "Cancelar",
+//                        callback: function () {}
+//                    }
+//                }
+//            }).init(function(){
+//        if($().mask) {
+////            $('.date-picker').mask('99/99/9999');
+//            $('.hora').mask('99:99:99');
+//        }
+//        if($().datepicker) {
+//            $('.date-picker').datepicker({
+//                language: 'es',
+//                locale:'es-AR',
+//                format:'dd/mm/yyyy',
+//                dateFormat:'dd/mm/yyyy',
+//                autoclose: true
 //            });
-        }
-        $('#valor_meses').focusout(function(){
-            var fecha_inicio = $('#valor_fecha_inicio').val();
-            var meses = $('#valor_meses').val();
-            $('#valor_fecha_fin').val(calcularHasta(fecha_inicio,meses));
-            $('#valor_fecha_fin').datepicker('setDate',$('#valor_fecha_fin').val());
-        });
-    });
-}
+////             $('.date-picker').on('changeDate', function(ev){
+////                $(this).datepicker('hide');
+////            });
+//        }
+//        $('#valor_meses').focusout(function(){
+//            var fecha_inicio = $('#valor_fecha_inicio').val();
+//            var meses = $('#valor_meses').val();
+//            $('#valor_fecha_fin').val(calcularHasta(fecha_inicio,meses));
+//            $('#valor_fecha_fin').datepicker('setDate',$('#valor_fecha_fin').val());
+//        });
+//    });
+//}
 
-function agregarMonto(data){
-    
+function agregarMonto(data){    
     var table = data.target==="Valor"?"#tblValor":"#tblDocumento";
-    var fecha_desde = data.fecha_desde;;
-    var fecha_hasta = data.fecha_hasta;
-    var monto = data.monto;
-    
-    if(data.target==="Valor"){
-        var html_desde = fecha_desde + ' <input type="hidden" name="valor_desde" value="'+fecha_desde+'">';
-        var html_hasta = fecha_hasta + ' <input type="hidden" name="valor_hasta" value="'+fecha_hasta+'">';
-        var html_monto = monto + ' <input type="hidden" name="valor_monto" value="'+monto+'">';
-    } else {
-        var html_desde = fecha_desde +  ' <input type="hidden" name="documento_desde" value="'+fecha_desde+'">';
-        var html_hasta = fecha_hasta + ' <input type="hidden" name="documento_hasta" value="'+fecha_hasta+'">';
-        var html_monto = monto + ' <input type="hidden" name="documento_monto" value="'+monto+'">';
-    }
-    var html = '';
-    html += wrapTag('td',html_desde,'');
-    html += wrapTag('td',html_hasta,'');
-    html += wrapTag('td',html_monto,'');
-    var span = "<span class='btn btn-xs btn-danger btn-circle btn-del'><span class='fa fa-trash-o'></span>";
-    html += wrapTag('td',span,'');
-    html = wrapTag('tr',html,'');
-    $(table).find('tbody').append(html);
+    data.esValor = function(){return data.target==="Valor"};
+    var template = Handlebars.templates["agregarMonto"];
+    $(table).find('tbody').append(template(data));
     $('.btn-del').click(borrar);
-                        
-       
 }
+function recuperarDatosGasto(){
+    var data = {};
+    data.concepto = $('#gasto_concepto').val();
+    data.aplica   = $('#gasto_aplica').val()===1?"Inquilino":"Propietario";
+    data.importe      = $('#gasto_importe').val();
+    data.cuotas       = $('#gasto_cuota').val();
+    data.gasto_aplica =$('#gasto_aplica').val();
+    data.gasto_cuota=$('#gasto_cuota').val();
+    return data;
+}
+                    
 function agregarGasto(target){
     var title = "Agregar gasto";
     var table = "#tblGasto";
+    var template = Handlebars.templates['agregarGasto'];
     bootbox.dialog({
-                title: title,
-                message: '<div class="row">  ' +
-                    '<div class="col-md-12"> ' +
-                    '<form class="form-vertical"> ' +
-                     '<div class="form-group"> ' +
-                        '<label class="col-md-4 control-label" for="gasto_concepto">Concepto</label> ' +
-                        '<div class="col-md-8"> ' +
-                        '<input id="gasto_concepto" type="text" class="form-control input-md" value=""> ' +
-                     '</div>' +
-                     '<div class="form-group"> ' +
-                        '<label class="col-md-4 control-label" for="gasto_aplica">Aplica</label> ' +
-                        '<div class="col-md-8"> ' +
-                        '<select id="gasto_concepto" type="text" class="form-control input-md"> ' +
-                        '<option value="1">Inquilino</option>' +
-                        '<option value="2">Propietario</option>' +
-                        '</select>' +
-                     '</div>' +
-                      '<div class="form-group"> ' +
-                        '<label class="col-md-4 control-label" for="gasto_cuota">Cuotas</label>' +
-                        '<div class="col-md-8"> ' +
-                        '<input id="gasto_cuota"  type="text" class="form-control input-md" value=""> ' +
-                        '</div> ' +
-                    '</div>'+
-                    '<div class="form-group"> ' +
-                        '<label class="col-md-4 control-label" for="gasto_importe">Importe</label>' +
-                        '<div class="col-md-8"> ' +
-                        '<input id="gasto_importe" type="text" class="form-control input-md" value=""> ' +
-                        '</div> ' +
-                    '</div>'+
-
-                      '</div> ' +
-                    '</form>' +
-                    '</div>'+
-                    '</div>',
-                buttons: {
-                    success: {
-                        label: "Guardar",
-                        className: "btn-success",
-                        callback: function () {
-                            var concepto = $('#gasto_concepto').val();
-                            var aplica   = $('#gasto_aplica').val()===1?"Inquilino":"Propietario";
-                            var importe  = $('#gasto_importe').val();
-                            var cuotas   = $('#gasto_cuota').val();
-
-                            var html_concepto = concepto + '<input type="hidden" name="gasto_concepto" value="'+concepto+'">';
-                            var html_aplica   = aplica   + '<input type="hidden" name="gasto_aplica"  value="'+$('#gasto_aplica').val()+'">';
-                            var html_cuotas   = cuotas   + '<input type="hidden" name="gasto_cuota"   value="'+$('#gasto_cuota').val()+'">';
-                            var html_importe  = importe  + '<input type="hidden" name="gasto_importe" value="'+importe+'">';
-
-                            var html = '';
-                            html += wrapTag('td',html_concepto,'');
-                            html += wrapTag('td',html_aplica,'');
-                            html += wrapTag('td',html_importe,'');
-                            html += wrapTag('td',html_cuotas,'');
-                            var span = "<span class='btn btn-xs btn-danger btn-circle btn-del'><span class='fa fa-trash-o'></span>";
-                            html += wrapTag('td',span,'');
-                            html = wrapTag('tr',html,'');
-                            $(table).find('tbody').append(html);
-                            $('.btn-del').click(borrar);
-                        }
-                    },
-                    cancel: {
-                        label: "Cancelar",
-                        callback: function () {}
-                    }
+        title: title,
+        message: template({}),
+        buttons: {
+            success: {
+                label: "Guardar",
+                className: "btn-success",
+                callback: function () {
+                    var data = recuperarDatosGasto();
+                    var template = Handlebars.templates["agregarLineaGasto"];
+                    $(table).find('tbody').append(template(data));
+                    $('.btn-del').click(borrar);
                 }
-            });
+            },
+            cancel: {
+                label: "Cancelar",
+                callback: function () {}
+            }
+        }
+    });
 }
 function borrar(e){
     var $tr = $(this).parent().parent();
@@ -1073,32 +964,62 @@ function borrar(e){
 }
 
 function mover(tab, navigation, index){
-    if(index===3){
-        $('#btnRow').css('display','block');
-        console.log(tab,navigation,index);
-    } else $('#btnRow').css('display','none');
+//    console.log(index);
+//    if(index===3){
+//        $('#btnRow').css('display','block');
+//        
+//    } else $('#btnRow').css('display','none');
+}
+function recuperarValores(){
+    var data = {};
+    data.id_inquilino = $('#id_inquilino').val();
+    data.id_propiedad = $('#id_propiedad').val();
+    data.id_vendedor  = $('#id_vendedor').val();
+    data.fecha_inicio = $('#fecha_inicio').val();
+    data.fecha_fin    = $('#fecha_fin').val();
+    data.meses        = $('#meses').val();
+    data.numero       = $('#numero').val();
+    return data;
 }
 function validar(data){
     var todoOk = true;
+//    var $id_inquilino = $('#id_inquilino');
+//    var $id_propiedad = $('#id_propiedad');
+//    var $id_vendedor  = $('#id_vendedor');
+//    var $fecha_inicio = $('#fecha_inicio');
+//    var $fecha_fin = $('#fecha_fin');
+//    var $meses     = $('#meses');
+//    var $numero    = $('#numero');
+
+    todoOk &= validarInquilino();
+    todoOk &= validarPropiedad();   
+    todoOk &= validarFechasContrato();
+    return todoOk;
+}
+function validarInquilino(){
     var $id_inquilino = $('#id_inquilino');
-    var $id_propiedad = $('#id_propiedad');
-    var $id_vendedor = $('#id_vendedor');
+    return validarCampo($id_inquilino,"Debe seleccionar el inquilino",validarNoCero)
+}
+function validarPropiedad(){
+     var $id_propiedad = $('#id_propiedad');
+    return validarCampo($id_propiedad,"Debe seleccionar la propiedad",validarNoCero);
+}
+function validarVendedor(){
+    var $id_vendedor  = $('#id_vendedor');
+    validarCampo($id_vendedor,"Debe seleccionar el vendedor",validarNoCero);
+}
+function validarFechasContrato(){
     var $fecha_inicio = $('#fecha_inicio');
     var $fecha_fin = $('#fecha_fin');
-    var $meses = $('#meses');
-    var $numero = $('#numero');
-
-    todoOk &= validarCampo($id_inquilino,"Debe seleccionar el inquilino",validarCero);
-    todoOk &= validarCampo($id_propiedad,"Debe seleccionar la propiedad",validarCero);
+    var $meses     = $('#meses');
+    var todoOk = true;
     todoOk &= validarCampo($fecha_inicio,"Ingrese la fecha de inicio del contrato",validarCampoFecha);
     todoOk &= validarCampo($fecha_fin,"Ingrese la fecha de fin del contrato",validarCampoFecha);
-    todoOk &= validarNoNulo($meses,"Ingrese la cantidad de meses del contrato",validarCero);
-    todoOk &= validarCampo($id_vendedor,"Debe seleccionar el vendedor",validarCero);
-
+    todoOk &= validarNoNulo($meses,"Ingrese la cantidad de meses del contrato",validarNoCero);
     return todoOk;
 }
 
-function validarValores(){
+function validarValoresContrato(){
     var $tabla = $('#tblValor');
     var filas = $tabla.find('tbody tr');
     for(var i =0;i<= filas.length;i++ ){
@@ -1109,64 +1030,20 @@ function validarValores(){
     }
 
 }
+function validarDocumentos(){}
 
-
-
-function validarDocumentos(){
-
-}
 function validarNoNulo($campo,mensaje){
     if($campo ===undefined || $campo.val()==="" || parseInt($campo.val())===0) {
         $.notify(mensaje,"error");
         return false;
+    }
+    return true;
 }
-return true;
-}
-//function loadDataPropiedad(data){
-//            var $tabla = $('#tblPropiedades');
-//            //$tabla.DataTable().destroy();
-//            data.id_estado = 1;
-//            data.id_operadion = 1;
-//            $.ajax({
-//               url: '<%= PathCfg.PROPIEDAD_LIST %>',
-//               data: data,
-//               method:"POST",
-//               dataType: "json",
-//               beforeSend:function(){
-//                    var cant_cols = $tabla.find('thead th').length;
-//                    $tabla.find('tbody').html("<tr><td colspan='" + cant_cols + "'><center><img src='assets/img/ajax-loader.gif'/></center></td></tr>");
-//               },
-//               success: function(result) {
-//                   if(result.Result === "OK") {
-//
-//                       $tabla.find('tbody').html(createTablePropiedad(result.Records));
-//                        $('.btn-del').click(borrar);
-//                   }
-//               }
-//           });
-//    }
-//function createTablePropiedad(data){
-//        var html = "";
-//        for(var i = 0;i< data.length;i++){
-//           html +="<tr class=''>";
-//           d = data[i];
-//           html +=wrapTag('td',d.tipo_inmueble,'');
-//           html += wrapTag('td',d.calle + ' ' + d.numero,'');
-////           html += wrapTag('td',d.barrio,'');
-////           html += wrapTag('td',d.precio,'');
-//           html += wrapTag('td',d.propietario,'');
-//
-//           var htmlSel = "<span class='btn btn-xs btn-primary btn-circle btn-sel'  data-index='"+ d.id + "' ><span class='fa fa-plus'></span>";
-//           html +='<td style="width:75px"  >' + htmlSel + '</td>';
-////         html +=wrapTag('td',htmlEdit + htmlDel,'');
-//           html +="</tr>";
-//       }
-//       return html;
-//    }
 </script>
  <%@include file="mdl_cliente.jsp" %>
  <%@include file="mdl_propiedad.jsp" %>
  <%@include file="mdl_valor.jsp" %>
+ <%@include file="mdl_documento.jsp" %>
  <%--<%@include file="mdl_gasto.jsp" %>--%>
 </body>
 </html>

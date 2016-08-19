@@ -117,6 +117,16 @@ String apenom = cliente.getId()==0?"":cliente.getApellido() + ", " + cliente.get
                                                             </div>
                                                         </div>
                                                     </div>
+                                                     <div class="col-lg-12  nopadding ">
+                                                         <div class="form-group">
+                                                            <label class="control-label" for="nomenclatura">Nomenclatura Catastral</label>
+                                                            <div class="controls">
+                                                                  <div class="input-group col-lg-12">
+                                                                    <input type="text" name="nomenclatura" id="nomenclatura" class="form-control" value="<%=p.getNomenclatura()%>">
+                                                                  </div>
+                                                            </div>
+                                                        </div>
+                                                     </div>
                                                     <div class="col-lg-12  nopadding ">
                                                         <div class="form-group " >
                                                             <label class="control-label">Operaci&oacute;n</label>

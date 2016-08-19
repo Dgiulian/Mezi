@@ -57,7 +57,8 @@
 <script>
     $(document).ready(function(){
         $('#mdlValor').on('shown.bs.modal',function(e){
-            var invoker = $(e.relatedTarget);           
+            var invoker = $(e.relatedTarget);            
+            //$('#ttlModal').text("Agregar " + $('#target').val());
             $('#valor_fecha_inicio').val("");
             $('#valor_fecha_fin').val("");
             $('#valor_importe').val("");
@@ -73,7 +74,11 @@
             var fecha_desde = $('#valor_fecha_inicio').val();
             var fecha_hasta = $('#valor_fecha_fin').val();
             var monto       = $('#valor_importe').val();
-            var target      = $('#target').val();
+            var target      = "Valor"; //$('#target').val();
+            if(fecha_desde==="" || fecha_hasta ==="") {
+                bootbox.alert("Debe ingresar la fecha desde y hasta");
+                return;
+            }
             if (!validarAnterior(fecha_desde,fecha_hasta)){
                 bootbox.alert("La fecha desde debe ser anterior a la fecha hasta");
                 return;

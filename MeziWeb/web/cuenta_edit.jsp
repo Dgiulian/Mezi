@@ -235,9 +235,7 @@
 	<script src="assets/js/jquery-ui-1.10.3.custom.min.js"></script>
 	<script src="assets/js/jquery.sparkline.min.js"></script>
 	<script src="assets/js/jquery.chosen.min.js"></script>
-	<script src="assets/js/jquery.cleditor.min.js"></script>
-	<script src="assets/js/jquery.autosize.min.js"></script>
-	<script src="assets/js/jquery.placeholder.min.js"></script>
+	
 	<script src="assets/js/jquery.maskedinput.min.js"></script>
 	<script src="assets/js/jquery.inputlimiter.1.3.1.min.js"></script>
 	<script src="assets/js/bootstrap-datepicker.min.js"></script>
@@ -245,8 +243,7 @@
 	<script src="assets/js/moment.min.js"></script>
 	<script src="assets/js/daterangepicker.min.js"></script>
 	<script src="assets/js/jquery.hotkeys.min.js"></script>
-	<script src="assets/js/bootstrap-wysiwyg.min.js"></script>
-	<script src="assets/js/bootstrap-colorpicker.min.js"></script>
+	
 	<script src="assets/js/star-rating.js" type="text/javascript"></script>	
         <script src="assets/js/star-rating_locale_es.js" type="text/javascript"></script>
         <!--<script src="assets/js/jquery.raty.js" type="text/javascript"></script>-->-->

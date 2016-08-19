@@ -162,18 +162,18 @@
                    if(result.Result === "OK") {
                        $tabla.find('tbody').html(createTable(result.Records));
                        $('.btn-del').click(borrarUsuario);
-                       $tabla.DataTable({
-                            responsive: true,
-                            retrieve: true,
-                            paging: false,
-                            ordering: true,
-                            searching: false,
-                            lengthChange: false,
-                            bInfo: false,
-                            language: {
-                                url:'bower_components/datatables-plugins/i18n/Spanish.json',
-                            }
-                        });
+//                       $tabla.DataTable({
+//                            responsive: true,
+//                            retrieve: true,
+//                            paging: false,
+//                            ordering: true,
+//                            searching: false,
+//                            lengthChange: false,
+//                            bInfo: false,
+//                            language: {
+//                                url:'bower_components/datatables-plugins/i18n/Spanish.json',
+//                            }
+//                        });
                    }
                }
            });

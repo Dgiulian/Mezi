@@ -15,14 +15,20 @@ import java.util.List;
 public class OptionsCfg {
    
     
-    public static final Integer MODULO_CLIENTE      = 1;
-    public static final Integer MODULO_PROPIEDAD    = 2;
-    public static final Integer MODULO_LOCALIDAD    = 3;
-    public static final Integer MODULO_BARRIO       = 4;
-    public static final Integer MODULO_CONTRATO     = 5;
-    public static final Integer MODULO_SERVICIO     = 6;
-    public static final Integer MODULO_VENDEDOR     = 7;
-    public static final Integer MODULO_USUARIO      = 10;
+    public static final Integer MODULO_CLIENTE    = 1;
+    public static final Integer MODULO_PROPIEDAD  = 2;
+    public static final Integer MODULO_LOCALIDAD  = 3;
+    public static final Integer MODULO_BARRIO     = 4;
+    public static final Integer MODULO_CONTRATO   = 5;
+    public static final Integer MODULO_SERVICIO   = 6;
+    public static final Integer MODULO_VENDEDOR   = 7;
+    public static final Integer MODULO_CUENTA     = 8;    
+    public static final Integer MODULO_USUARIO    = 10;
+    public static final Integer MODULO_CAJA       = 11;
+    public static final Integer MODULO_CAJA_DETALLE           = 12;
+    public static final Integer MODULO_CUENTA_INTERNA         = 13;
+    public static final Integer MODULO_CUENTA_INTERNA_DETALLE = 14;
+    
     
     public static final int ACCION_ALTA = 1;
     public static final int ACCION_BAJA = 2;
@@ -36,6 +42,10 @@ public class OptionsCfg {
     
     public static final int CUENTA_OFICIAL = 1;
     public static final int CUENTA_NO_OFICIAL = 2;
+    
+    public static final int CUENTA_VENDEDOR = 1;
+    public static final int CUENTA_OTRO     = 2;
+    
     
     public static final int CONCEPTO_ALQUILER         = 1;
     public static final int CONCEPTO_DOCUMENTO        = 2;
@@ -58,6 +68,17 @@ public class OptionsCfg {
     
     public static final String RECIBO_PATH  = "recibo_path";
     public static final String CUENTA_PATH  = "cuenta_path";
+    
+    public static final int CAJA_ABIERTA = 1;
+    public static final int CAJA_CERRADA = 2;
+    
+    public static final int FORMA_EFECTIVO      = 1;
+    public static final int FORMA_CHEQUE        = 2;
+    public static final int FORMA_TRANSFERENCIA = 3;
+
+    
+    public static final int TIPO_INGRESO     = 1;
+    public static final int TIPO_EGRESO      = 2;
     
     public static ArrayList<Option> getPerfiles(){
         ArrayList<Option> lista = new ArrayList();
@@ -99,8 +120,8 @@ public class OptionsCfg {
     
    public static ArrayList<Option> getEstadosPropiedad(){
         ArrayList<Option> lista = new ArrayList();
-        lista.add(new Option(PROPIEDAD_DISPONIBLE,String.format("%03d",PROPIEDAD_DISPONIBLE),"Disponible"));
-        lista.add(new Option(PROPIEDAD_ALQUILADA, String.format("%03d",PROPIEDAD_ALQUILADA), "Alquilada"));        
+        lista.add(new Option(PROPIEDAD_DISPONIBLE,"Disponible"));
+        lista.add(new Option(PROPIEDAD_ALQUILADA, "Alquilada"));        
         return lista;
    }
    public static HashMap<Integer,Option> getMap(List<Option> lista){
@@ -110,16 +131,47 @@ public class OptionsCfg {
         }
         return mapa;
    } 
-     public static ArrayList<Option> getEstadosContrato(){
+   public static ArrayList<Option> getEstadosContrato(){
         ArrayList<Option> lista = new ArrayList();
-        lista.add(new Option(CONTRATO_ESTADO_ACTIVO,String.format("%03d",CONTRATO_ESTADO_ACTIVO),"Activo"));
-        lista.add(new Option(CONTRATO_ESTADO_FIN,   String.format("%03d",CONTRATO_ESTADO_FIN), "Fin"));        
+        lista.add(new Option(CONTRATO_ESTADO_ACTIVO,"Activo"));
+        lista.add(new Option(CONTRATO_ESTADO_FIN, "Fin"));        
+        return lista;
+   }
+   public static ArrayList<Option> getEstadosCaja(){
+        ArrayList<Option> lista = new ArrayList();
+        lista.add(new Option(CAJA_ABIERTA,"Abierta"));
+        lista.add(new Option(CAJA_CERRADA, "Cerrada"));        
+        return lista;
+   }
+    public static ArrayList<Option> getFormaPago(){
+        ArrayList<Option> lista = new ArrayList();
+        lista.add(new Option(FORMA_EFECTIVO,"Efectivo"));
+        lista.add(new Option(FORMA_CHEQUE, "Cheque"));        
+        lista.add(new Option(FORMA_TRANSFERENCIA, "Transferencia"));        
+        return lista;
+   }
+      public static ArrayList<Option> getTipoMovimiento(){
+        ArrayList<Option> lista = new ArrayList();
+        lista.add(new Option(TIPO_INGRESO,"Ingreso"));
+        lista.add(new Option(TIPO_EGRESO, "Egreso"));        
+        
+        return lista;
+   }
+      public static ArrayList<Option> getTiposCuentaInterna(){
+        ArrayList<Option> lista = new ArrayList();
+        lista.add(new Option(CUENTA_VENDEDOR,"Vendedor"));
+        lista.add(new Option(CUENTA_OTRO, "Otros"));                
         return lista;
    }
     public static class Option{
         Integer id ;
         String codigo;
         String descripcion;    
+        public Option(Integer id,String descripcion){
+            this.id = id;
+            this.codigo = String.format("%03d",id);
+            this.descripcion = descripcion;            
+        }
         public Option(Integer id,String codigo,String descripcion) {
             this.id = id;
             this.codigo = codigo;
@@ -136,6 +188,7 @@ public class OptionsCfg {
         }
                 
     }
+    
     static enum Tipo {CLIENTE,PROPIETARIO};
     public static void main(String[] args){
         

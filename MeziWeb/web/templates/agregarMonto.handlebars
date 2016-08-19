@@ -1,0 +1,15 @@
+{{#if esValor}}
+    <tr>
+        <td>{{fecha_desde}}<input type="hidden" name="valor_desde" value="{{fecha_desde}}"></td>
+        <td>{{fecha_hasta}}<input type="hidden" name="valor_hasta" value="{{fecha_hasta}}"></td>
+        <td>{{monto}}<input type="hidden" name="valor_monto" value="{{monto}}"></td>
+        <td><span class='btn btn-xs btn-danger btn-circle btn-del'><span class='fa fa-trash-o'></span></td>
+    </tr>
+{{else}}
+  <tr>
+    <td>{{fecha_desde}}<input type="hidden" name="documento_desde" value="{{fecha_desde}}"></td>
+    <td>{{fecha_hasta}}<input type="hidden" name="documento_hasta" value="{{fecha_hasta}}"></td>
+    <td>{{monto}}<input type="hidden" name="documento_monto" value="{{monto}}"></td>
+    <td><span class='btn btn-xs btn-danger btn-circle btn-del'><span class='fa fa-trash-o'></span></td>
+  </tr>
+{{/if}}

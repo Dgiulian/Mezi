@@ -76,4 +76,30 @@
             width:100%;
             height:450px;
         }
+        .sidebar-nav>ul {
+            margin: -5px -15px;
+            border: 0;
+            /* padding-bottom: 1px; */
+            font-size: 14px;
+            white-space: nowrap;
+        }
+        .sidebar-nav>ul>li>a>span {
+            font-size: 13px;
+            padding:-5px;
+        }
+        .header-nav .user .name {
+            display: block;
+            margin-top: -0px !important;
+            font-size: 13px;
+        }
+        .nav.main-menu > li > a > i, .nav.main-menu > li > ul > li > a > i {
+            margin-right: 7px;
+            height: 38px;
+            width: 30px;
+            padding: 13px 0px;
+            display: inline-block;
+            text-align: center;
+            border-right: 1px solid #dbdee0;
+        }
+        
     </style>

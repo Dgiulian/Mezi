@@ -11,7 +11,7 @@
     <filter>
         <filter-name>DeleteFilter</filter-name>
         <filter-class>Filters.DeleteFilter</filter-class>
-    </filter>    
+    </filter>
     <filter-mapping>
         <filter-name>AuthenticationFilter</filter-name>
         <url-pattern>/</url-pattern>
@@ -36,6 +36,10 @@
         <url-pattern>/UsuarioEdit</url-pattern>
         <url-pattern>/Vendedor</url-pattern>
         <url-pattern>/VendedorEdit</url-pattern>
+        <url-pattern>/Caja</url-pattern>
+        <url-pattern>/CajaEdit</url-pattern>
+        <url-pattern>/CuentaInterna</url-pattern>
+        <url-pattern>/CuentaInternaEdit</url-pattern>
     </filter-mapping>
     <servlet>
         <servlet-name>ClientePath</servlet-name>
@@ -265,6 +269,62 @@
         <servlet-name>CuentaPrint</servlet-name>
         <servlet-class>Cuenta.CuentaPrint</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CajaServlet</servlet-name>
+        <servlet-class>Caja.CajaServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CajaList</servlet-name>
+        <servlet-class>Caja.CajaList</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CajaDel</servlet-name>
+        <servlet-class>Caja.CajaDel</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CajaEdit</servlet-name>
+        <servlet-class>Caja.CajaEdit</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CajaDetalleList</servlet-name>
+        <servlet-class>CajaDetalle.CajaDetalleList</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CajaDetalleEdit</servlet-name>
+        <servlet-class>CajaDetalle.CajaDetalleEdit</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CajaDetalleDel</servlet-name>
+        <servlet-class>CajaDetalle.CajaDetalleDel</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CajaCierre</servlet-name>
+        <servlet-class>Caja.CajaCierre</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CuentaInterna</servlet-name>
+        <servlet-class>CuentaInterna.CuentaInternaPath</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CuentaInternaList</servlet-name>
+        <servlet-class>CuentaInterna.CuentaInternaList</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CuentaInternaEdit</servlet-name>
+        <servlet-class>CuentaInterna.CuentaInternaEdit</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CuentaInternaDel</servlet-name>
+        <servlet-class>CuentaInterna.CuentaInternaDel</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CuentaInternaDetalleList</servlet-name>
+        <servlet-class>CuentaInternaDetalle.CuentaInternaDetalleList</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CuentaInternaDetallePath</servlet-name>
+        <servlet-class>CuentaInternaDetalle.CuentaInternaDetallePath</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ClientePath</servlet-name>
         <url-pattern>/Cliente</url-pattern>
@@ -488,6 +548,62 @@
     <servlet-mapping>
         <servlet-name>CuentaPrint</servlet-name>
         <url-pattern>/CuentaPrint</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CajaServlet</servlet-name>
+        <url-pattern>/Caja</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CajaList</servlet-name>
+        <url-pattern>/CajaList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CajaDel</servlet-name>
+        <url-pattern>/CajaDel</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CajaEdit</servlet-name>
+        <url-pattern>/CajaEdit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CajaDetalleList</servlet-name>
+        <url-pattern>/CajaDetalleList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CajaDetalleEdit</servlet-name>
+        <url-pattern>/CajaDetalleEdit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CajaDetalleDel</servlet-name>
+        <url-pattern>/CajaDetalleDel</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CajaCierre</servlet-name>
+        <url-pattern>/CajaCierre</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CuentaInterna</servlet-name>
+        <url-pattern>/CuentaInterna</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CuentaInternaList</servlet-name>
+        <url-pattern>/CuentaInternaList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CuentaInternaEdit</servlet-name>
+        <url-pattern>/CuentaInternaEdit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CuentaInternaDel</servlet-name>
+        <url-pattern>/CuentaInternaDel</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CuentaInternaDetalleList</servlet-name>
+        <url-pattern>/CuentaInternaDetalleList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CuentaInternaDetallePath</servlet-name>
+        <url-pattern>/CuentaInternaDetalle</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

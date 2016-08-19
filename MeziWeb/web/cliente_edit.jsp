@@ -57,30 +57,38 @@
                                             <% }%>
                                         <div  class="tab-content box-content">   
                                             <div class="tab-pane active row" id="tab1">    
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-8">
 
                                                     <div class="col-lg-12">
                                                         <div class="form-group row">
                                                                 <div class="col-lg-2 nopadding">
                                                                     <div class="controls">
-                                                                        <label class="control-label" for="carpeta">Nº Carpeta</label>
-                                                                        <div class="input-group ">
-                                                                            <input type="text" name="carpeta" id="carpeta" class="form-control" value="<%= cliente.getId() %>" readonly>
+                                                                        <label class="control-label" for="carpeta">C&oacute;digo</label>
+                                                                        <div class="input-group  col-lg-12 ">
+                                                                            <input type="text" name="id" id="id" class="form-control" value="<%= cliente.getId() %>" readonly>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-lg-5 ">
+                                                                <div class="col-lg-2 ">
+                                                                    <div class="controls">
+                                                                        <label class="control-label" for="carpeta">Nº Carpeta</label>
+                                                                        <div class="input-group  col-lg-12 ">
+                                                                            <input type="text" name="carpeta" id="carpeta" class="form-control" value="<%= cliente.getCarpeta() %>" >
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4 ">
                                                                     <div class="controls">
                                                                         <label class="control-label" for="nombre">Nombre</label>
-                                                                          <div class="input-group ">
+                                                                          <div class="input-group  col-lg-12 ">
                                                                             <input type="text" id="nombre" name="nombre" class="form-control"  value="<%=cliente.getNombre()%>">
                                                                           </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-lg-5 nopadding">
+                                                                <div class="col-lg-4 nopadding">
                                                                     <div class="controls">
                                                                         <label class="control-label" for="apellido">Apellido</label>
-                                                                          <div class="input-group ">
+                                                                          <div class="input-group  col-lg-12 ">
                                                                             <input type="text" id="apellido" name="apellido" class="form-control"  value="<%=cliente.getApellido()%>">
                                                                           </div>
                                                                     </div>
@@ -108,7 +116,7 @@
                                                                     <div class=" col-sm-6">
                                                                   <label class="control-label" for="direccion">Direcci&oacute;n</label>
                                                                   <div class="controls">
-                                                                        <div class="input-group">
+                                                                        <div class="input-group  col-lg-12 ">
                                                                           <input type="text" id="direccion" name="direccion" class="form-control"  value="<%= cliente.getDireccion()%>" >
                                                                         </div>
                                                                   </div>
@@ -122,7 +130,7 @@
                                                                 <div class="col-lg-6 nopadding">
                                                                     <label class="control-label" for="dni">DNI</label>
                                                                     <div class="controls">
-                                                                        <div class="input-group">
+                                                                        <div class="input-group col-lg-12 ">
                                                                           <input type="text" id="dni" name="dni"class="form-control" value="<%=cliente.getDni()%>" >
                                                                         </div>
                                                                     </div>
@@ -131,7 +139,7 @@
                                                                 <div class="col-lg-6 ">
                                                                     <label class="control-label" for="cuil">CUIT / CUIL</label>
                                                                     <div class="controls">
-                                                                        <div class="input-group">
+                                                                        <div class="input-group col-lg-12 ">
                                                                           <input type="text" id="cuil" name="cuit" class="form-control" value="<%= cliente.getCuil()%>">
                                                                         </div>
                                                                     </div>
@@ -156,7 +164,7 @@
                                                         </div>-->
 
                                                     </div>
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-4">
                                                      <div class="form-group">
                                                             <label class="control-label" for="lugar_trabajo">Lugar de trabajo</label>
                                                             <div class="controls">

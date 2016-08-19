@@ -201,7 +201,7 @@ public abstract class TransaccionBase<E> {
     }
     public String auditar(Object objeto){
         Field[] atributos = objeto.getClass().getFields();
-        StringBuffer query = new StringBuffer();
+        StringBuilder query = new StringBuilder();
         
         for (int i = 0; i <= atributos.length - 1; i++) {
             Field field = atributos[i];

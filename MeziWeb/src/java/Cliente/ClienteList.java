@@ -46,6 +46,8 @@ public class ClienteList extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        JsonRespuesta jr = new JsonRespuesta();
+        
         String pagNro = request.getParameter("pagNro");
         String codigo = request.getParameter("codigo");
         String nombre = request.getParameter("nombre");
@@ -54,11 +56,9 @@ public class ClienteList extends HttpServlet {
         String dni = request.getParameter("dni");
         
         Integer page = 0;
-        
+
         page = Parser.parseInt(pagNro);
         try {
-            JsonRespuesta jr = new JsonRespuesta();           
-
 //            List<Cliente> lista ;
             mapPropietarios = new TPropietario().getMap();
             mapInquilinos   = new TInquilino().getMap();
@@ -106,11 +106,9 @@ public class ClienteList extends HttpServlet {
                 jr.setResult("ERROR");
                 jr.setTotalRecordCount(0);
             }            
-            
-            String jsonResult = new Gson().toJson(jr);
 
-            out.print(jsonResult);
-        } finally {            
+        } finally {
+            out.print(new Gson().toJson(jr));
             out.close();
         }
     }

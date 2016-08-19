@@ -83,6 +83,7 @@ public class PropiedadEdit extends HttpServlet {
         String  observaciones  = request.getParameter("observaciones");
         Float   latitud        = Parser.parseFloat(request.getParameter("latitud"));
         Float   longitud       = Parser.parseFloat(request.getParameter("longitud"));
+        String  nomenclatura   = request.getParameter("nomenclatura");
         Integer id_operacion = Parser.parseInt(request.getParameter("id_operacion"));
         try{
             TPropiedad tp = new TPropiedad();
@@ -118,6 +119,7 @@ public class PropiedadEdit extends HttpServlet {
         propiedad.setObservaciones(observaciones);
         propiedad.setLatitud(latitud);
         propiedad.setLongitud(longitud);
+        propiedad.setNomenclatura(nomenclatura);
         propiedad.setId_estado(1); // Disponible
         propiedad.setId_operacion(id_operacion);
         if(nuevo){

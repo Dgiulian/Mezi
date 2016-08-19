@@ -1,3 +1,5 @@
+<%@page import="bd.Caja"%>
+<%@page import="bd.Cuenta"%>
 <%@page import="bd.Localidad"%>
 <%@page import="bd.Barrio"%>
 <%@page import="bd.Propiedad"%>
@@ -12,6 +14,7 @@
     Integer id_tipo_cliente = (Integer) request.getAttribute("id_tipo_cliente");
     String fecha_consulta = TFecha.ahora(TFecha.formatoVista);
 //    fecha_consulta = "05/01/2016";
+    Caja caja = (Caja) request.getAttribute("caja");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -160,7 +163,9 @@
                                             <h2><i class="fa fa-edit"></i>Cuenta Oficial 
                                                 <input type="hidden" name="id_cuenta_oficial" id="id_cuenta_oficial" >
                                                 <span class="btn btn-sm btn-primary" id="btnAjOficial"  data-id_cuenta='' data-toggle="modal" data-target="#mdlConcepto">Ajustar</span>                                             
-                                                <span class="btn btn-sm btn-primary" id="btnLiqOficial" data-id_cuenta='' data-toggle="modal" data-target="#mdlLiquidar" id="btnLiquidar">Liquidar</span>
+                                                <% if(caja!=null && caja.getId_estado()==OptionsCfg.CAJA_ABIERTA) {%>
+                                                    <span class="btn btn-sm btn-primary" id="btnLiqOficial" data-id_cuenta='' data-toggle="modal" data-target="#mdlLiquidar" id="btnLiquidar">Liquidar</span>
+                                                <% }%>
                                             </h2>
                                             <table class="table table-bordered table-condensed table-striped" id="tblCuentaOficial">
                                                     <colgroup>
@@ -194,7 +199,9 @@
                                             <h2><i class="fa fa-edit"></i>Cuenta no oficial 
                                                 <input type="hidden" name="id_cuenta_no_oficial" id="id_cuenta_no_oficial" >
                                                 <span class="btn btn-sm btn-primary" id="btnAjNoOficial"  data-id_cuenta='' data-toggle="modal" data-target="#mdlConcepto">Ajustar</span>
+                                                <% if(caja!=null && caja.getId_estado()==OptionsCfg.CAJA_ABIERTA) {%>
                                                 <span class="btn btn-sm btn-primary" id="btnLiqNoOficial" data-id_cuenta='' data-toggle="modal" data-target="#mdlLiquidar" id="btnLiquidar">Liquidar</span></h2>
+                                                <% } %>
                                             <table class="table table-bordered table-condensed table-striped" id="tblCuentaNoOficial">
                                                     <colgroup>
                                                         <col style="width:10%">

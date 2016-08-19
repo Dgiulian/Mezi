@@ -66,13 +66,13 @@ public class UsuarioList extends HttpServlet {
         }
     }
 
-class UsuarioDet extends Usuario{
+private class UsuarioDet extends Usuario{
      String tipo_usuario = "";     
      public UsuarioDet(Usuario usuario){
          super(usuario);  
          Tipo_usuario t = mapTipos.get(usuario.getId_tipo_usuario());
          
-        this.tipo_usuario = (t!=null)?t.getCodigo():usuario.getId_tipo_usuario().toString(); 
+        this.tipo_usuario = (t!=null)?t.getDescripcion():usuario.getId_tipo_usuario().toString(); 
      }
  }   
     /**

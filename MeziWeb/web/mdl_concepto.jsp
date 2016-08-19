@@ -70,28 +70,25 @@
         });
     });
     
-        function guardarConcepto() {
+    function guardarConcepto() {
         $('#mdlConcepto').modal('hide');
-
+         
         var id_cuenta = $('#aj_id_cuenta').val();
         var fecha     = $('#ajFecha').val();
         var concepto  = $('#ajConcepto').val();
         var monto = $('#ajMonto').val();                        
         var tipo = $('input[name="ajTipo"]:checked').val();
-        // VALIDAR 
-        if (tipo===undefined){
-            bootbox.alert("Seleccione el tipo de ajuste");
-            return;
-        }
+        var data = {id_cuenta: parsearInt(id_cuenta),
+                   fecha: fecha,
+                   concepto: concepto,
+                   monto: parsearFloat(monto),
+                   tipo: tipo};
+       if(!validarAltaConcepto(data)) return;
 
 
         $.ajax({
             url:'<%= PathCfg.CUENTA_DET_EDIT%>',
-            data: {id_cuenta: id_cuenta,
-                   fecha: fecha,
-                   concepto: concepto,
-                   monto: monto,
-                   tipo: tipo,},
+            data: data,
             method:'POST',
             dataType:'json',
             success:function(result){
@@ -103,7 +100,30 @@
                }
             }
         });
-        //bootbox.alert("Nombre " + nombre + ". Email: <b>" + email + "</b>");
+    }
+    
+    function validarAltaConcepto(data){
+        if(data.id_cuenta===0) {
+            bootbox.alert("Seleccione la cuenta que desea ajustar");
+            return false;
+        }
+        if(data.fecha==="" || !validarFecha(data.fecha)){
+            bootbox.alert("Ingrese una fecha v&aacute;lida");
+            return false;
+        }
+        if(data.concepto ==='') {
+            bootbox.alert("Ingrese el concepto del ajuste");
+            return false;
+        }
+        if(data.monto ===0) {
+            bootbox.alert("Ingrese el monto del ajuste");
+            return false;
+        }
+        if (data.tipo===undefined){
+            bootbox.alert("Seleccione el tipo de ajuste");
+            return false;
+        }
+        return true;
     }
     
 </script>

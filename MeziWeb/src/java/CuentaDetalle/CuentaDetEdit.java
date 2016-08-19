@@ -14,7 +14,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.joda.time.LocalDate;
+import transaccion.TAuditoria;
 import transaccion.TContrato;
 import transaccion.TCuenta;
 import transaccion.TCuenta_detalle;
@@ -76,6 +78,10 @@ public class CuentaDetEdit extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        HttpSession sesion = request.getSession(false);
+        Integer id_usuario = (Integer) sesion.getAttribute("id_usuario");
+        Integer id_tipo_usuario_actual = (Integer) sesion.getAttribute("id_tipo_usuario");
+        
         String  fecha     = TFecha.convertirFecha(request.getParameter("fecha"), TFecha.formatoVista, TFecha.formatoBD);
         String  concepto  = request.getParameter("concepto");
         Float   monto     = Parser.parseFloat(request.getParameter("monto"));
@@ -84,16 +90,18 @@ public class CuentaDetEdit extends HttpServlet {
         JsonRespuesta jr  = new JsonRespuesta();
         TCuenta tc = new TCuenta();
         TCuenta_detalle tcd = new TCuenta_detalle();
+
         try{
-            
-            
             Cuenta cuenta = tc.getById(id_cuenta);
+            
             
             
             if(cuenta==null) throw new BaseException("ERROR","Debe indicar la cuenta a ajustar");            
             
             Contrato contrato = new TContrato().getById(cuenta.getId_contrato());
             if(contrato==null) throw new BaseException("ERROR","No se encontr&oacute; el contrato");
+            
+
             
             /*
              * La fecha de ajuste no puede ser anterior a la ultima liquidación.
@@ -123,8 +131,10 @@ public class CuentaDetEdit extends HttpServlet {
             else cd.setHaber(monto);
             int id = tcd.alta(cd);
             if(id!=0){
+                TAuditoria.guardar(id_usuario,id_tipo_usuario_actual,OptionsCfg.MODULO_CUENTA,OptionsCfg.ACCION_ALTA,id,tc.auditar(cuenta)); 
                 jr.setResult("OK");
                 jr.setRecord(cd);
+                
             } else {
                 throw new BaseException("ERROR","Ocurr&oacute; un error al cargar el ajuste");
             }

@@ -4,6 +4,7 @@
  */
 package Usuario;
 
+import bd.Caja;
 import bd.Usuario;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,7 +15,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import transaccion.TCaja;
 import transaccion.TUsuario;
+import utils.TFecha;
 
 /**
  *
@@ -34,6 +37,7 @@ public class Login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 
@@ -81,6 +85,9 @@ public class Login extends HttpServlet {
                     session.setAttribute("email", email);
                     session.setAttribute("id_usuario", u.getId());
                     session.setAttribute(("id_tipo_usuario"), u.getId_tipo_usuario());
+                    Caja  caja = new TCaja().buscarCaja(u.getId(), TFecha.ahora(TFecha.formatoBD));
+                    if(caja!=null) session.setAttribute("id_caja", caja.getId());
+                    
                     System.out.println(u.getId_tipo_usuario());
                     if(ref!=null)
                         response.sendRedirect(ref);

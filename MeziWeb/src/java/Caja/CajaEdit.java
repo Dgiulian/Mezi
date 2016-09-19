@@ -157,6 +157,7 @@ public class CajaEdit extends HttpServlet {
                     detalle.setId_caja(caja.getId());
                     detalle.setImporte(efectivo_anterior);
                     detalle.setId_forma(OptionsCfg.FORMA_EFECTIVO);
+                    detalle.setId_tipo(OptionsCfg.TIPO_INGRESO);
                     detalle.setConcepto("Apertura caja del " + fecha);
                     Integer id_detalle = new TCaja_detalle().alta(detalle);
                     detalle.setId(id_detalle);

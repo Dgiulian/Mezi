@@ -46,7 +46,7 @@
                                                <thead>
                                                     <tr>
                                                         <th>Tipo</th>
-                                                        <th>Lugar</th>
+                                                        <th>Recibe</th>
                                                         <th>Identificaci&oacute;n</th>
                                                         <th>Activo</th>
                                                         <th></th>

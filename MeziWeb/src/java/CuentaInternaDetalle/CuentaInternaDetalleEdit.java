@@ -2,10 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Vendedor;
+package CuentaInternaDetalle;
 
 import bd.Cuenta_interna;
-import bd.Vendedor;
+import bd.Cuenta_interna_detalle;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,20 +13,19 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import transaccion.TAuditoria;
+import org.eclipse.jdt.internal.compiler.parser.ParserBasicInformation;
 import transaccion.TCuenta_interna;
-import transaccion.TVendedor;
 import utils.BaseException;
 import utils.JsonRespuesta;
 import utils.OptionsCfg;
 import utils.Parser;
+import utils.TFecha;
 
 /**
  *
  * @author Diego
  */
-public class VendedorEdit extends HttpServlet {
+public class CuentaInternaDetalleEdit extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -47,10 +46,10 @@ public class VendedorEdit extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet VendedorEdit</title>");            
+            out.println("<title>Servlet CuentaInternaDetalleEdit</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet VendedorEdit at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CuentaInternaDetalleEdit at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {            
@@ -58,7 +57,7 @@ public class VendedorEdit extends HttpServlet {
         }
     }
 
-    
+   
     /**
      * Handles the HTTP
      * <code>GET</code> method.
@@ -71,7 +70,6 @@ public class VendedorEdit extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
         processRequest(request, response);
     }
 
@@ -87,63 +85,41 @@ public class VendedorEdit extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Integer id = Parser.parseInt(request.getParameter("id"));
-        String nombre = request.getParameter("nombre");
-        String apellido = request.getParameter("apellido");
-        String activo = request.getParameter("activo");
-        
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        JsonRespuesta jr = new JsonRespuesta();           
-
+        
+        Integer id_cuenta = Parser.parseInt(request.getParameter("id_cuenta"));
+        String fecha = TFecha.formatearFechaVistaBd(request.getParameter("fecha"));
+        String concepto = request.getParameter("concepto");
+        Integer id_tipo = Parser.parseInt(request.getParameter("id_tipo"));
+        Float monto = Parser.parseFloat(request.getParameter("monto"));
+        JsonRespuesta jr = new JsonRespuesta();
+        TCuenta_interna ti = new TCuenta_interna();
+        
         try{
-            TVendedor tv = new TVendedor();
-            Vendedor vendedor = tv.getById(id);
-            boolean nuevo = false;
-            if(vendedor == null){
-                vendedor = new Vendedor();
-                nuevo = true;
-            }
-            vendedor.setNombre(nombre);
-            vendedor.setApellido(apellido);
-            
-            if(activo!=null && !activo.equalsIgnoreCase("")){
-                vendedor.setActivo(1);
-            } else vendedor.setActivo(0);
-             
-            boolean todoOk;
-            if(nuevo){
-                /* Creamos la cuenta interna del vendedor  */
-                Cuenta_interna ci = new Cuenta_interna();
-                ci.setId_estado(1);
-                ci.setNombre(vendedor.getApellido() + ", " + vendedor.getNombre());
-                Integer id_cuenta = new TCuenta_interna().alta(ci);
-                vendedor.setId_cuenta(id_cuenta);
-                
-                id = tv.alta(vendedor);
-                todoOk = id!=0;
-                
-                
-            }else{
-                todoOk=tv.actualizar(vendedor);
-            }
-             if(!todoOk)  throw new BaseException("ERROR","Ocurri&oacute; un error al guardar el vendedor"); 
-             jr.setResult("OK");
-             jr.setRecord(vendedor);
-             HttpSession session = request.getSession();
-             Integer id_usuario_actual = (Integer) session.getAttribute("id_usuario");
-             Integer id_tipo_usuario_actual = (Integer) session.getAttribute("id_tipo_usuario");
-             TAuditoria.guardar(id_usuario_actual,id_tipo_usuario_actual,OptionsCfg.MODULO_VENDEDOR,nuevo?OptionsCfg.ACCION_ALTA:OptionsCfg.ACCION_MODIFICAR,id,tv.auditar(vendedor)); 
-           
+            Cuenta_interna cuenta = ti.getById(id_cuenta);
+            if(cuenta==null) throw new BaseException("ERROR","No se encontr&oacute; la cuenta interna");
+            Cuenta_interna_detalle cuenta_interna = new Cuenta_interna_detalle();
+            cuenta_interna.setId_cuenta(id_cuenta);
+            cuenta_interna.setFecha(fecha);
+            cuenta_interna.setConcepto(concepto);
+            if (id_tipo==OptionsCfg.TIPO_INGRESO){
+                cuenta_interna.setHaber(monto);
+            } else if(id_tipo==OptionsCfg.TIPO_EGRESO){
+                cuenta_interna.setDebe(monto);
+            } else throw new BaseException("ERROR","Seleccione si el movimiento es de Ingreso o Egreso");
+            int id = ti.alta(cuenta_interna);
+            if (id==0)throw new BaseException("ERROR","Ocurri&oacute; un error al guardar el movimiento");
+            cuenta_interna.setId(id);
+            jr.setResult("OK");
+            jr.setRecord(cuenta_interna);            
         } catch(BaseException ex){
             jr.setResult(ex.getResult());
             jr.setMessage(ex.getMessage());
-        } finally {   
-            String jsonResult = new Gson().toJson(jr);
-            out.print(jsonResult);
+        } finally{
+            out.println(new Gson().toJson(jr));
             out.close();
         }
-        
     }
 
     /**

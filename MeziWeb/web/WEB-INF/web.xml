@@ -325,6 +325,10 @@
         <servlet-name>CuentaInternaDetallePath</servlet-name>
         <servlet-class>CuentaInternaDetalle.CuentaInternaDetallePath</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CuentaInternaDetalleEdit</servlet-name>
+        <servlet-class>CuentaInternaDetalle.CuentaInternaDetalleEdit</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ClientePath</servlet-name>
         <url-pattern>/Cliente</url-pattern>
@@ -604,6 +608,10 @@
     <servlet-mapping>
         <servlet-name>CuentaInternaDetallePath</servlet-name>
         <url-pattern>/CuentaInternaDetalle</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CuentaInternaDetalleEdit</servlet-name>
+        <url-pattern>/CuentaInternaDetalleEdit</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -41,5 +41,21 @@ public class ContratoTest extends Contrato{
             this.setId_propiedad(9);
             this.setId_inquilino(12);
             this.setId_vendedor(7);
+            
+            this.setGarante_1_dni("garante_1_dni");
+this.setGarante_1_nombre("garante_1_nombre");
+this.setGarante_1_telefono("garante_1_telefono");
+this.setGarante_1_id_garantia(OptionsCfg.GARANTIA_ESCRITURA);
+
+this.setGarante_2_dni("garante_2_dni");
+this.setGarante_2_nombre("garante_2_nombre");
+this.setGarante_2_telefono("garante_2_telefono");
+this.setGarante_2_id_garantia(OptionsCfg.GARANTIA_RECIBO);
+
+this.setGarante_3_dni("garante_3_dni");
+this.setGarante_3_nombre("garante_3_nombre");
+this.setGarante_3_telefono("garante_3_telefono");
+this.setGarante_3_id_garantia(OptionsCfg.GARANTIA_ESCRITURA);
+            
     }
 }

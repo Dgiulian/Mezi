@@ -167,7 +167,11 @@ function selTodos(filtro,checked){
       $input = $($arr[i]).prop('checked',checked);                
     }
 }
-
+$(document).ready(function(){
+    if(typeof Handlebars !== "undefined")
+        Handlebars.registerHelper("convertirFecha",convertirFecha);
+    
+});
 $(document).ready(function(){
    $('.uppercase').keyup(function(e) {
         if(e.keyCode>=65 && e.keyCode <= 90) 
@@ -278,6 +282,7 @@ function validarCampoFecha(e){
 }
 function validarCero(e){return parseInt(e.val())===0}    
 function validarNoCero(e){return parseInt(e.val())!==0}    
+function validarNoVacio(e){return parseInt(e.val())!==""}
 
 function parsearInt(valor){
     var v = parseInt(valor);

@@ -165,7 +165,9 @@
                                                 <span class="btn btn-sm btn-primary" id="btnAjOficial"  data-id_cuenta='' data-toggle="modal" data-target="#mdlConcepto">Ajustar</span>                                             
                                                 <% if(caja!=null && caja.getId_estado()==OptionsCfg.CAJA_ABIERTA) {%>
                                                     <span class="btn btn-sm btn-primary" id="btnLiqOficial" data-id_cuenta='' data-toggle="modal" data-target="#mdlLiquidar" id="btnLiquidar">Liquidar</span>
-                                                <% }%>
+                                                <% } else {%>
+                                                <h6> No hay ninguna caja abierta. No se puede liquidar</h6>
+                                                <% } %>
                                             </h2>
                                             <table class="table table-bordered table-condensed table-striped" id="tblCuentaOficial">
                                                     <colgroup>
@@ -200,7 +202,9 @@
                                                 <input type="hidden" name="id_cuenta_no_oficial" id="id_cuenta_no_oficial" >
                                                 <span class="btn btn-sm btn-primary" id="btnAjNoOficial"  data-id_cuenta='' data-toggle="modal" data-target="#mdlConcepto">Ajustar</span>
                                                 <% if(caja!=null && caja.getId_estado()==OptionsCfg.CAJA_ABIERTA) {%>
-                                                <span class="btn btn-sm btn-primary" id="btnLiqNoOficial" data-id_cuenta='' data-toggle="modal" data-target="#mdlLiquidar" id="btnLiquidar">Liquidar</span></h2>
+                                                <span class="btn btn-sm btn-primary" id="btnLiqNoOficial" data-id_cuenta='' data-toggle="modal" data-target="#mdlLiquidar" id="btnLiquidar">Liquidar</span></h2>                                                
+                                                 <% } else {%>
+                                                <h6> No hay ninguna caja abierta. No se puede liquidar</h6>
                                                 <% } %>
                                             <table class="table table-bordered table-condensed table-striped" id="tblCuentaNoOficial">
                                                     <colgroup>

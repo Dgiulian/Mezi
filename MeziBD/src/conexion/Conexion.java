@@ -58,8 +58,8 @@ public class Conexion {
 
             /* Local con base local */
             String host = "127.0.0.1";
-            String port = ":3306";            
-//            String port = ":3307";            
+//            String port = ":3306";            
+            String port = ":3307";            
             String nombrebd = "/mezi_db";
             String usr = "mezi_user";
             String password = "mezi*2015DG";

@@ -54,7 +54,7 @@ public class CajaList extends HttpServlet {
            TCaja tc = new TCaja();
            HashMap<String,String> mapFiltro = new HashMap<String,String>();
            mapFiltro.put("id_usuario", id_usuario.toString());
-           
+           tc.setOrderBy(" fecha desc");
            List<Caja> listFiltro = tc.getListFiltro(mapFiltro);           
            if(listFiltro==null) throw new BaseException("ERROR","Ocurri&oacute; un error al listar las cajas");
            ArrayList listaDet = new ArrayList<CajaDet>();

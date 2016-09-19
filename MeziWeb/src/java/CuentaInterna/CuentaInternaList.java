@@ -57,6 +57,7 @@ public class CuentaInternaList extends HttpServlet {
 
             TCuenta_interna tp = new TCuenta_interna();
             HashMap<String,String> mapFiltro = new HashMap<String,String> ();
+            
             List<Cuenta_interna> listFiltro =  tp.getListFiltro(mapFiltro);
 //           lista = tp.getList();
             ArrayList lista = new ArrayList<Cuenta_internaDet>();

@@ -35,7 +35,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="id_envio">Env&iacute;o:</label>
+                    <label class="col-md-4 control-label" for="id_envio">Recibe:</label>
                     <div class="col-md-8">
                     <select id="id_envio" name="id_envio" class="form-control input-md" >
                     <option value="0"></option>

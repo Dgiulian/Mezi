@@ -5,6 +5,9 @@ public class VendedorBase {
 	public String nombre = "";
 	public String apellido = "";
 	public Integer activo = 0;
+        public Integer id_cuenta = 0;
+
+  
 
 	public VendedorBase() {
 	}
@@ -51,4 +54,11 @@ public class VendedorBase {
 		this.activo = activo;
 		return this;
 	}
+        public Integer getId_cuenta() {
+            return id_cuenta;
+        }
+
+        public void setId_cuenta(Integer id_cuenta) {
+            this.id_cuenta = id_cuenta;
+        }
 }

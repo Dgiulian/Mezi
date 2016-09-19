@@ -70,6 +70,10 @@ public class ContratoEdit extends HttpServlet {
         
         Contrato contrato = new Contrato();
         contrato.setComision_mensual_propietario(10f);
+        contrato.setPunitorio_monto(0.017f);
+        contrato.setPunitorio_desde(10);
+        
+        contrato.setComision_mensual_propietario(10f);
         List<Contrato_valor>     contrato_valor     = new ArrayList<Contrato_valor>();
         List<Contrato_gasto>     contrato_gasto     = new ArrayList<Contrato_gasto>();
         List<Contrato_documento> contrato_documento = new ArrayList<Contrato_documento>();
@@ -147,6 +151,20 @@ public class ContratoEdit extends HttpServlet {
         Float    deposito_monto                = Parser.parseFloat(request.getParameter("deposito_monto"));
         String   deposito_desde                = TFecha.formatearFechaVistaBd(request.getParameter("deposito_desde"));
         Integer  deposito_cuotas               = Parser.parseInt(request.getParameter("deposito_cuotas"));
+        
+        String  garante_1_dni         = request.getParameter("garante_1_dni");
+        String  garante_1_nombre      = request.getParameter("garante_1_nombre");
+        String  garante_1_telefono    = request.getParameter("garante_1_telefono");
+        Integer garante_1_id_garantia = Parser.parseInt(request.getParameter("garante_1_id_garantia"));
+        String  garante_2_dni         = request.getParameter("garante_2_dni");
+        String  garante_2_nombre      = request.getParameter("garante_2_nombre");
+        String  garante_2_telefono    = request.getParameter("garante_2_telefono");
+        Integer garante_2_id_garantia = Parser.parseInt(request.getParameter("garante_2_id_garantia"));
+        String  garante_3_dni         = request.getParameter("garante_3_dni");
+        String  garante_3_nombre      = request.getParameter("garante_3_nombre");
+        String  garante_3_telefono    = request.getParameter("garante_3_telefono");
+        Integer garante_3_id_garantia = Parser.parseInt(request.getParameter("garante_3_id_garantia"));
+        
         
         Integer  asegura_renta                 = request.getParameter("asegura_renta")!=null&&!request.getParameter("asegura_renta").equals("")?1:0;
         String   observaciones                 = request.getParameter("observaciones");
@@ -238,6 +256,21 @@ public class ContratoEdit extends HttpServlet {
            contrato.setDeposito_desde(deposito_desde);
            contrato.setDeposito_cuotas(deposito_cuotas);
            contrato.setAsegura_renta(asegura_renta);
+           
+           contrato.setGarante_1_dni(garante_1_dni);
+           contrato.setGarante_1_nombre(garante_1_nombre);
+           contrato.setGarante_1_telefono(garante_1_telefono);
+           contrato.setGarante_1_id_garantia(garante_1_id_garantia);
+           
+           contrato.setGarante_2_dni(garante_2_dni);
+           contrato.setGarante_2_nombre(garante_2_nombre);
+           contrato.setGarante_2_telefono(garante_2_telefono);
+           contrato.setGarante_2_id_garantia(garante_2_id_garantia);
+           
+           contrato.setGarante_3_dni(garante_3_dni);
+           contrato.setGarante_3_nombre(garante_3_nombre);
+           contrato.setGarante_3_telefono(garante_3_telefono);
+           contrato.setGarante_3_id_garantia(garante_3_id_garantia);
            contrato.setObservaciones(observaciones);
            contrato.setId_estado(OptionsCfg.CONTRATO_ESTADO_ACTIVO);
            id_contrato = new TContrato().alta(contrato);

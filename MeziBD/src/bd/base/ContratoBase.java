@@ -31,6 +31,18 @@ public class ContratoBase {
 	public Integer deposito_cuotas = 0;
 	public Integer asegura_renta = 0;
 	public String observaciones = "";
+	public String garante_1_dni = "";
+	public String garante_1_nombre = "";
+	public String garante_1_telefono = "";
+	public Integer garante_1_id_garantia = 0;
+	public String garante_2_dni = "";
+	public String garante_2_nombre = "";
+	public String garante_2_telefono = "";
+	public Integer garante_2_id_garantia = 0;
+	public String garante_3_dni = "";
+	public String garante_3_nombre = "";
+	public String garante_3_telefono = "";
+	public Integer garante_3_id_garantia = 0;
 
 	public ContratoBase() {
 	}
@@ -78,6 +90,18 @@ public class ContratoBase {
 		this.deposito_cuotas = contratobase.getDeposito_cuotas();
 		this.asegura_renta = contratobase.getAsegura_renta();
 		this.observaciones = contratobase.getObservaciones();
+		this.garante_1_dni = contratobase.getGarante_1_dni();
+		this.garante_1_nombre = contratobase.getGarante_1_nombre();
+		this.garante_1_telefono = contratobase.getGarante_1_telefono();
+		this.garante_1_id_garantia = contratobase.getGarante_1_id_garantia();
+		this.garante_2_dni = contratobase.getGarante_2_dni();
+		this.garante_2_nombre = contratobase.getGarante_2_nombre();
+		this.garante_2_telefono = contratobase.getGarante_2_telefono();
+		this.garante_2_id_garantia = contratobase.getGarante_2_id_garantia();
+		this.garante_3_dni = contratobase.getGarante_3_dni();
+		this.garante_3_nombre = contratobase.getGarante_3_nombre();
+		this.garante_3_telefono = contratobase.getGarante_3_telefono();
+		this.garante_3_id_garantia = contratobase.getGarante_3_id_garantia();
 	}
 
 	public Integer getId() {
@@ -360,5 +384,129 @@ public class ContratoBase {
 	public ContratoBase setObservaciones(String observaciones) {
 		this.observaciones = observaciones;
 		return this;
+	}
+
+	public String getGarante_1_dni() {
+		return this.garante_1_dni;
+	}
+
+	public ContratoBase setGarante_1_dni(String garante_1_dni) {
+		this.garante_1_dni = garante_1_dni;
+		return this;
+	}
+
+	public String getGarante_1_nombre() {
+		return this.garante_1_nombre;
+	}
+
+	public ContratoBase setGarante_1_nombre(String garante_1_nombre) {
+		this.garante_1_nombre = garante_1_nombre;
+		return this;
+	}
+
+	public String getGarante_1_telefono() {
+		return this.garante_1_telefono;
+	}
+
+	public ContratoBase setGarante_1_telefono(String garante_1_telefono) {
+		this.garante_1_telefono = garante_1_telefono;
+		return this;
+	}
+
+	public Integer getGarante_1_id_garantia() {
+		return this.garante_1_id_garantia;
+	}
+
+	public ContratoBase setGarante_1_id_garantia(Integer garante_1_id_garantia) {
+		this.garante_1_id_garantia = garante_1_id_garantia;
+		return this;
+	}
+
+	public String getGarante_2_dni() {
+		return this.garante_2_dni;
+	}
+
+	public ContratoBase setGarante_2_dni(String garante_2_dni) {
+		this.garante_2_dni = garante_2_dni;
+		return this;
+	}
+
+	public String getGarante_2_nombre() {
+		return this.garante_2_nombre;
+	}
+
+	public ContratoBase setGarante_2_nombre(String garante_2_nombre) {
+		this.garante_2_nombre = garante_2_nombre;
+		return this;
+	}
+
+	public String getGarante_2_telefono() {
+		return this.garante_2_telefono;
+	}
+
+	public ContratoBase setGarante_2_telefono(String garante_2_telefono) {
+		this.garante_2_telefono = garante_2_telefono;
+		return this;
+	}
+
+	public Integer getGarante_2_id_garantia() {
+		return this.garante_2_id_garantia;
+	}
+
+	public ContratoBase setGarante_2_id_garantia(Integer garante_2_id_garantia) {
+		this.garante_2_id_garantia = garante_2_id_garantia;
+		return this;
+	}
+
+	public String getGarante_3_dni() {
+		return this.garante_3_dni;
+	}
+
+	public ContratoBase setGarante_3_dni(String garante_3_dni) {
+		this.garante_3_dni = garante_3_dni;
+		return this;
+	}
+
+	public String getGarante_3_nombre() {
+		return this.garante_3_nombre;
+	}
+
+	public ContratoBase setGarante_3_nombre(String garante_3_nombre) {
+		this.garante_3_nombre = garante_3_nombre;
+		return this;
+	}
+
+	public String getGarante_3_telefono() {
+		return this.garante_3_telefono;
+	}
+
+	public ContratoBase setGarante_3_telefono(String garante_3_telefono) {
+		this.garante_3_telefono = garante_3_telefono;
+		return this;
+	}
+
+	public Integer getGarante_3_id_garantia() {
+		return this.garante_3_id_garantia;
+	}
+
+	public ContratoBase setGarante_3_id_garantia(Integer garante_3_id_garantia) {
+		this.garante_3_id_garantia = garante_3_id_garantia;
+		return this;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof bd.base.ContratoBase))
+			return false;
+		return ((bd.base.ContratoBase) obj).getId().equals(this.getId());
+	}
+
+	@Override
+	public int hashCode() {
+		return (int) this.id;
 	}
 }

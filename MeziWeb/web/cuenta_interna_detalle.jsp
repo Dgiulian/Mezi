@@ -27,6 +27,7 @@
                                 <div class="box">
                                     <div class="box-header">
                                         <H3>Cuenta: <%=cuenta.getNombre()%></H3>
+                                        
                                         <input type="hidden" id="id_cuenta" name="id_cuenta" value="<%=cuenta.getId()%>"
                                     </div>
                                 </div>
@@ -36,12 +37,12 @@
 				<div class="col-lg-12">
 					<div class="box">
                                             <div class="box-header">
-                                                <H3>Detalle cuenta interna</H3>
+                                                <H3>Detalle cuenta interna <span class="btn btn-primary" id="btnAjustar">Ajustar</span></H3>
                                             </div>
                                         <div  class="box-content">
                                             <table class="table table-bordered table-condensed table-striped" id="tblCuentaInternaDetalle" >
                                                 <colgroup>
-                                                    <col span="1" style="width:5%;"></col>
+                                                    <col span="1" style="width:10%;"></col>
                                                     <col span="1" style=""></col>                                                    
                                                     <col span="1" style="width:10%;"></col>
                                                     <col span="1" style="width:10%;"></col>
@@ -112,11 +113,12 @@
 	<script src="assets/js/jquery.inputlimiter.1.3.1.min.js"></script>
 	<script src="assets/js/bootstrap-datepicker.min.js"></script>
 	<script src="assets/js/bootstrap-timepicker.min.js"></script>
-	<script src="assets/js/moment.min.js"></script>
+	
 	<script src="assets/js/daterangepicker.min.js"></script>
 	<script src="assets/js/jquery.hotkeys.min.js"></script>
 -->
-
+        <script src="assets/js/bootstrap-datepicker.min.js"></script>
+        <script src="assets/js/moment.min.js"></script>
 	<!-- theme scripts -->
 	<script src="assets/js/custom.min.js"></script>
 	<script src="assets/js/core.min.js"></script>
@@ -125,14 +127,81 @@
 	<!--<script src="assets/js/pages/form-elements.js"></script>-->
 
         <script src="assets/js/bootbox.min.js"></script>
-        <script src="assets/js/common-functions.js"></script>
+        <script src="assets/js/handlebars.runtime-v4.0.5.js"></script>
+        
 
+        
+        <script src="assets/templates/ajustarCuentaInterna.js"></script>
+        
+        <script src="assets/js/common-functions.js"></script>
+        
 	<!-- end: JavaScript-->
         <script language="">
         $(document).ready(function(){
            var id_cuenta = $('#id_cuenta').val();
            loadData({id_cuenta:id_cuenta});
+           $('#btnAjustar').click(ajustarCuentaInterna);
+        
         });
+        function ajustarCuentaInterna(){
+            var title = "Ajustar cuenta Interna";        
+        var template = Handlebars.templates['ajustarCuentaInterna'];
+        bootbox.dialog({
+            title: title,
+            message: template({fecha:new moment().format("YYYY-MM-DD")}),
+            buttons: {
+                success: {
+                    label: "Guardar",
+                    className: "btn-success",
+                    callback: function () {
+                        var data = recuperarDatos();
+                        editarCuentaInterna(data);
+                    }
+                },
+                cancel: {
+                    label: "Cancelar",
+                    callback: function () {}
+                }
+            }
+        }).init(function(){        
+            if($().datepicker) {
+               $('.date-picker').datepicker({
+                    language: 'es',
+                    locale:'es-AR',
+                    format:'dd/mm/yyyy',
+                    dateFormat:'dd/mm/yyyy',
+                    autoclose: true
+                });
+            }
+    });
+    }
+    function editarCuentaInterna(data){
+        $.ajax({
+            url: '<%=PathCfg.CUENTA_INTERNA_DETALLE_EDIT%>',
+            method: "POST",
+            dataType: "json",
+            data: data,
+            success: function(result){
+                console.log(result);
+                if(result.Result ==="OK"){
+                      var id_cuenta = $('#id_cuenta').val();
+                       loadData({id_cuenta:id_cuenta});
+                } else {
+                    bootbox.alert(result.Message);
+                }
+
+            },
+        });
+    }
+    function recuperarDatos(){
+        var data = {};
+        data.id_cuenta = $('#id_cuenta').val();
+        data.fecha    = $('#fecha').val();
+        data.concepto = $('#concepto').val();
+        data.monto    = $('#monto').val();
+        data.id_tipo  = $('input[name="id_tipo"]:checked').val();        
+        return data;
+    }
         function loadData(data){
             var $tabla = $('#tblCuentaInternaDetalle');
             //$tabla.DataTable().destroy();
@@ -157,10 +226,10 @@
         }
    function createTable(data){
         var html = "";
-        for(var i = 0;i< data.length;i++){
+        for(var i = 0;i< data.length;i++) {
            html +="<tr class=''>";
-           d = data[i];
-           html +=wrapTag('td',d.fecha.fecha,'');
+           var d = data[i];
+           html +=wrapTag('td',convertirFecha(d.fecha.fecha),'');
            html +=wrapTag('td',d.concepto ,'');           
            html +=wrapTag('td',d.debe ,'');           
            html +=wrapTag('td',d.haber ,'');           

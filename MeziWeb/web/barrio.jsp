@@ -172,7 +172,7 @@
             $.ajax({
                url: '<%= PathCfg.BARRIO_LIST %>',
                data: data,
-               method:"POST",
+               method:"GET",
                dataType: "json",
                beforeSend:function(){
                     var cant_cols = $tabla.find('thead th').length;

@@ -400,7 +400,7 @@ String apenom = cliente.getId()==0?"":cliente.getApellido() + ", " + cliente.get
                                                    <thead>
                                                         <tr>
                                                             <th>Tipo</th>
-                                                            <th>Lugar</th>
+                                                            <th>Recibe</th>
                                                             <th>Identificaci&oacute;n</th>
                                                             <th>Activo</th>
                                                             <th></th>

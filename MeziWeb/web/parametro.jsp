@@ -29,8 +29,8 @@
                             <div class="col-lg-12">
                                 <div class="box">
                                     <div class="box-header">
-                                            <H3>Listado de Parametros</H3>
-                                    </div>
+                                            <H3>Listado de Parametros <span id="btnNuevo" class="btn btn-primary"><span class="fa fa-file-o fa-fw"> </span>Nuevo</span></H3>
+                                    </div 
                                     <div  class="box-content">
                                         
                                         <table class="table table-striped table-bordered table-condensed" id="tblParametro">
@@ -117,7 +117,9 @@
 
         <script src="assets/js/bootbox.min.js"></script>
         <script src="assets/js/common-functions.js"></script>
-
+        <script src="assets/js/handlebars.runtime-v4.0.5.js"></script>
+        <script src="assets/templates/parametro.list.js"></script>
+        <script src="assets/templates/parametro.edit.js"></script>
 	<!-- end: JavaScript-->
 
    <script>
@@ -157,75 +159,50 @@
                 } else if (result.Message) bootbox.alert(result.Message);
         });
     }
-    function createTable(data){
-        var html = "";
-        for(var i = 0;i< data.length;i++){
-           html +="<tr class=''>";
-           d = data[i];
-            html += wrapTag('td',d.id,'');
-            html += wrapTag('td',d.numero,'');
-            html += wrapTag('td',d.codigo,'');
-            html += wrapTag('td',d.nombre,'');
-            html += wrapTag('td',d.valor,'');            
-           var htmlEdit = "<span href='<%= PathCfg.PARAMETRO_EDIT%>?id="+ d.id +"' data-codigo='" + d.codigo + "' data-nombre='"+ d.nombre +" ' data-valor='"+ d.valor +"' class='btn btn-xs btn-circle  btn-warning  btn-edit'><span class='fa fa-edit fw'></span></span> ";
-           var htmlDel = "<span href='' data-index='"+ d.id + "' class='btn btn-xs btn-danger btn-circle btn-del'><span class='fa fa-trash-o fw'></span></span>";
-           html +=wrapTag('td',htmlEdit + htmlDel,'');
-           html +="</tr>";
-       }
-       return html;
+     function createTable(data){        
+        return Handlebars.templates['parametro.list']({records:data});       
     }
+//    function createTable(data){
+//        var html = "";
+//        for(var i = 0;i< data.length;i++){
+//           html +="<tr class=''>";
+//           d = data[i];
+//            html += wrapTag('td',d.id,'');
+//            html += wrapTag('td',d.numero,'');
+//            html += wrapTag('td',d.codigo,'');
+//            html += wrapTag('td',d.nombre,'');
+//            html += wrapTag('td',d.valor,'');            
+//           var htmlEdit = "<span href='<%= PathCfg.PARAMETRO_EDIT%>?id="+ d.id +"' data-codigo='" + d.codigo + "' data-nombre='"+ d.nombre +" ' data-valor='"+ d.valor +"' class='btn btn-xs btn-circle  btn-warning  btn-edit'><span class='fa fa-edit fw'></span></span> ";
+//           var htmlDel = "<span href='' data-index='"+ d.id + "' class='btn btn-xs btn-danger btn-circle btn-del'><span class='fa fa-trash-o fw'></span></span>";
+//           html +=wrapTag('td',htmlEdit + htmlDel,'');
+//           html +="</tr>";
+//       }
+//       return html;
+//    }
      function editarParametro(){
+        var numero = $(this).data('numero');
         var codigo = $(this).data('codigo');
         var nombre = $(this).data('nombre');
         var valor  = $(this).data('valor');
         var index  = $(this).data('index');
         var activo = $(this).data('activo');
-        agregarParametro({codigo:codigo,nombre:nombre,id:index,valor:valor,activo:activo});
+        agregarParametro({numero:numero,codigo:codigo,nombre:nombre,id:index,valor:valor,activo:activo});
     }
     function agregarParametro(data){
-        
-        //var checked = (data.activo)?"checked":"";
+        data.checked = (data.activo)?"checked":"";
+        var template = Handlebars.templates['parametro.edit'];
         bootbox.dialog({
                 title: "Configuraci&oacute;n de par&aacute;metro",
-                message: '<div class="row">  ' +
-                    '<div class="col-md-12"> ' +                    
-                    '<form class="form-vertical"> ' +
-                    '<input id="id" name="id" type="hidden" class="" value=' + data.id + ' >' +
-                     '<div class="form-group"> ' +
-                        '<label class="col-md-4 control-label" for="codigo">Codigo:</label> ' +
-                        '<div class="col-md-8"> ' +
-                        '<input id="codigo" name="codigo" type="text" class="form-control input-md" value="'+ data.codigo +'"> ' +
-                     '</div>' + 
-                     '<div class="form-group"> ' +
-                        '<label class="col-md-4 control-label" for="nombre">Nombre:</label> ' +
-                        '<div class="col-md-8"> ' +
-                        '<input id="nombre" name="nombre" type="text" class="form-control input-md" value="'+ data.nombre +'"> ' +
-                     '</div>' + 
-//                    '</div>'+
-                    '<div class="form-group"> ' +
-                        '<label class="col-md-4 control-label" for="valor">Email:</label>' +
-                        '<div class="col-md-8"> ' +
-                        '<input id="valor" name="valor" type="text" class="form-control input-md" value="' + data.valor + '"> ' +
-                        '</div> ' + 
-                    '</div>'+ 
-                    '</div> ' +  
-                    '</form>' + 
-                    '</div>'+
-                    '</div>',
+                message: template(data), 
                 buttons: {
                     success: {
                         label: "Guardar",
                         className: "btn-success",
                         callback: function () {
-                            var id     = $('#id').val();                        
-                            var nombre = $('#nombre').val();
-                            var codigo = $('#nombre').val();
-                            var valor = $('#email').val();                            
-                            var activo = $('#activo').prop('checked')?'1':'';
-                            
+                            var data = recuperarCampos();
                             $.ajax({
-                                url:'<%= PathCfg.PARAMETRO_EDIT%>',
-                                data: {id:id,codigo:codigo,nombre:nombre,valor:valor,activo:activo},
+                                url:'<%=PathCfg.PARAMETRO_EDIT%>',
+                                data: data,
                                 method:'POST',
                                 dataType:'json',
                                 success:function(){
@@ -237,11 +214,22 @@
                     },
                     cancel: {
                         label: "Cancelar",
-                        callback: function () {                            
+                        callback: function () {
                         }
                     }
                 }
             });
+    }
+    function recuperarCampos(){
+        var data = {};
+        data.id     = $('#id').val();
+        data.numero = $('#numero').val();
+        data.codigo = $('#codigo').val();
+        data.nombre = $('#nombre').val();
+        data.valor  = $('#valor').val();
+        data.activo = $('#activo').prop('checked')?'1':'';
+        data.activo = 1;
+        return data;
     }
 </script>
     </script>

@@ -98,7 +98,7 @@
             $.ajax({
                url: '<%= PathCfg.CLIENTE_LIST %>?id_tipo_cliente=' + $id_tipo_cliente,
                data: data,
-               method:"POST",
+               method:"GET",
                dataType: "json",
                beforeSend:function(){
                     var cant_cols = $tabla.find('thead th').length;

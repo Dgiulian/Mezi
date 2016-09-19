@@ -1,4 +1,5 @@
 
+<%@page import="utils.OptionsCfg.Option"%>
 <%@page import="bd.Contrato_gasto"%>
 <%@page import="bd.Contrato_documento"%>
 <%@page import="bd.Contrato_valor"%>
@@ -41,8 +42,8 @@
 
 
     boolean con_propiedad = true;
-    boolean con_cliente = true;
-    boolean con_vendedor = true;
+    boolean con_cliente   = true;
+    boolean con_vendedor  = true;
     if(propiedad==null){
         propiedad = new Propiedad();
         con_propiedad = false;
@@ -104,6 +105,7 @@
                                                     <li><a href="#tabProp" data-toggle="tab">Propiedad</a></li>
                                                     <li><a href="#tabBasicos" data-toggle="tab">B&aacute;sicos</a></li>
                                                     <li><a href="#tabAdic" data-toggle="tab">Adicionales</a></li>
+                                                    <li><a href="#tabGarantes" data-toggle="tab">Garantes</a></li>
                                                     <li><a href="#tabOtros" data-toggle="tab">Otros datos</a></li>
                                                 </ul>
                                             </div>
@@ -112,7 +114,7 @@
                                             <div class="tab-pane row active" id="tab1">
                                                <div class="col-lg-8">
                                                    <fieldset>
-                                                       <legend>Datos del cliente</legend>
+                                                       <legend>Datos del inquilino</legend>
                                                    <div class="col-lg-12">
                                                         <div class="form-group row">
                                                                 <div class="col-lg-2 nopadding">
@@ -428,7 +430,7 @@
                                                     </div>
                                                 </div>
                                             </div><!-- tabBasicos -->
-                                                <div class="tab-pane  row" id="tabAdic">
+                                            <div class="tab-pane  row" id="tabAdic">
                                                     <div class="col-lg-6">
                                                     <fielset>
                                                         <legend >Gastos inquilino</legend>
@@ -622,6 +624,156 @@
                                                         </table>
                                                     </div>
                                             </div> <!-- tabAdic-->
+                                            
+                                            <div class="tab-pane row" id="tabGarantes">
+                                               <div class="col-lg-12">
+                                                   <fieldset>
+                                                       <legend>Garante 1</legend>
+                                                    <div class="col-lg-12">
+                                                        <div class="form-group row">
+                                                                <div class="col-lg-2 nopadding">
+                                                                    <div class="controls">
+                                                                        <label class="control-label" for="garante_1_dni">DNI</label>
+                                                                          <div class="input-group ">
+                                                                            <input type="text" id="garante_1_dni" name="garante_1_dni" class="form-control" value="<%=contrato.getGarante_1_dni()%>" >
+                                                                          </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4 ">
+                                                                    <div class="controls">
+                                                                        <label class="control-label" for="garante_1_nombre">Nombre y apellido</label>
+                                                                          <div class="input-group col-lg-12 ">
+                                                                            <input type="text" id="garante_1_nombre" name="garante_1_nombre" class="form-control" value="<%=contrato.getGarante_1_nombre()%>" >
+                                                                          </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <div class="controls">
+                                                                        <label class="control-label" for="garante_1_telefono">Telefono</label>
+                                                                          <div class="input-group ">
+                                                                            <input type="text" id="garante_1_telefono" name="garante_1_telefono" class="form-control" value="<%=contrato.getGarante_1_telefono()%>" >
+                                                                          </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <div class="controls">
+                                                                        <label class="control-label" for="garante_1_id_garantia">Tipo</label>
+                                                                          <div class="input-group col-lg-4">
+                                                                            <select id="garante_1_id_garantia" name="garante_1_id_garantia" class="form-control" value="<%=contrato.getGarante_1_telefono()%>" >
+                                                                                <option id="0"></option>
+                                                                                 <% for(Option o: OptionsCfg.getGarantias()){
+                                                                                String garante_1_selected = o.getId().equals(contrato.getGarante_1_id_garantia())?"selected":"";
+                                                                                %>
+                                                                                    <option value="<%=o.getId()%>" <%=garante_1_selected%>><%=o.getDescripcion()%></option>
+                                                                                <%}%>
+                                                                            </select>
+                                                                          </div>
+                                                                    </div>
+                                                                </div>
+                                                        </div><!-- row -->
+                                                   </div>                                                    
+                                                </fieldset>
+                                            </div>
+                                            
+                                            <div class="col-lg-12">
+                                                   <fieldset>
+                                                       <legend>Garante 2</legend>
+                                                    <div class="col-lg-12">
+                                                        <div class="form-group row">
+                                                                <div class="col-lg-2 nopadding">
+                                                                    <div class="controls">
+                                                                        <label class="control-label" for="garante_2_dni">DNI</label>
+                                                                          <div class="input-group ">
+                                                                            <input type="text" id="garante_2_dni" name="garante_2_dni" class="form-control" value="<%=contrato.getGarante_2_dni()%>" >
+                                                                          </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4 ">
+                                                                    <div class="controls">
+                                                                        <label class="control-label" for="garante_2_nombre">Nombre y apellido</label>
+                                                                          <div class="input-group col-lg-12 ">
+                                                                            <input type="text" id="garante_2_nombre" name="garante_2_nombre" class="form-control" value="<%=contrato.getGarante_2_nombre()%>" >
+                                                                          </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <div class="controls">
+                                                                        <label class="control-label" for="garante_2_telefono">Telefono</label>
+                                                                          <div class="input-group ">
+                                                                            <input type="text" id="garante_2_telefono" name="garante_2_telefono" class="form-control" value="<%=contrato.getGarante_2_telefono()%>" >
+                                                                          </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <div class="controls">
+                                                                        <label class="control-label" for="garante_2_id_garantia">Tipo</label>
+                                                                          <div class="input-group col-lg-4">
+                                                                            <select id="garante_2_id_garantia" name="garante_2_id_garantia" class="form-control" value="<%=contrato.getGarante_2_telefono()%>" >
+                                                                                <option id="0" ></option>
+                                                                                <% for(Option o: OptionsCfg.getGarantias()){
+                                                                                String garante_2_selected = o.getId().equals(contrato.getGarante_2_id_garantia())?"selected":"";
+                                                                                %>
+                                                                                    <option value="<%=o.getId()%>" <%=garante_2_selected%>><%=o.getDescripcion()%></option>
+                                                                                <%}%>
+                                                                            </select>
+                                                                          </div>
+                                                                    </div>
+                                                                </div>
+                                                        </div><!-- row -->
+                                                   </div>                                                    
+                                                </fieldset>
+                                            </div>
+                                            
+                                            <div class="col-lg-12">
+                                                   <fieldset>
+                                                       <legend>Garante 3</legend>
+                                                    <div class="col-lg-12">
+                                                        <div class="form-group row">
+                                                                <div class="col-lg-2 nopadding">
+                                                                    <div class="controls">
+                                                                        <label class="control-label" for="garante_3_dni">DNI</label>
+                                                                          <div class="input-group ">
+                                                                            <input type="text" id="garante_3_dni" name="garante_3_dni" class="form-control" value="<%=contrato.getGarante_2_dni()%>" >
+                                                                          </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4 ">
+                                                                    <div class="controls">
+                                                                        <label class="control-label" for="garante_3_nombre">Nombre y apellido</label>
+                                                                          <div class="input-group col-lg-12 ">
+                                                                            <input type="text" id="garante_3_nombre" name="garante_3_nombre" class="form-control" value="<%=contrato.getGarante_3_nombre()%>" >
+                                                                          </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <div class="controls">
+                                                                        <label class="control-label" for="garante_3_telefono">Telefono</label>
+                                                                          <div class="input-group ">
+                                                                            <input type="text" id="garante_3_telefono" name="garante_3_telefono" class="form-control" value="<%=contrato.getGarante_3_telefono()%>" >
+                                                                          </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <div class="controls">
+                                                                        <label class="control-label" for="garante_3_id_garantia">Tipo</label>
+                                                                          <div class="input-group col-lg-4">
+                                                                            <select id="garante_3_id_garantia" name="garante_3_id_garantia" class="form-control" value="" >
+                                                                                 <option id="0" ></option>
+                                                                                    <% for(Option o: OptionsCfg.getGarantias()){ 
+                                                                                    String garante_3_selected = o.getId().equals(contrato.getGarante_3_id_garantia())?"selected":"";
+                                                                                    %>
+                                                                                    <option value="<%=o.getId()%>" <%=garante_3_selected%>><%=o.getDescripcion()%></option>
+                                                                                <%}%>
+                                                                            </select>
+                                                                          </div>
+                                                                    </div>
+                                                                </div>
+                                                        </div><!-- row -->
+                                                   </div>                                                    
+                                                </fieldset>
+                                            </div>
+                                        </div> <!-- tabGarante -->
+
                                              <div class="tab-pane row " id="tabOtros">
                                                  <div class="col-lg-12 nopadding">
                                                       <div class="form-group ">
@@ -994,7 +1146,26 @@ function validar(data){
     todoOk &= validarInquilino();
     todoOk &= validarPropiedad();   
     todoOk &= validarFechasContrato();
+    todoOk &= validarGarantes();
     return todoOk;
+}
+function validarGarantes(){
+    var $garante_1_dni         =$('#garante_1_dni');
+    var $garante_1_nombre      =$('#garante_1_nombre');
+    var $garante_1_telefono    =$('#garante_1_telefono');
+    var $garante_1_id_garantia =$('#garante_1_id_garantia');
+    var $garante_2_dni         =$('#garante_2_dni');
+    var $garante_2_nombre      =$('#garante_2_nombre');
+    var $garante_2_telefono    =$('#garante_2_telefono');
+    var $garante_2_id_garantia =$('#garante_2_id_garantia');
+    var $garante_3_dni         =$('#garante_3_dni');
+    var $garante_3_nombre      =$('#garante_3_nombre');
+    var $garante_3_telefono    =$('#garante_3_telefono');
+    var $garante_3_id_garantia =$('#garante_3_id_garantia');
+    return validarCampo($garante_1_dni,"Debe seleccionar al menos un garante",validarNoVacio) &&
+           validarCampo($garante_1_nombre,"Debe seleccionar al menos un garante",validarNoVacio) &&
+           validarCampo($garante_1_telefono,"Debe seleccionar al menos un garante",validarNoVacio) &&
+           validarCampo($garante_1_id_garantia,"Debe seleccionar al menos un garante",validarNoCero);
 }
 function validarInquilino(){
     var $id_inquilino = $('#id_inquilino');

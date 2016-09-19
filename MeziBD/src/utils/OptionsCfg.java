@@ -80,6 +80,9 @@ public class OptionsCfg {
     public static final int TIPO_INGRESO     = 1;
     public static final int TIPO_EGRESO      = 2;
     
+    public static final int GARANTIA_RECIBO     = 1;
+    public static final int GARANTIA_ESCRITURA  = 2;
+    
     public static ArrayList<Option> getPerfiles(){
         ArrayList<Option> lista = new ArrayList();
         lista.add(new Option(1,"ADM","Administrador"));
@@ -161,6 +164,12 @@ public class OptionsCfg {
         ArrayList<Option> lista = new ArrayList();
         lista.add(new Option(CUENTA_VENDEDOR,"Vendedor"));
         lista.add(new Option(CUENTA_OTRO, "Otros"));                
+        return lista;
+   }
+    public static ArrayList<Option> getGarantias(){
+        ArrayList<Option> lista = new ArrayList();
+        lista.add(new Option(GARANTIA_RECIBO,"Recibo"));
+        lista.add(new Option(GARANTIA_ESCRITURA, "Escritura"));        
         return lista;
    }
     public static class Option{

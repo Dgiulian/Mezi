@@ -110,7 +110,7 @@
             $('#liq_mnt').val(mnt_liq);
             $('#liq_id_cuenta').val(id_cuenta);
 
-            $('#liqFecha').val("");
+           // $('#liqFecha').val("");
             $('#liqEfeMnt').val("");
             $('#liqChkMnt').val("");
             $('#liqChkBan').val("");

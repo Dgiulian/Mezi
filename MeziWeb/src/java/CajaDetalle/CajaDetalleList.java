@@ -6,6 +6,9 @@ package CajaDetalle;
 
 import bd.Caja;
 import bd.Caja_detalle;
+import bd.Cliente;
+import bd.Cuenta;
+import bd.Cuenta_interna;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,6 +22,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import transaccion.TCaja;
 import transaccion.TCaja_detalle;
+import transaccion.TCliente;
+import transaccion.TCuenta;
+import transaccion.TCuenta_interna;
 import utils.BaseException;
 import utils.JsonRespuesta;
 import utils.OptionsCfg;
@@ -52,6 +58,7 @@ public class CajaDetalleList extends HttpServlet {
           mapMovimiento = OptionsCfg.getMap(OptionsCfg.getTipoMovimiento());
           
           Integer id_caja = Parser.parseInt(request.getParameter("id_caja"));
+          Integer id_forma = Parser.parseInt(request.getParameter("id_forma"));
           
           TCaja tc =  new TCaja();          
           TCaja_detalle tcd = new TCaja_detalle();
@@ -64,6 +71,10 @@ public class CajaDetalleList extends HttpServlet {
              */
              
           mapFiltro.put("id_caja", caja.getId().toString());
+                     
+           if(id_forma!=0) mapFiltro.put("id_forma", id_forma.toString());
+           
+
           List<Caja_detalle> listFiltro = tcd.getListFiltro(mapFiltro);
           if(listFiltro==null) throw new BaseException("ERROR","Ocurri&oacute; un error al listar los movimientos de caja");
           ArrayList<CajaDetalleDet> listaDet = new ArrayList<CajaDetalleDet>();
@@ -88,6 +99,7 @@ public class CajaDetalleList extends HttpServlet {
     private class CajaDetalleDet extends Caja_detalle{
         String forma_pago = "";
         String tipo       = "";
+        String nombre_cuenta     = "";
         public CajaDetalleDet(Caja_detalle detalle){
             super(detalle);
             Option o = mapFormaPago.get(detalle.getId_forma());
@@ -95,6 +107,23 @@ public class CajaDetalleList extends HttpServlet {
             
             o = mapMovimiento.get(detalle.getId_tipo());
             tipo = o!=null?o.getDescripcion():"";
+            switch(detalle.getId_tipo_cuenta()){
+                case OptionsCfg.CLIENTE_TIPO_INQUILINO:   //nombre_cuenta = "Inquilino";   break;
+                case OptionsCfg.CLIENTE_TIPO_PROPIETARIO: {
+                    Cuenta cuenta = new TCuenta().getById(this.getId_cuenta());
+                    if(cuenta==null) nombre_cuenta=String.format("%d %d",this.getId_tipo_cuenta(),this.getId_cuenta());
+                    else {
+                        Cliente cliente = new TCliente().getById(cuenta.getId_cliente());
+                        nombre_cuenta = cliente!=null?cliente.getApellidoyNombre():this.getId_cuenta().toString();
+                    }
+                } break;
+                case OptionsCfg.CLIENTE_TIPO_INTERNA: {
+                    Cuenta_interna cuenta_interna = new TCuenta_interna().getById(this.getId_cuenta());
+                    nombre_cuenta = cuenta_interna!=null?cuenta_interna.getNombre():this.getId_cuenta().toString();     
+                    break;
+                }
+                default: nombre_cuenta ="";
+            }
         }
     }
 

@@ -86,7 +86,7 @@ public List<Cuenta_detalle> crearDetalle(Contrato contrato,Contrato_valor[] lstV
             //LocalDate fecha = desde.plusMonths(i).withDayOfMonth(1);
             
             Float monto = valor.getMonto();
-            String concepto = String.format("Mes Alquiler %s",fecha.getMonthOfYear());
+            String concepto = String.format("Mes Alquiler %s",OptionsCfg.MESES[fecha.getMonthOfYear()]);
             
             cd.setConcepto(concepto);
             cd.setId_concepto(OptionsCfg.CONCEPTO_ALQUILER);

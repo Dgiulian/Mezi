@@ -37,10 +37,11 @@ public abstract class BasePdf {
     protected  BaseFont bfBold;
     protected  BaseFont bf;    
     protected  int pageNumber = 0;
+    protected int baseFontSize = 10;
     protected final String logoFileName = "e:\\ActiSoft\\LogoACTIgde.jpg";
     protected void createHeadings(PdfContentByte cb, float x, float y, String text){
         cb.beginText();
-        cb.setFontAndSize(bf, 8);
+        cb.setFontAndSize(bf, this.baseFontSize);
         cb.setTextMatrix(x,y);
         cb.showText(text.trim());
         cb.setFontAndSize(bf, 7);
@@ -48,7 +49,7 @@ public abstract class BasePdf {
     }
     protected void addText(PdfContentByte cb, float x, float y, String text){
         cb.beginText();
-        cb.setFontAndSize(bf, 8);
+        cb.setFontAndSize(bf, this.baseFontSize);
         cb.setTextMatrix(x,y);
         
         cb.showText(text.trim());

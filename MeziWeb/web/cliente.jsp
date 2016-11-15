@@ -27,32 +27,46 @@
                                             <H3>Listado de clientes <a href="<%= PathCfg.CLIENTE_EDIT%>" class="btn btn-primary" ><span class="fa fa-file" ></span> Nuevo</a></H3>
                                         </div>
                                     <div  class="box-content">
+                                    
                                         <div class="row">
                                             <div class="col-lg-4">
                                                 <div clas="form-group">
                                                     <label for="nombre_search">Nombre</label>
-                                                    <div class="input-group">                                                                                            
-                                                        <input type="text" class="form-control" name="nombre_search" id="nombre_search" size="20" value="">
-                                                    </div>
+                                                    <input type="text" class="form-control" name="nombre_search" id="nombre_search" size="20" value="">                                                    
                                                 </div>
                                             </div>
                                             <div class="col-lg-4">
                                              <div clas="form-group">
                                                     <label for="apellido_search">Apellido</label>
-                                                    <div class="input-group">                                                                                            
+<!--                                                    <div class="input-group">                                                                                            -->
                                                         <input type="text" class="form-control" name="apellido_search" id="apellido_search" size="20" value="">
-                                                    </div>
+                                                    <!--</div>-->
                                                 </div>
                                             </div>
-                                            <div class="col-lg-4">
+                                            <div class="col-lg-2">
                                              <div clas="form-group">
                                                     <label for="dni_search">Dni</label>
-                                                    <div class="input-group">                                                                                            
+                                                    
                                                         <input type="text" class="form-control" name="dni_search" id="dni_search" size="20" value="">
-                                                    </div>
+
                                                 </div>
                                             </div>
+                                            <div class="col-lg-1">
+                                            <div clas="form-group">
+                                                <label for="numResults">Mostrar: </label>
+                                           <select id="numResults" name="numResults" CLASS="form-control" >
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>                                                            
+                                        </select>
                                             </div>
+                                        </div>
+                                        </div><!--row-->
+                                      <div class="row" id="paginacion">
+                                          <input type="hidden" id="pagNro" name="pagNro" value="1">                                          
+                                          <ul class="pagination"></ul>
+                                      </div>
+                                        
                                             <table class="table table-bordered table-condensed table-striped" id="tblCliente">
                                                 <thead>
                                                     <tr>
@@ -148,10 +162,14 @@
            $('#nombre_search').change(filtrar_mdl_cliente);
            $('#apellido_search').change(filtrar_mdl_cliente);
            $('#dni_search').change(filtrar_mdl_cliente);
+           $('ul.pagination li').click(gotoPage);
+           $('#numResults').change(filtrar_mdl_cliente);
            filtrar_mdl_cliente();
         });
         
         function loadData(data){
+            console.log(data);
+        
             var $tabla = $('#tblCliente');
             //$tabla.DataTable().destroy();
             $.ajax({
@@ -166,6 +184,8 @@
                success: function(result) {
                    if(result.Result === "OK") {
                        $tabla.find('tbody').html(createTable(result.Records));
+                       $('ul.pagination').html(createPagination(result.TotalRecordCount,data.pagNro,data.numResults));
+                       $('ul.pagination li').click(gotoPage);
                         $('.btn-del').click(borrar);
                         
 //                        $tabla.DataTable({
@@ -184,13 +204,14 @@
                }
            });
     }
+  
    function createTable(data){
         var html = "";
         for(var i = 0;i< data.length;i++){
            html +="<tr class=''>";
            d = data[i];
                       
-           html += wrapTag('td',d.id,'');
+           html += wrapTag('td',d.carpeta,'');
            html += wrapTag('td',d.apellido + ", " + d.nombre,'');
            html += wrapTag('td',d.tipo_cliente,'');
            html += wrapTag('td',d.dni,'');
@@ -215,19 +236,33 @@
                 } else if (result.Message) bootbox.alert(result.Message);
         }, message);
     }
-    function filtrar_mdl_cliente(){            
-        var nombre_search = $('#nombre_search').val();
-        var apellido_search = $('#apellido_search').val();
-        var dni_search = $('#dni_search').val();
-
-        loadData({
-            nombre: nombre_search,           
-            apellido: apellido_search,
-            dni: dni_search  ,
-        });
+    function filtrar_mdl_cliente(){     
+        var data = {};
+        data.nombre = $('#nombre_search').val();
+        data.apellido = $('#apellido_search').val();
+        data.dni = $('#dni_search').val();
+        data.pagNro = parseInt($('#pagNro').val());
+        data.numResults = parseInt($('#numResults').val());
+        loadData(data);
 
      }
-   
+     function gotoPage(){            
+            var pagNro = parseInt($(this).find('a').text());
+            $('ul.pagination li').removeClass('active');
+            $(this).addClass('active');
+            $('#pagNro').val(pagNro);
+            filtrar_mdl_cliente();
+        }
+    function createPagination(totalRecordCount,pagNro,numResults){
+        var html="";
+        var numPages = Math.ceil(totalRecordCount / numResults);
+        //if(numPages<=1) return html;
+        for(var i=1;i<=numPages;i++){
+            var active=(i===pagNro)?'class="active"':'';
+            html += '<li '+ active +'><a href="#">'+ i +'</a></li>';
+        }        
+    return html;
+   }
     </script>
 </body>
 </html>

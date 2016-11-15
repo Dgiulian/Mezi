@@ -13,10 +13,11 @@ import java.util.List;
  */
 public class JsonRespuesta {
 
-    String Result;
+    String Result;    
+    int TotalRecordCount;
+    int RecordCount;
     List Records;
     List Options;
-    int TotalRecordCount;
     Object Record;
     String Message;
     
@@ -65,5 +66,12 @@ public class JsonRespuesta {
         this.Options = list;
     }
     
+    public int getRecordCount() {
+        return RecordCount;
+    }
+
+    public void setRecordCount(int RecordCount) {
+        this.RecordCount = RecordCount;
+    }
     
 }

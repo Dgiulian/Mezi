@@ -99,6 +99,19 @@
                                             <% }%>
                                            </fieldset>
                                         </div>
+                                           <div class="row">
+                                           <div class="form-group">
+                                            <label class="control-label" for="id_forma">Forma de pago</label>
+                                            <div class="input-group">
+                                              <select class="form-control input-md " id="id_forma">
+                                                <option value="0">Todos</option>
+                                                <% for(Option o:OptionsCfg.getFormaPago()) {%>
+                                                    <option value="<%=o.getId()%>"><%=o.getDescripcion()%></option>
+
+                                                <% } %>
+                                              </select>
+                                          </div>
+                                           </div>
                                         <div class="row">
                                             <div class="col-lg-12">
                                             <table class="table table-bordered table-condensed table-striped" id="tblCajaDetalle">
@@ -112,6 +125,7 @@
                                               <thead>
                                                   <tr>
                                                       <th>Concepto</th>
+                                                      <th>Cuenta</th>
                                                       <th>Forma</th>
                                                       <th>Tipo</th>
                                                       <th>Importe</th>
@@ -238,15 +252,15 @@
             {{#each detalles}}
             <tr>
                 <td>{{concepto}}</td>                
+                <td>{{nombre_cuenta}}</td>                
                 <td>{{forma_pago}}</td>                
                 <td>{{tipo}}</td>                
                 <td>{{importe}}</td>
                 <td>{{saldo}}</td>
             </tr>           
             {{else}}
-            <tr><td colspan="3" ><center>A&uacute;n no se han realizado movimientos</center></td></tr>
-            {{/each}}
-           
+            <tr><td colspan="6" ><center>A&uacute;n no se han realizado movimientos</center></td></tr>
+            {{/each}}           
         </script>
         <script id="cerrarCaja" type="text/x-handlebars-template">
            <div class="row">
@@ -307,7 +321,7 @@
         $(document).ready(function(){
            $('#btnAgregar').click(agregarDetalle);
            $('#btnCerrar').click(cerrarCaja);
-           
+           $('#id_forma').change(filtrar_mdl_caja);
         filtrar_mdl_caja();
         loadCuentasInternas();
         });
@@ -367,10 +381,11 @@
        return html;
     }  
     function filtrar_mdl_caja(){            
-        var id_caja = $('#id_caja').val();        
-        loadDataCajaDetalle({
-            id_caja:id_caja
-        });
+        var data = {};
+        data.id_caja = $('#id_caja').val();
+        data.id_forma = $('#id_forma').val();
+        console.log(data);
+        loadDataCajaDetalle(data);
 
      }
    function agregarDetalle(){
@@ -395,6 +410,9 @@
                         data: data,
                         success:function(result){
                             if(result.Result ==="OK"){
+                                if(result.Record.id) {
+                                location.href = "<%=PathCfg.RECIBO_PRINT%>?id="+ result.Record.id;
+                               }
                                 filtrar_mdl_caja({});
                             } else {
                                 bootbox.alert(result.Message);
@@ -426,6 +444,7 @@ function cerrarCaja(){
    
     //var template = Handlebars.templates['cerrarCaja'];
     var data = calcularSaldos();
+    
     bootbox.dialog({
         title: "Cierre de caja",
         message: template(data),
@@ -476,8 +495,8 @@ function calcularSaldos(){
     data.saldo_transferencia = 0;
     $("#tblCajaDetalle tbody tr").each(function(index,el){
         var row = $(this).find("td");
-        var forma = $(row[1]).text();
-        var importe = parseFloat($(row[3]).text());
+        var forma = $(row[2]).text();        
+        var importe = parseFloat($(row[4]).text());
         if(forma==="Efectivo") data.saldo_efectivo += importe;
         else if(forma==="Cheque")  data.saldo_cheques += importe;
         else if(forma==="Transferencia")  data.saldo_transferencia += importe;

@@ -63,7 +63,7 @@
     }
     List<Contrato_valor> lstValor = (List<Contrato_valor>) request.getAttribute("lstValor");
     List<Contrato_documento> lstDocum= (List<Contrato_documento>) request.getAttribute("lstDocum");
-    List<Contrato_gasto> lstGasto = (List<Contrato_gasto>) request.getAttribute("lstGasto");
+    List<Contrato_gasto> lstContrato_gasto = (List<Contrato_gasto>) request.getAttribute("lstContrato_gasto");
     DecimalFormat df = new DecimalFormat("#.#####");
 %>
 <!DOCTYPE html>
@@ -351,7 +351,7 @@
                                                               
                                                             </thead>
                                                             <tbody>
-                                                                <% for(Contrato_valor valor:lstValor) {%> 
+                                                                <% for(Contrato_valor valor: lstValor) {%> 
                                                                 <tr>
                                                                     <td><%=TFecha.formatearFechaBdVista(valor.getDesde())%><input type="hidden" name="valor_desde" value="<%=TFecha.formatearFechaBdVista(valor.getDesde())%>"></td>
                                                                     <td><%=TFecha.formatearFechaBdVista(valor.getHasta())%><input type="hidden" name="valor_hasta" value="<%=TFecha.formatearFechaBdVista(valor.getHasta())%>"></td>
@@ -361,7 +361,13 @@
                                                                 <%}%>
                                                                 
                                                             </tbody>
-                                                            <tfoot><tr><td colspan="5"><span class="btn btn-primary" id="btnValor">Agregar Valor</span></td></tr></tfoot>
+                                                            <tfoot>
+                                                                <% if(lstValor.size() == 0) {%>
+                                                                <tr><td colspan="5">No se agreg&oacute; ning&uacute;n valor al contrato</td></tr>
+                                                                <% }%>
+                                                                <!-- <tr><td colspan="5"><span class="btn btn-primary" id="btnValor">Agregar Valor</span></td></tr> -->
+                                                            </tfoot>  
+                                                            <tfoot></tfoot>
                                                         </table>
                                                     </fieldset>
                                                     </div>
@@ -386,7 +392,7 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <% for(Contrato_documento documento:lstDocum) {%> 
+                                                                <% for(Contrato_documento documento: lstDocum) {%> 
                                                                 <tr>
                                                                     <td><%=TFecha.formatearFechaBdVista(documento.getDesde())%><input type="hidden" name="documento_desde" value="<%=TFecha.formatearFechaBdVista(documento.getDesde())%>"></td>
                                                                     <td><%=TFecha.formatearFechaBdVista(documento.getHasta())%><input type="hidden" name="documento_hasta" value="<%=TFecha.formatearFechaBdVista(documento.getHasta())%>"></td>
@@ -395,7 +401,12 @@
                                                                 </tr>
                                                                 <%}%>                                                              
                                                             </tbody>
-                                                            <tfoot><tr><td colspan="5"><span class="btn btn-primary" id="btnDocumento">Agregar Valor</span></td></tr></tfoot>
+                                                            <tfoot>
+                                                                <% if(lstDocum.size() == 0) {%>
+                                                                <tr><td colspan="5">No se agreg&oacute; ning&uacute;n documento al contrato</td></tr>
+                                                                <% }%>
+                                                                <!-- <tr><td colspan="5"><span class="btn btn-primary" id="btnDocumento">Agregar Valor</span></td></tr>-->
+                                                            </tfoot>                                                            
                                                         </table>
                                                             </fieldset>
                                                     </div>
@@ -623,24 +634,32 @@
                                                                 <tr>
                                                                     <th>Concepto</th>
                                                                     <th>Aplica</th>
+                                                                    <th>Cuotas</th>
                                                                     <th>Importe</th>
                                                                     <th>Acci&oacute;n</th>
                                                                 </tr>
                                                             </thead>
                                                             
                                                             <tbody>
-                                                                <% for(Contrato_gasto gasto:lstGasto) {
+                                                                <% for(Contrato_gasto gasto: lstContrato_gasto) {
                                                                     String aplica = gasto.getId_aplica()==1?"Inquilino":"Propietario";
                                                                 %> 
                                                                 <tr>
                                                                     <td><%=gasto.getConcepto()%><input type="hidden" name="gasto_concepto" value="<%=gasto.getConcepto()%>"></td>
                                                                     <td><%=aplica%><input type="hidden" name="gasto_aplica" value="<%=gasto.getId_aplica()%>"></td>
+                                                                    <td><%=gasto.getCuotas()%><input type="hidden" name="gasto_cuotas" value="<%=gasto.getCuotas()%>"></td>
                                                                     <td><%=df.format(gasto.getImporte())%><input type="hidden" name="valor_monto" value="<%=gasto.getImporte()%>"></td>
                                                                     <td><span class='btn btn-xs btn-danger btn-circle btn-del'><span class='fa fa-trash-o'></span></td>
                                                                 </tr>
                                                                 <%}%>                                                               
                                                             </tbody>
-                                                            <tfoot><tr><td colspan="5"><span class="btn btn-primary" id="btnGasto">Agregar Gasto</span></td></tr></tfoot>
+                                                            <tfoot>
+                                                                <% if(lstContrato_gasto.size() == 0) {%>
+                                                                <tr><td colspan="5">No se agreg&oacute; ning&uacute;n gasto adicional al contrato</td></tr>
+                                                                <% } else { %>
+                                                                <!-- <tr><td colspan="5"><span class="btn btn-primary" id="btnGasto">Agregar Gasto</span></td></tr>-->
+                                                                <%}%>
+                                                            </tfoot>
                                                         </table>
                                                     </div>
                                             </div> <!-- tabAdic-->

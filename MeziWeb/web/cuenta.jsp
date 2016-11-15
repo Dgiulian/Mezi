@@ -281,7 +281,8 @@
 	<![endif]-->
 	<script src="assets/js/jquery-migrate-1.2.1.min.js"></script>
 	<script src="assets/js/bootstrap.min.js"></script>
-	
+	<script src="assets/js/handlebars-v4.0.5.js"></script>
+        
 	<!-- page scripts -->
 	<script src="assets/js/jquery-ui-1.10.3.custom.min.js"></script>
         <script src="assets/js/bootstrap-datepicker.min.js"></script>
@@ -469,9 +470,6 @@
            html += wrapTag('td',d.debe.toFixed(2),'numeric');
            html += wrapTag('td',d.haber.toFixed(2),'numeric');
            html += wrapTag('td',saldo.toFixed(2),'numeric');
-            
-//            html +='<td style="width:75px"  >' + '</td>';
-//            html +=wrapTag('td',htmlEdit + htmlDel,'');
            html +="</tr>";
        }      
        return html;
@@ -601,5 +599,6 @@ function completarPropiedad(data){
     <%@include file="mdl_propiedad.jsp" %>
     <%@include file="mdl_concepto.jsp" %>
     <%@include file="mdl_liquidar.jsp" %>
+    <%@include file="mdl_pago_adelantado.jsp" %>
 </body>
 </html>

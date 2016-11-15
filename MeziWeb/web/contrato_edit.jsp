@@ -601,15 +601,14 @@
                                                                 <tr>
                                                                     <th>Concepto</th>
                                                                     <th>Aplica</th>
-                                                                    <th>Importe</th>
                                                                     <th>Cuotas</th>
+                                                                    <th>Importe</th>
                                                                     <th>Acci&oacute;n</th>
                                                                 </tr>
                                                             </thead>                                                            
                                                             <tbody>
-                                                                <% for(Contrato_gasto cg :lstContrato_gasto) {
+                                                                <% for(Contrato_gasto cg: lstContrato_gasto) {
                                                                     String aplica = (cg.getId_aplica()==OptionsCfg.CLIENTE_TIPO_INQUILINO)?"Inquilino":"Propietario";
-
                                                                 %>
                                                                 <tr>
                                                                     <td><%=cg.getConcepto()%><input type="hidden" name="gasto_concepto" value="<%=cg.getConcepto()%>"></td>
@@ -620,7 +619,16 @@
                                                                 </tr>
                                                                 <%}%>
                                                             </tbody>
-                                                            <tfoot><tr><td colspan="5"><span class="btn btn-sm btn-primary" id="btnGasto">Agregar Valor</span></td></tr></tfoot>
+                                                            <tfoot>
+                                                                <tr><td colspan="5">
+                                                                <% if(lstContrato_gasto.size() == 0) {%>
+                                                               <!--  No se agreg&oacute; ning&uacute;n gasto adicional al contrato -->
+                                                                <% } else { %>
+                                                                <span class="btn btn-sm btn-primary" id="btnGasto">Agregar Gasto</span>
+                                                                <% } %>
+                                                                </td></tr>
+                                                                
+                                                            </tfoot>
                                                         </table>
                                                     </div>
                                             </div> <!-- tabAdic-->
@@ -1211,8 +1219,10 @@ function validarNoNulo($campo,mensaje){
     return true;
 }
 </script>
- <%@include file="mdl_cliente.jsp" %>
+ 
  <%@include file="mdl_propiedad.jsp" %>
+ <%@include file="mdl_cliente.jsp" %>
+ <%--<%@include file="mdl_propietario.jsp" %>--%>
  <%@include file="mdl_valor.jsp" %>
  <%@include file="mdl_documento.jsp" %>
  <%--<%@include file="mdl_gasto.jsp" %>--%>

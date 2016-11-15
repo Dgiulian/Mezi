@@ -34,7 +34,7 @@ public class PropiedadList extends HttpServlet {
     private Map<Integer,Barrio> mapBarrios;
     private Map<Integer,Propietario> mapPropietarios;
     private Map<Integer,Option> mapEstados;
-    private String[] arrTipo_propiedad  = {"","Casa","Departamento","Terreno","Local comercial"};
+    private String[] arrTipo_propiedad  = {"","Casa","Departamento","Terreno","Local comercial","Chacra","Galp&oacute;n"};
     
     /**
      * Processes requests for both HTTP
@@ -51,11 +51,15 @@ public class PropiedadList extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
         Integer pagNro = Parser.parseInt(request.getParameter("pagNro"));
+        Integer numResults = Parser.parseInt(request.getParameter("numResults"));
         Integer id = Parser.parseInt(request.getParameter("id"));
         Integer id_tipo_inmueble = Parser.parseInt(request.getParameter("id_tipo_inmueble"));
         Integer id_estado = Parser.parseInt(request.getParameter("id_estado"));
         Integer id_operacion = Parser.parseInt(request.getParameter("id_operacion"));
         Integer id_propietario = Parser.parseInt(request.getParameter("id_propietario"));
+        String calle  = request.getParameter("calle");
+        String numero = request.getParameter("numero");
+        
         Integer page = 0;
         
         try {
@@ -66,6 +70,8 @@ public class PropiedadList extends HttpServlet {
             List<Propiedad> lista ;
             
             TPropiedad tp = new TPropiedad();
+            if(numResults>0) tp.setNumResults(numResults);
+            
             HashMap<String,String> mapFiltro = new HashMap<String,String> ();
             if(id!=0){
                 mapFiltro.put("id",id.toString());
@@ -82,14 +88,18 @@ public class PropiedadList extends HttpServlet {
             if(id_propietario!=0){
                 mapFiltro.put("id_propietario",id_propietario.toString());
             }
-            lista =  tp.getListFiltro(mapFiltro);
+            if(calle!=null && !"".equals(calle)) mapFiltro.put("calle",calle);
+            if(numero!=null && !"".equals(numero)) mapFiltro.put("numero",numero);
+            
+            lista =  tp.getListFiltro(mapFiltro,pagNro);
 //            lista = tp.getList();
             ArrayList<PropiedadDet> listaDet = new ArrayList();
             for(Propiedad p:lista){
                 listaDet.add(new PropiedadDet(p));
             }
             if (lista != null) {
-                jr.setTotalRecordCount(listaDet.size());
+                jr.setTotalRecordCount(tp.getListFiltroCount(mapFiltro));
+                jr.setRecordCount(listaDet.size());
                 jr.setRecords(listaDet);
             } else {
                 jr.setTotalRecordCount(0);
@@ -147,10 +157,10 @@ public class PropiedadList extends HttpServlet {
     }// </editor-fold>
     
     private class PropiedadDet extends Propiedad {
-        String barrio      = "";
-        String tipo_inmueble        = "";
-        String propietario = "";
-        String estado      = "";
+        String barrio         = "";
+        String tipo_inmueble  = "";
+        String propietario    = "";
+        String estado         = "";
         String operacion      = "";
         PropiedadDet(Propiedad p){
             super(p);

@@ -1,6 +1,7 @@
 package transaccion;
 
 import bd.Cliente;
+import java.util.HashMap;
 import java.util.List;
 public class TCliente extends TransaccionBase<Cliente> {
 
@@ -25,4 +26,10 @@ public class TCliente extends TransaccionBase<Cliente> {
                 System.out.println(query);
 		return super.getById(query);
 	}
+        public static void main(String[] args){
+            HashMap<String,String> mapFiltro = new HashMap<String,String>();
+//            mapFiltro.put("nombre","ANGELA");
+            new TCliente().getListFiltro(mapFiltro, 1);
+            System.out.println(new TCliente().getListFiltroCount(mapFiltro));
+        }
 }

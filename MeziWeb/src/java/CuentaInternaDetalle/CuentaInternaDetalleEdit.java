@@ -6,6 +6,8 @@ package CuentaInternaDetalle;
 
 import bd.Cuenta_interna;
 import bd.Cuenta_interna_detalle;
+import bd.Recibo;
+import bd.Recibo_detalle;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.eclipse.jdt.internal.compiler.parser.ParserBasicInformation;
 import transaccion.TCuenta_interna;
+import transaccion.TRecibo;
+import transaccion.TRecibo_detalle;
 import utils.BaseException;
 import utils.JsonRespuesta;
 import utils.OptionsCfg;
@@ -111,8 +115,34 @@ public class CuentaInternaDetalleEdit extends HttpServlet {
             int id = ti.alta(cuenta_interna);
             if (id==0)throw new BaseException("ERROR","Ocurri&oacute; un error al guardar el movimiento");
             cuenta_interna.setId(id);
+            TRecibo tr = new TRecibo();
+            TRecibo_detalle trd = new TRecibo_detalle();
+            
+//            Recibo recibo = new Recibo();            
+//            recibo.setId_pago(0);
+//            recibo.setId_cuenta(cuenta.getId());
+//            recibo.setId_contrato(0);
+//            recibo.setFecha(fecha);
+//            recibo.setNumero(0);
+//            recibo.setId_tipo_recibo(OptionsCfg.CLIENTE_TIPO_INTERNA);
+//            recibo.setFecha_creacion(TFecha.ahora(TFecha.formatoBD_Hora));
+//            recibo.setId_cliente(0);       
+//            recibo.setNumero(tr.getNumero());
+//            Integer id_recibo = tr.alta(recibo );   
+//            if(id_recibo!=0){
+//                Recibo_detalle detalle = new Recibo_detalle();
+//                detalle.setId_recibo(id_recibo);
+//                detalle.setConcepto(concepto);
+//                detalle.setFecha(fecha);
+//                detalle.setDebe(cuenta_interna.getDebe());
+//                detalle.setHaber(cuenta_interna.getHaber());
+//                trd.alta(detalle);                
+//            }
+//            
+            
             jr.setResult("OK");
-            jr.setRecord(cuenta_interna);            
+            jr.setRecord(cuenta_interna);
+//            jr.setRecord(recibo);
         } catch(BaseException ex){
             jr.setResult(ex.getResult());
             jr.setMessage(ex.getMessage());

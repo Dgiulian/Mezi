@@ -2,22 +2,19 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Caja;
+package Recibo;
 
-import bd.Caja;
+import bd.Recibo;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import transaccion.TCaja;
-import utils.BaseException;
+import transaccion.TRecibo;
 import utils.JsonRespuesta;
 import utils.OptionsCfg;
 import utils.Parser;
@@ -26,8 +23,8 @@ import utils.Parser;
  *
  * @author Diego
  */
-public class CajaList extends HttpServlet {
-    private HashMap<Integer, OptionsCfg.Option> mapEstadosCaja;
+public class ReciboList extends HttpServlet {
+
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -42,39 +39,69 @@ public class CajaList extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        JsonRespuesta jr = new JsonRespuesta();
-        Gson gson = new Gson();
-        mapEstadosCaja = OptionsCfg.getMap(OptionsCfg.getEstadosCaja());
+        String pagNro = request.getParameter("pagNro");
+        Integer id_localidad = Parser.parseInt(request.getParameter("id_localidad"));
+        Integer page = Parser.parseInt(pagNro);
         
+       
         try {
-           HttpSession sesion = request.getSession(false);
-           Integer id_usuario = (Integer) sesion.getAttribute("id_usuario");
-           Integer id_tipo_usuario_actual = (Integer) sesion.getAttribute("id_tipo_usuario");
-           if (id_usuario ==null) throw new BaseException("ERROR","Su sesi&oacute;n expir&oacute;. Debe estar logueado para abrir una caja");                
-         
-           TCaja tc = new TCaja();
-           HashMap<String,String> mapFiltro = new HashMap<String,String>();
-           mapFiltro.put("id_usuario", id_usuario.toString());
-           tc.setOrderBy(" fecha desc");
-           List<Caja> listFiltro = tc.getListFiltro(mapFiltro);           
-           if(listFiltro==null) throw new BaseException("ERROR","Ocurri&oacute; un error al listar las cajas");
-           ArrayList listaDet = new ArrayList<CajaDet>();
-           
-            for(Caja caja:listFiltro)   {
-                listaDet.add(new CajaDet(caja));
-            }           
-           jr.setResult("OK");
-           jr.setRecords(listaDet);
-        } catch(BaseException ex){
-            jr.setResult(ex.getResult());
-            jr.setMessage(ex.getMessage());
-        } finally {
-            out.printf(gson.toJson(jr));
+            JsonRespuesta jr = new JsonRespuesta();           
+
+            List<Recibo> lista ;
+
+            TRecibo tp = new TRecibo();
+//            HashMap<String,String> mapFiltro = new HashMap<String,String> ();
+            
+            lista =  tp.getList();
+           //lista = tp.getList();
+            ArrayList<ReciboDet> listaDet = new ArrayList();
+            for(Recibo c:lista){
+                listaDet.add(new ReciboDet(c));
+            } 
+            if (lista != null) {
+                jr.setTotalRecordCount(lista.size());
+                jr.setResult("OK");
+                jr.setRecords(listaDet);
+            } else {                
+                jr.setTotalRecordCount(0);
+                jr.setResult("ERROR");
+            }            
+
+            
+            
+            String jsonResult = new Gson().toJson(jr);
+
+            out.print(jsonResult);
+        } finally {            
             out.close();
         }
     }
-
     
+    private class ReciboDet extends Recibo{
+        String tipo_recibo = "";
+        String tipo_cliente = "";
+        public ReciboDet(Recibo recibo){
+            super(recibo);
+            
+            
+            switch (recibo.getId_tipo_recibo()){
+               case OptionsCfg.CLIENTE_TIPO_INQUILINO:
+                   tipo_recibo = "Inquilino";
+                   break;
+                case OptionsCfg.CLIENTE_TIPO_PROPIETARIO:
+                    tipo_recibo = "Propietario";
+                    break;
+                case OptionsCfg.CLIENTE_TIPO_INTERNA: 
+                    tipo_recibo = "Interna";
+                    break;
+            }
+            switch (recibo.getId_tipo_cliente()){
+                
+            }
+            
+        }
+    }
+   
     /**
      * Handles the HTTP
      * <code>GET</code> method.
@@ -114,14 +141,4 @@ public class CajaList extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
-    private class CajaDet extends Caja{
-        public String estado = "";
-        public CajaDet(Caja caja){
-            super(caja);
-            OptionsCfg.Option opt = mapEstadosCaja.get(caja.getId_estado());
-            estado = opt==null?caja.getId_estado().toString():opt.getDescripcion();
-        }
-    }
-    
 }

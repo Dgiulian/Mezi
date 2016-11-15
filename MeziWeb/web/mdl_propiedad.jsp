@@ -4,10 +4,31 @@
     <div class="modal-dialog">
         <div class="modal-content">
                 <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">Buscar propiedad</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Buscar propiedad</h4>
                 </div>
                 <div class="modal-body">
+                    <div class="row">
+<!--                      <div class="col-lg-6">
+                            <div clas="form-group">
+                                <label for="id">Propietario</label>
+                                <span class="input-group">                                                                                            
+                                    <input type="text" class="form-control uppercase" name="propietario" id="propietario" size="20" value="">
+                                    <input type="hidden" class="form-control uppercase" name="id_propietario" id="id_propietario" size="20" value="">
+                                    <span class="input-group-addon" id="btnBuscarCliente" ><span class="fa fa-search fa-fw"></span></span>
+                                </span>
+                            </div>
+                        </div>-->
+                        <div class="col-lg-6">
+                            <div clas="form-group">
+                                <label for="calle_search">Calle</label>
+                                <span class="input-group">                                                                                            
+                                    <input type="text" class="form-control uppercase" name="calle_search" id="calle_search" size="20" value="">
+                                    <span class="input-group-addon" id="btnFiltrarCalle" ><span class="fa fa-search fa-fw"></span></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                     <table class="table table-striped table-condensed" id="tblPropiedad">
                         <thead>
                             <tr>                                
@@ -30,10 +51,22 @@
 
 <script>
     $(document).ready(function(){
+       $('#btnFiltrarCalle').click(filtrarPropiedad);
+//       $('#btnBuscarCliente').click(function(){
+//            $('#mdlPropietario').modal('show');
+//       });
+       $('#mdlPropietario').on('hide.bs.modal',filtrarPropiedad);
        $('#mdlPropiedad').on('show.bs.modal',function(){
-           loadDataPropiedad({});
+        //   loadDataPropiedad({});
        }) 
     });
+    function filtrarPropiedad(){
+        var data = {};
+        data.id_propietario = $('#id_propietario').val();
+        data.calle = $('#calle_search').val();
+        console.log(data);
+        loadDataPropiedad(data);
+    }
     function loadDataPropiedad(data){
             var $tabla = $('#tblPropiedad');
             //$tabla.DataTable().destroy();

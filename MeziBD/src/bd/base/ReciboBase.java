@@ -11,6 +11,7 @@ public class ReciboBase {
 	public Integer id_tipo_cliente = 0;
 	public Integer id_pago = 0;
 	public String fecha_creacion = "";
+	public Integer id_caja = 0;
 
 	public ReciboBase() {
 	}
@@ -117,4 +118,11 @@ public class ReciboBase {
 		this.fecha_creacion = fecha_creacion;
 		return this;
 	}
+        public Integer getId_caja() {
+            return id_caja;
+        }
+
+        public void setId_caja(Integer id_caja) {
+            this.id_caja = id_caja;
+        }
 }

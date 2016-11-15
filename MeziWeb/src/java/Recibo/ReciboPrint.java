@@ -21,7 +21,10 @@ import transaccion.TParametro;
 import transaccion.TRecibo;
 import utils.BaseException;
 import utils.OptionsCfg;
+import utils.Parser;
 import utils.ReciboInquilinoPdf;
+import utils.ReciboInternoPdf;
+import utils.ReciboPdf;
 import utils.ReciboPropietarioPdf;
 
 
@@ -47,30 +50,36 @@ public class ReciboPrint extends HttpServlet {
         Parametro parametro = new TParametro().getByCodigo(OptionsCfg.RECIBO_PATH);
         try{
             if(request.getParameter("id")==null) throw new BaseException("Error de recibo", "Debe seleccionar el recibo");
-            try{
-                Integer id = Integer.parseInt(request.getParameter("id"));
-                recibo = new TRecibo().getById(id);
-            } catch (NumberFormatException ex){
-                throw new BaseException( "Error" ,"No se ha encontrado el recibo");                
-            }
             
+            Integer id = Parser.parseInt(request.getParameter("id"));
+            recibo = new TRecibo().getById(id);
+            if(recibo==null){
+                    throw new BaseException( "Error" ,"No se ha encontrado el recibo");                
+            }
             Cliente cliente = new TCliente().getById(recibo.getId_cliente());
-            String fileName = String.format("Recibo_%d_%s.pdf",cliente.getCarpeta(),recibo.getFecha());
+            String fileName = String.format("Recibo_%d_%s.pdf",recibo.getNumero(),recibo.getFecha());
             String filePath;
             
             filePath = (parametro!=null)? parametro.getValor():"c:\\";            
             filePath += File.separator + fileName;
             boolean generado = false;
-            if(recibo.getId_tipo_recibo()==OptionsCfg.CLIENTE_TIPO_INQUILINO) {
-                ReciboInquilinoPdf reciboPdf = new ReciboInquilinoPdf(recibo);
-                generado = reciboPdf.createPdf(filePath);
-            } else {
-                ReciboPropietarioPdf reciboPdf = new ReciboPropietarioPdf(recibo);
-                generado = reciboPdf.createPdf(filePath);
+            ReciboPdf reciboPdf;
+            switch(recibo.getId_tipo_recibo()){
+                case OptionsCfg.CLIENTE_TIPO_INQUILINO:
+                    reciboPdf = new ReciboInquilinoPdf(recibo);
+                    generado = reciboPdf.createPdf(filePath);
+                    break;
+                case OptionsCfg.CLIENTE_TIPO_PROPIETARIO:
+                    reciboPdf = new ReciboPropietarioPdf(recibo);
+                    generado = reciboPdf.createPdf(filePath);
+                    break;
+                case OptionsCfg.CLIENTE_TIPO_INTERNA:
+                    reciboPdf = new ReciboInternoPdf(recibo);
+                    generado = reciboPdf.createPdf(filePath);
+                    break;
+                default: generado = false;
             }
             
-            
-
 
             if (generado) {
                 // reads input file from an absolute path        

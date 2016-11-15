@@ -6,6 +6,9 @@ public class Caja_detalleBase {
 	public Integer id_forma = 0;
 	public Integer id_tipo = 0;
 	public Integer id_cuenta = 0;
+	public Integer id_tipo_cuenta = 0;
+
+    
 	public String concepto = "";
 	public Float importe = 0f;
 	public Float saldo = 0f;
@@ -96,6 +99,13 @@ public class Caja_detalleBase {
 		this.saldo = saldo;
 		return this;
 	}
+        public Integer getId_tipo_cuenta() {
+            return id_tipo_cuenta;
+        }
+
+        public void setId_tipo_cuenta(Integer id_tipo_cuenta) {
+            this.id_tipo_cuenta = id_tipo_cuenta;
+        }
 
 
 }

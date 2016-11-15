@@ -21,13 +21,15 @@
 			
 							
 			<div class="row">
+                            
 				<div class="col-lg-12">
-					<div class="box">
-                                            <div class="box-header">
-                                                <H3>Listado de propiedades <a href="<%=PathCfg.PROPIEDAD_EDIT%>" class="btn btn-primary" ><span class="fa fa-file" ></span> Nuevo</a></H3>
-                                            </div>
-                                        <div  class="box-content">
+                                    <div class="box">
+                                        <div class="box-header">
+                                            <H3>Listado de propiedades <a href="<%=PathCfg.PROPIEDAD_EDIT%>" class="btn btn-primary" ><span class="fa fa-file" ></span> Nuevo</a></H3>
+                                        </div>
+                                    <div  class="box-content">
                                             
+                                    <div class="row">
                                         <div class="col-lg-2">
                                             <div clas="form-group">
                                                 <label for="id">C&oacute;digo</label>
@@ -82,7 +84,7 @@
                                                 <label class="control-label" for="id_operacion">Operaci&oacute;n</label>
                                                 <div class="controls">
                                                       <div class="input-group  col-lg-12">
-                                                        <select type="text" id="id_operacion" name="id_operacion" class="form-control">
+                                                        <select id="id_operacion" name="id_operacion" class="form-control">
                                                             <option value="0" selected>Todos</option>
                                                             <option value="1">Alquiler</option>
                                                             <option value="2">Venta</option>                                                            
@@ -91,6 +93,30 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-lg-4">
+                                            <div clas="form-group">
+                                                <label for="calle">Calle</label>
+                                                <span class="input-group">                                                                                            
+                                                    <input type="text" class="form-control uppercase" name="calle" id="calle" size="20" value="">
+                                                    <span class="input-group-addon" id="btnFiltrarCalle" ><span class="fa fa-search fa-fw"></span></span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-1">
+                                            <div clas="form-group">
+                                                <label for="numResults">Mostrar: </label>
+                                           <select id="numResults" name="numResults" CLASS="form-control" >
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>                                                            
+                                        </select>
+                                            </div>
+                                        </div>
+                                      </div><!--row-->
+                                      <div class="row" id="paginacion">
+                                          <input type="hidden" id="pagNro" name="pagNro" value="1">                                          
+                                          <ul class="pagination"></ul>
+                                      </div>
                                             <table class="table table-bordered table-condensed table-striped" id="tblPropiedad" name="tblPropiedad">
                                                  <colgroup>
                                                         <col span="1" style="width: 7%; text-align: right;"> <!-- Codigo -->
@@ -115,8 +141,7 @@
                                                         <th>Acciones</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody class="">
-                                                </tbody>
+                                                <tbody class=""></tbody>
                                             </table>
                                         </div> <!-- tab-content-->
 					</div>
@@ -169,20 +194,8 @@
 	
 	<!-- page scripts -->
 	<script src="assets/js/jquery-ui-1.10.3.custom.min.js"></script>
-	<!--<script src="assets/js/jquery.sparkline.min.js"></script>-->
-	<!--<script src="assets/js/jquery.chosen.min.js"></script>-->
-	<!--<script src="assets/js/jquery.cleditor.min.js"></script>-->
-	<!--<script src="assets/js/jquery.autosize.min.js"></script>-->
-	<!--<script src="assets/js/jquery.placeholder.min.js"></script>-->
-	<!--<script src="assets/js/jquery.maskedinput.min.js"></script>-->
-	<!--<script src="assets/js/jquery.inputlimiter.1.3.1.min.js"></script>-->
-	<!--<script src="assets/js/bootstrap-datepicker.min.js"></script>-->
-	<!--<script src="assets/js/bootstrap-timepicker.min.js"></script>-->
+	
 	<script src="assets/js/moment.min.js"></script>
-	<!--<script src="assets/js/daterangepicker.min.js"></script>-->
-	<!--<script src="assets/js/jquery.hotkeys.min.js"></script>-->
-	<!--<script src="assets/js/bootstrap-wysiwyg.min.js"></script>-->
-	<!--<script src="assets/js/bootstrap-colorpicker.min.js"></script>-->
 	
 	<!-- theme scripts -->
 	<script src="assets/js/custom.min.js"></script>
@@ -197,7 +210,7 @@
 	<!-- end: JavaScript-->
         <script language="">
         $(document).ready(function(){
-           loadData({});
+           filtrar();
            
            $('#id_tipo_inmueble').change(filtrar);
            $('#id_estado').change(filtrar);
@@ -205,31 +218,36 @@
            $('#btnBuscar').click(filtrar);
            $('#id_propietario').change(filtrar);
            $('#propietario').change(filtrar);
+           $('#numResults').change(filtrar);
+           $('#btnFiltrarCalle').click(filtrar);
            $('#btnBuscarCliente').click(function(){
                $('#mdlCliente').modal('show');
            });
-           
+           $('ul.pagination li').click(gotoPage);
         });
+        function gotoPage(){            
+            var pagNro = parseInt($(this).find('a').text());
+            $('ul.pagination li').removeClass('active');
+            $(this).addClass('active');
+            $('#pagNro').val(pagNro);
+            filtrar();
+        }
         function filtrar(){
-            console.log("Filtrar");
-           var id_tipo_inmueble = $('#id_tipo_inmueble').val();
-           var id_estado = $('#id_estado').val();
-           var id_operacion = $('#id_operacion').val();
-           var id_propietario = $('#id_propietario').val();
-           var id = $('#id').val();
-           loadData({
-               id_tipo_inmueble: id_tipo_inmueble,           
-               id_estado: id_estado, 
-               id_operacion: id_operacion,
-               id_propietario:id_propietario,
-               id: id
-           });
+           var data = {}
+           data.id_tipo_inmueble = $('#id_tipo_inmueble').val();
+           data.id_estado = $('#id_estado').val();
+           data.id_operacion = $('#id_operacion').val();
+           data.id_propietario = $('#id_propietario').val();
+           data.calle = $('#calle').val();           
            
+           data.id = $('#id').val();
+           data.pagNro = parseInt($('#pagNro').val());
+           data.numResults = parseInt($('#numResults').val());
+           loadData(data);
         }
         
         function loadData(data){
             var $tabla = $('#tblPropiedad');
-            //$tabla.DataTable().destroy();
             $.ajax({
                url: '<%= PathCfg.PROPIEDAD_LIST %>',
                data: data,
@@ -240,14 +258,38 @@
                     $tabla.find('tbody').html("<tr><td colspan='" + cant_cols + "'><center><img src='assets/img/ajax-loader.gif'/></center></td></tr>");
                },
                success: function(result) {
-                   if(result.Result === "OK") {
-                       
+                   if(result.Result === "OK") {                       
                        $tabla.find('tbody').html(createTable(result.Records));
-                        $('.btn-del').click(borrar);                        
+                       $('ul.pagination').html(createPagination(result.TotalRecordCount,data.pagNro,data.numResults));
+                       $('ul.pagination li').click(gotoPage);
+                       $('.btn-del').click(borrar);  
+//                       $tabla.DataTable({
+//                                responsive: true,
+//                                retrieve: true,
+//                                paging: false,
+//                                ordering: true,
+//                                searching: false,
+//                                lengthChange:false,
+//                                bInfo: false,
+//                                language: {
+//                                    url:'bower_components/datatables-plugins/i18n/Spanish.json',
+//                                }
+//                        });
                    }
                }
            });
     }
+   function createPagination(totalRecordCount,pagNro,numResults){
+    console.log("Paginando");
+        var html="";
+        var numPages = Math.ceil(totalRecordCount / numResults);
+        //if(numPages<=1) return html;
+        for(var i=1;i<=numPages;i++){
+            var active=(i===pagNro)?'class="active"':'';
+            html += '<li '+ active +'><a href="#">'+ i +'</a></li>';
+        }        
+    return html;
+   }
    function createTable(data){
         var html = "";
         for(var i = 0;i< data.length;i++){

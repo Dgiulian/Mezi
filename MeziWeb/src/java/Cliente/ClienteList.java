@@ -48,16 +48,15 @@ public class ClienteList extends HttpServlet {
         PrintWriter out = response.getWriter();
         JsonRespuesta jr = new JsonRespuesta();
         
-        String pagNro = request.getParameter("pagNro");
+        Integer pagNro = Parser.parseInt(request.getParameter("pagNro"));
+        Integer numResults = Parser.parseInt(request.getParameter("numResults"));
         String codigo = request.getParameter("codigo");
         String nombre = request.getParameter("nombre");
         String apellido = request.getParameter("apellido");
         Integer id_tipo_cliente = Parser.parseInt(request.getParameter("id_tipo_cliente"));
         String dni = request.getParameter("dni");
         
-        Integer page = 0;
-
-        page = Parser.parseInt(pagNro);
+        
         try {
 //            List<Cliente> lista ;
             mapPropietarios = new TPropietario().getMap();
@@ -66,7 +65,11 @@ public class ClienteList extends HttpServlet {
             TCliente tc     = new TCliente();
             TInquilino ti   = new TInquilino();
             TPropietario tp = new TPropietario();
-            
+            if(numResults>0){
+                tp.setNumResults(numResults);
+                ti.setNumResults(numResults);
+                tc.setNumResults(numResults);
+            }
             HashMap<String,String> mapFiltro = new HashMap<String,String> ();
             
             if(nombre!=null && !nombre.equals("")){
@@ -81,30 +84,44 @@ public class ClienteList extends HttpServlet {
 //            lista =  tp.getListFiltro(mapFiltro);
 //           lista = tp.getList();
             List lista = new ArrayList<ClienteDet>();
+            Integer totalRecordCount = 0;
             switch (id_tipo_cliente) {
               
               case OptionsCfg.CLIENTE_TIPO_PROPIETARIO: {
-                      for(Propietario c:tp.getListFiltro(mapFiltro)){
+                    List<Propietario> lstPropietarios = tp.getListFiltro(mapFiltro,pagNro);
+                    
+                    totalRecordCount = tp.getListFiltroCount(mapFiltro);
+                     for(Propietario c:lstPropietarios){
                         lista.add(new ClienteDet(c));
                       }
               } break;
               case  OptionsCfg.CLIENTE_TIPO_INQUILINO: { 
-                    for(Inquilino c:ti.getListFiltro(mapFiltro)){
+                    List<Inquilino> lstInquilinos = ti.getListFiltro(mapFiltro,pagNro);
+                    if(numResults>0) ti.setNumResults(numResults);
+                    totalRecordCount = ti.getListFiltroCount(mapFiltro);
+                    for(Inquilino c:lstInquilinos){
                         lista.add(new ClienteDet(c));
                     } 
                     break;
               }
-             default: for(Cliente c:tc.getListFiltro(mapFiltro)){
+             default: {
+                
+                List<Cliente> lstClientes = tc.getListFiltro(mapFiltro,pagNro);                
+                totalRecordCount = tc.getListFiltroCount(mapFiltro);
+                 for(Cliente c:lstClientes){
                             lista.add(new ClienteDet(c));
                        } break;
+                }
             }
             if (lista != null) {
                 jr.setResult("OK");
-                jr.setTotalRecordCount(lista.size());
+                jr.setTotalRecordCount(totalRecordCount);
+                jr.setRecordCount(lista.size());
                 jr.setRecords(lista);
             } else {
                 jr.setResult("ERROR");
                 jr.setTotalRecordCount(0);
+                jr.setRecordCount(0);
             }            
 
         } finally {

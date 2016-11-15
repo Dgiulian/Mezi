@@ -105,8 +105,10 @@ public class PathCfg {
     
     public static final String PAGO      = "Pago";
     public static final String PAGO_EDIT = PAGO + "Edit";
+    public static final String PAGO_ADELANTADO = PAGO + "Adelantado";
     
     public static final String RECIBO      = "Recibo";
+    public static final String RECIBO_LIST = RECIBO + "List";
     public static final String RECIBO_PRINT = RECIBO + "Print";
     
     

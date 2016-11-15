@@ -34,11 +34,12 @@ public class OptionsCfg {
     public static final int ACCION_BAJA = 2;
     public static final int ACCION_MODIFICAR = 3;
     
-    public static final Integer PROPIEDAD_DISPONIBLE = 1;
-    public static final Integer PROPIEDAD_ALQUILADA = 2;
+    public static final int PROPIEDAD_DISPONIBLE = 1;
+    public static final int PROPIEDAD_ALQUILADA  = 2;
     
-    public static final int CLIENTE_TIPO_INQUILINO = 1;
+    public static final int CLIENTE_TIPO_INQUILINO   = 1;
     public static final int CLIENTE_TIPO_PROPIETARIO = 2;
+    public static final int CLIENTE_TIPO_INTERNA     = 3;
     
     public static final int CUENTA_OFICIAL = 1;
     public static final int CUENTA_NO_OFICIAL = 2;
@@ -82,7 +83,7 @@ public class OptionsCfg {
     
     public static final int GARANTIA_RECIBO     = 1;
     public static final int GARANTIA_ESCRITURA  = 2;
-    
+    public static final String[] MESES = {"Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"};
     public static ArrayList<Option> getPerfiles(){
         ArrayList<Option> lista = new ArrayList();
         lista.add(new Option(1,"ADM","Administrador"));

@@ -184,8 +184,8 @@
             success: function(result){
                 console.log(result);
                 if(result.Result ==="OK"){
-                      var id_cuenta = $('#id_cuenta').val();
-                       loadData({id_cuenta:id_cuenta});
+                      var id_cuenta = $('#id_cuenta').val();                      
+                      loadData({id_cuenta:id_cuenta});
                 } else {
                     bootbox.alert(result.Message);
                 }

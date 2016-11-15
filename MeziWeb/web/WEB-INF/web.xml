@@ -329,6 +329,18 @@
         <servlet-name>CuentaInternaDetalleEdit</servlet-name>
         <servlet-class>CuentaInternaDetalle.CuentaInternaDetalleEdit</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ReciboList</servlet-name>
+        <servlet-class>Recibo.ReciboList</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReciboPath</servlet-name>
+        <servlet-class>Recibo.ReciboPath</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PagoAdelantado</servlet-name>
+        <servlet-class>Pago.PagoAdelantado</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ClientePath</servlet-name>
         <url-pattern>/Cliente</url-pattern>
@@ -612,6 +624,18 @@
     <servlet-mapping>
         <servlet-name>CuentaInternaDetalleEdit</servlet-name>
         <url-pattern>/CuentaInternaDetalleEdit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReciboList</servlet-name>
+        <url-pattern>/ReciboList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReciboPath</servlet-name>
+        <url-pattern>/Recibo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PagoAdelantado</servlet-name>
+        <url-pattern>/PagoAdelantado</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

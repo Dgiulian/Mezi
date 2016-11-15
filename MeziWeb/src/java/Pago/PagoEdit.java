@@ -182,17 +182,24 @@ public class PagoEdit extends HttpServlet {
             recibo.setNumero(0);
             recibo.setId_tipo_recibo(cuenta.getId_tipo_cliente());
             recibo.setFecha_creacion(TFecha.ahora(TFecha.formatoBD_Hora));
-            recibo.setId_cliente(cuenta.getId_cliente());            
+            recibo.setId_cliente(cuenta.getId_cliente());       
+            recibo.setNumero(tr.getNumero());
+            recibo.setId_caja(id_caja);
             Integer id_recibo = tr.alta(recibo );   
             
             if(liqEfeMnt>0){
                 Caja_detalle caja_detalle = new Caja_detalle();
                 caja_detalle.setId_caja(caja.getId());
                 caja_detalle.setId_forma(OptionsCfg.FORMA_EFECTIVO);
+                caja_detalle.setId_cuenta(cuenta.getId());
+                caja_detalle.setId_tipo_cuenta(cuenta.getId_tipo_cliente());
+                caja_detalle.setId_tipo(OptionsCfg.TIPO_INGRESO);
                 if (cuenta.getId_tipo_cliente()==OptionsCfg.CLIENTE_TIPO_PROPIETARIO) {
                     caja_detalle.setImporte(-1 * liqEfeMnt);
+                    caja_detalle.setId_tipo_cuenta(OptionsCfg.CLIENTE_TIPO_PROPIETARIO);
                 } else{
                     caja_detalle.setImporte(liqEfeMnt);
+                    caja_detalle.setId_tipo_cuenta(OptionsCfg.CLIENTE_TIPO_INQUILINO);
                 }                
                 caja_detalle.setConcepto(String.format("RECIBO NRO: %d" , recibo.getNumero()));
                 tcaja_detalle.alta(caja_detalle);
@@ -201,6 +208,9 @@ public class PagoEdit extends HttpServlet {
                 Caja_detalle caja_detalle = new Caja_detalle();
                 caja_detalle.setId_caja(caja.getId());
                 caja_detalle.setId_forma(OptionsCfg.FORMA_CHEQUE);
+                caja_detalle.setId_cuenta(cuenta.getId());
+                caja_detalle.setId_tipo_cuenta(cuenta.getId_tipo_cliente());
+                caja_detalle.setId_tipo(OptionsCfg.TIPO_INGRESO);
                 if (cuenta.getId_tipo_cliente()==OptionsCfg.CLIENTE_TIPO_PROPIETARIO) {
                     caja_detalle.setImporte(liqChkMnt);
                 } else{
@@ -213,6 +223,9 @@ public class PagoEdit extends HttpServlet {
                 Caja_detalle caja_detalle = new Caja_detalle();
                 caja_detalle.setId_caja(caja.getId());
                 caja_detalle.setId_forma(OptionsCfg.FORMA_TRANSFERENCIA);
+                caja_detalle.setId_cuenta(cuenta.getId());
+                caja_detalle.setId_tipo_cuenta(cuenta.getId_tipo_cliente());
+                caja_detalle.setId_tipo(OptionsCfg.TIPO_INGRESO);
                 if (cuenta.getId_tipo_cliente()==OptionsCfg.CLIENTE_TIPO_PROPIETARIO) {
                     caja_detalle.setImporte(liqTraMnt);
                 } else{
@@ -237,15 +250,33 @@ public class PagoEdit extends HttpServlet {
             if(fecha==null || fecha.equals("")) fecha_conslta = new LocalDate();
             else fecha_conslta = new LocalDate(fecha);
             
+            System.out.println(ult_liquidacion);
+            
             for(Cuenta_detalle cuenta_detalle:lista) { // Calculo los punitorios
                 LocalDate fecha_det = new LocalDate(cuenta_detalle.getFecha());
-                if (ult_liquidacion!=null && fecha_det.isBefore(fecha_liquidacion) ) continue;
-                if  (fecha_det.isAfter(fecha_conslta)) continue;
+                /* */
+                if ((ult_liquidacion!=null && fecha_det.isBefore(fecha_liquidacion)) || 
+                   (fecha_det.isEqual(fecha_liquidacion) && cuenta_detalle.getId_concepto() != OptionsCfg.CONCEPTO_SALDO)
+                   ) continue;
+                
+                
+                if  (fecha_det.isAfter(fecha_conslta)) continue; // No se considera nada posterior a la fecha de liquidacion
+                
                 if (cuenta.getId_tipo_cliente()==OptionsCfg.CLIENTE_TIPO_PROPIETARIO) {
                     saldo += cuenta_detalle.getHaber() - cuenta_detalle.getDebe() ;
                 } else{
+                    
                     saldo += cuenta_detalle.getDebe() - cuenta_detalle.getHaber();
                 }
+//                System.out.print(cuenta_detalle.getFecha() );
+//                System.out.print(" " );
+//                System.out.print(cuenta_detalle.getId_concepto() );
+//                System.out.print(" " );
+//                System.out.print(cuenta_detalle.getDebe() );
+//                System.out.print(" " );
+//                System.out.print(cuenta_detalle.getHaber());
+//                System.out.print(" ");
+//                System.out.println(saldo);
                 
                 if (cuenta.getId_tipo_cliente()==OptionsCfg.CLIENTE_TIPO_PROPIETARIO) continue;
                 

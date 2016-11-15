@@ -24,6 +24,9 @@ import java.util.logging.Logger;
  */
 public abstract class TransaccionBase<E> {
     protected String orderBy = " ";
+    protected Integer numResults = 25;
+
+    
     protected Conexion conexion;
     Class<E> clase;
 
@@ -94,21 +97,17 @@ public abstract class TransaccionBase<E> {
         return (E) object;
     }
     public List<E> getListFiltro(Map<String,String> filtro){
-
+        return this.getListFiltro(filtro,0);
+    }
+    private String getWhere(Map<String,String> filtro){
         String where =  " where True ";
-        String order = this.getOrderBy();
         try {
-
             Class claseGenerada = Class.forName(this.clase.getCanonicalName().trim());
             Object objeto = claseGenerada.newInstance();
             
             for (String key : filtro.keySet()) {
                 Object value = filtro.get(key);
                 try{
-//                    Field[] declaredFields = claseGenerada.getFields();
-//                    for(Field f: declaredFields){
-//                        System.out.println(f.getName());
-//                    }
                     Field campo = null;
                     try{
                         campo = claseGenerada.getDeclaredField(key);
@@ -120,7 +119,7 @@ public abstract class TransaccionBase<E> {
 
                 if (type.isAssignableFrom(String.class)){
 //                    where += String.format(" and %s = '%s'",key,value) ;
-                    where += String.format(" and %s like '%%%s%%'",key,value) ;
+                    where += String.format(" and lower(%s) like lower('%%%s%%')",key,value) ;
                 }else if (type.isAssignableFrom(Integer.class)){
                     if (value != null)
                         where += String.format(" and %s = %s",key,value) ;
@@ -140,15 +139,39 @@ public abstract class TransaccionBase<E> {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(this.clase.getCanonicalName()).log(Level.SEVERE, null, ex);
         }
-        //System.out.println(this.clase.getPackage().toString() + );
-        String tabla = this.clase.getCanonicalName().replace(this.clase.getPackage().getName()+".", "").toLowerCase();
-        
-        
-        String query = "select * from " + tabla  + " " + where + " " + order;
+        return where;
+    }
+    private String getTabla(){
+        return this.clase.getCanonicalName().replace(this.clase.getPackage().getName()+".", "").toLowerCase();
+    }
+    private String getLimit(Integer pagNro,Integer num_results){
+        String limit = "";
+        if (pagNro > 0) {
+            pagNro = pagNro - 1;
+            limit = String.format(" limit %d,%d ",num_results * pagNro,num_results);
+        }
+        return limit;
+    }
+    
+    public List<E> getListFiltro(Map<String,String> filtro,Integer pagNro){
+        String order = this.getOrderBy();
+        String where = this.getWhere(filtro);
+        String tabla = this.getTabla();        
+        String limit = this.getLimit(pagNro,this.getNumResults());        
+        String query = "select * from " + tabla  + " " + where + " " + order + " " + limit;        
         System.out.println(query);
         return this.getList(query);
     }
-    
+    public Integer getListFiltroCount(Map<String,String> filtro){        
+        String where = this.getWhere(filtro);
+        String tabla = this.getTabla();                
+        String query = "select count(*) from " + tabla  + " " + where;
+        System.out.println(query);
+        
+        
+        
+        return this.getInteger(query);
+    }
     protected String getByDateRangeQuery(String fecha_desde,String hora_desde,String fecha_hasta, String hora_hasta){
         return "";
     };
@@ -250,5 +273,31 @@ public abstract class TransaccionBase<E> {
             }
         }                
         return query.toString();        
+    }
+    public Integer getInteger(String query) {
+        Integer result = null;
+        try {            
+            conexion.conectarse();
+            ResultSet rs = conexion.ejecutarSQLSelect(query);
+            if(rs!=null){
+                while(rs.next()){
+                    result = rs.getInt(1);
+                    break;
+                }
+            }
+            rs.close();            
+        } catch (SQLException ex) {
+            Logger.getLogger(TransaccionBase.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            conexion.desconectarse();
+            return result;
+        }
+    }
+    public Integer getNumResults() {
+        return numResults;
+    }
+
+    public void setNumResults(Integer numResults) {
+        this.numResults = numResults;
     }
 }

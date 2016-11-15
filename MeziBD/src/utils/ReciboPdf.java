@@ -53,12 +53,19 @@ public class ReciboPdf extends BasePdf{
         this.cuenta      = new TCuenta().getById(recibo.getId_cuenta());
         this.contrato    = new TContrato().getById(recibo.getId_contrato());
         this.cliente     = new TCliente().getById(recibo.getId_cliente());
-        this.propietario = new TCliente().getById(contrato.getId_propietario());
-        this.propiedad   = new TPropiedad().getById(contrato.getId_propiedad());
+        if (contrato!=null) {
+            this.propietario = new TCliente().getById(contrato.getId_propietario());
+            this.propiedad   = new TPropiedad().getById(contrato.getId_propiedad());
+        } 
         
         HashMap<String,String> mapFiltro = new HashMap();
         mapFiltro.put("id_recibo", recibo.getId().toString());
         this.lstRecibo_detalle = new TRecibo_detalle().getListFiltro(mapFiltro);
+        
+        if (pago    == null) pago = new Pago();
+        if (contrato == null) contrato = new Contrato();
+        if (cuenta == null) cuenta = new Cuenta();
+        if ( cliente == null) cliente = new Cliente();
     }
     
     @Override
@@ -72,53 +79,65 @@ public class ReciboPdf extends BasePdf{
        if (image_url!=null) bg_fileName = image_url.getValor();
        //System.out.println(image_url);
        setBackground(cb,bg_fileName);       
-       printNumero(cb);
+       printDatos(cb);
        printHeader(cb);
        printTitle(cb);
        printTotalPago(cb,700);
-       lineStart = 640;
-       lineHeight = 18;
+       printDetalle(cb);
+       lineStart -= 30;
+       printFormaPago(cb,lineStart,45);
+       printFirma(cb,50,380);
+    }
+    
+    public void printDetalle(PdfContentByte cb){
+        lineStart = 640;
+       lineHeight = 15;
+//       addTextAligned(cb, 50,  lineStart + 25, this.baseFontSize,"Concepto",Element.ALIGN_LEFT);       
+       addTextAligned(cb, 45,  lineStart + 13, this.baseFontSize,"Fecha",Element.ALIGN_LEFT);
+       addTextAligned(cb, 105, lineStart + 13, this.baseFontSize,"Concepto",Element.ALIGN_LEFT);
+       addTextAligned(cb, 430, lineStart + 13, this.baseFontSize,"Debe",Element.ALIGN_LEFT);
+       addTextAligned(cb, 480, lineStart + 13, this.baseFontSize,"Haber",Element.ALIGN_LEFT);
+       addTextAligned(cb, 525, lineStart + 13, this.baseFontSize,"Saldo",Element.ALIGN_LEFT);
+       cb.moveTo(40, lineStart   + 13 - 2);
+       cb.lineTo(560, lineStart  + 13 - 2);
+       cb.stroke();
        
        Integer i = 0;
        for(Recibo_detalle rd :lstRecibo_detalle){
            addText(cb, 45, lineStart, TFecha.formatearFechaBdVista(rd.getFecha()));
            addText(cb, 105,lineStart, rd.getConcepto());
-           addTextAlignedRight(cb, 460,lineStart, 8,String.format("%.2f",rd.getDebe()));
-           addTextAlignedRight(cb, 505,lineStart, 8,String.format("%.2f",rd.getHaber()));
-           addTextAlignedRight(cb, 555,lineStart, 8,String.format("%.2f",rd.getSaldo()));
+           addTextAlignedRight(cb, 460,lineStart, this.baseFontSize,String.format("%.2f",rd.getDebe()));
+           addTextAlignedRight(cb, 505,lineStart, this.baseFontSize,String.format("%.2f",rd.getHaber()));
+           addTextAlignedRight(cb, 555,lineStart, this.baseFontSize,String.format("%.2f",rd.getSaldo()));
            lineStart -= lineHeight;
            i++;
        }
-       lineStart -= 20;
-       printFormaPago(cb,lineStart,45);
-       printFirma(cb,50,380);
     }
-    public void printNumero(PdfContentByte cb){
-        addText(cb, 515,810, String.format("%d",recibo.getNumero()));
-        addText(cb, 515,800, TFecha.formatearFechaBdVista(recibo.getFecha()));
+    
+    
+    public void printDatos(PdfContentByte cb){
+        addText(cb, 470,810, "Nº Recibo: ");
+        addText(cb, 525,810, String.format("%d",recibo.getNumero()));
+        
+        addText(cb, 470,800, "Fecha: ");
+        addText(cb, 525,800, TFecha.formatearFechaBdVista(recibo.getFecha()));
     }
-    public void printHeader(PdfContentByte cb){
-        lineStart = 720;
-        addText(cb, 110,lineStart - lineHeight * 0, cliente.getApellido() + ", " + cliente.getNombre());
-        addText(cb, 520,lineStart - lineHeight * 0, "NºC " + contrato.getNumero().toString());
-        addText(cb, 110,710, propiedad.getDireccion());
-    }
-    public void printTotalPago(PdfContentByte cb,Integer lineStart){
-        Float total = pago.getEfectivo() + pago.getCheque_mnt() + pago.getTransf_mnt();
-        addText(cb, 110,lineStart, String.format("%.2f",total));
-        addText(cb, 100,680, String.format("PAGO DEL SIGUIENTE DETALLE POR CUENTA Y ORDEN DE %s",propietario.getApellido().toUpperCase() + ", " + propietario.getNombre().toUpperCase()));
-    }
+    public void printHeader(PdfContentByte cb){ }
+    public void printTotalPago(PdfContentByte cb,Integer lineStart){ }
+    
     public void printFormaPago(PdfContentByte cb,Integer lineStart,Integer colStart){
+       if(pago==null) return;
+       
        createHeadings(cb, colStart,lineStart, "FORMAS DE PAGO:");
         if(pago.getEfectivo()> 0) {
             lineStart -= 20;
             addText(cb, colStart,lineStart, "EFECTIVO:");
-            addTextAligned(cb, colStart + 120, lineStart, 8,String.format("$ %.2f",pago.getEfectivo()),Element.ALIGN_RIGHT);             
+            addTextAligned(cb, colStart + 120, lineStart, this.baseFontSize,String.format("$ %.2f",pago.getEfectivo()),Element.ALIGN_RIGHT);
         }   
         if(pago.getCheque_mnt()> 0) {
             lineStart -= 20;
             addText(cb, colStart,lineStart, "CHEQUE:");
-            addTextAligned(cb, colStart + 120, lineStart,8, String.format("$ %.2f",pago.getCheque_mnt()),Element.ALIGN_RIGHT);
+            addTextAligned(cb, colStart + 120, lineStart,this.baseFontSize, String.format("$ %.2f",pago.getCheque_mnt()),Element.ALIGN_RIGHT);
             addText(cb, colStart + 130,lineStart, String.format("%s (Nº:%s)",pago.getCheque_ban(),pago.getCheque_num()));
             
         }
@@ -126,13 +145,13 @@ public class ReciboPdf extends BasePdf{
         if(pago.getTransf_mnt()>0) {
             lineStart -= 20;
             addText(cb, colStart,lineStart, "TRANSFERENCIA:");
-            addTextAligned(cb, colStart + 120,lineStart,8,  String.format("$ %.2f", pago.getTransf_mnt()),Element.ALIGN_RIGHT);
+            addTextAligned(cb, colStart + 120,lineStart,this.baseFontSize,  String.format("$ %.2f", pago.getTransf_mnt()),Element.ALIGN_RIGHT);
             addText(cb, colStart + 130,lineStart, String.format("(Nº:%s)",pago.getTransf_num()));
         }
         Float total = pago.getEfectivo() + pago.getCheque_mnt() + pago.getTransf_mnt();
         lineStart -= 20;
         addText(cb, colStart,lineStart, "TOTAL:");
-        addTextAligned(cb, colStart + 120,lineStart, 8,String.format("$ %.2f",total),Element.ALIGN_RIGHT);
+        addTextAligned(cb, colStart + 120,lineStart, this.baseFontSize,String.format("$ %.2f",total),Element.ALIGN_RIGHT);
         
     }
     public void setBackground(PdfContentByte cb, String bg_file){
@@ -150,15 +169,16 @@ public class ReciboPdf extends BasePdf{
             }
         }
     }
-    public void printTitle(PdfContentByte cb){
-        this.addText(cb, 740, 350, "Liquidación de inquilino");
-    }
+    public void printTitle(PdfContentByte cb){}
+    /*
+     * Imprime la linea sobre la que se debe firmar
+     */
     public void printFirma(PdfContentByte cb,Integer lineStart,Integer colStart){
        cb.moveTo(colStart, lineStart);
        cb.lineTo(colStart + 130, lineStart);
        cb.stroke();
        lineStart = 40;
-       addText(cb, colStart+20,lineStart, "P/MEZI INMOBILIARIA");
+       
     }
     public static void main(String[] args){
         String fileName = "c:\\recibo.pdf";

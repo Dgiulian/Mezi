@@ -28,12 +28,10 @@ public class PropiedadBase {
 	public Float sup_cubierta = 0f;
 	public Float latitud = 0f;
 	public Float longitud = 0f;
-        public String nomenclatura = "";
-
-
 	public String observaciones = "";
 	public Integer id_estado = 0;
 	public Integer id_operacion = 0;
+	public String nomenclatura = "";
 
 	public PropiedadBase() {
 	}
@@ -66,10 +64,10 @@ public class PropiedadBase {
 		this.sup_cubierta = propiedadbase.getSup_cubierta();
 		this.latitud = propiedadbase.getLatitud();
 		this.longitud = propiedadbase.getLongitud();
-                this.nomenclatura = propiedadbase.getNomenclatura();
 		this.observaciones = propiedadbase.getObservaciones();
 		this.id_estado = propiedadbase.getId_estado();
 		this.id_operacion = propiedadbase.getId_operacion();
+		this.nomenclatura = propiedadbase.getNomenclatura();
 	}
 
 	public Integer getId() {
@@ -314,14 +312,7 @@ public class PropiedadBase {
 		this.longitud = longitud;
 		return this;
 	}
-        
-        public String getNomenclatura() {
-            return nomenclatura;
-        }
 
-        public void setNomenclatura(String nomenclatura) {
-            this.nomenclatura = nomenclatura;
-        }
 	public String getObservaciones() {
 		return this.observaciones;
 	}
@@ -347,5 +338,30 @@ public class PropiedadBase {
 	public PropiedadBase setId_operacion(Integer id_operacion) {
 		this.id_operacion = id_operacion;
 		return this;
+	}
+
+	public String getNomenclatura() {
+		return this.nomenclatura;
+	}
+
+	public PropiedadBase setNomenclatura(String nomenclatura) {
+		this.nomenclatura = nomenclatura;
+		return this;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof bd.base.PropiedadBase))
+			return false;
+		return ((bd.base.PropiedadBase) obj).getId().equals(this.getId());
+	}
+
+	@Override
+	public int hashCode() {
+		return (int) this.id;
 	}
 }

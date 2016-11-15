@@ -423,7 +423,7 @@ String apenom = cliente.getId()==0?"":cliente.getApellido() + ", " + cliente.get
                                                <div class="tab-pane " id="tab3">
                                                    <div class="form-group " >
                                                         <label for="observaciones">Observaciones</label>
-                                                        <textarea class="form-control" name="observaciones" id="observaciones"><%=p.getObservaciones()%></textarea>
+                                                        <textarea class="form-control" name="observaciones" id="observaciones" rows="10"><%=p.getObservaciones()%></textarea>
                                                     </div> 
                                                </div><!-- tab3 -->
                                                

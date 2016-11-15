@@ -27,3 +27,6 @@ MeziWeb/nb-configuration.xml
 *.jar
 *.war
 *.ear
+/MeziImport/nbproject/private/
+/MeziImport/build/
+/MeziImport/dist/

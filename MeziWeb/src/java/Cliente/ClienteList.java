@@ -53,6 +53,8 @@ public class ClienteList extends HttpServlet {
         String codigo = request.getParameter("codigo");
         String nombre = request.getParameter("nombre");
         String apellido = request.getParameter("apellido");
+        Integer carpeta = Parser.parseInt(request.getParameter("carpeta"));
+        
         Integer id_tipo_cliente = Parser.parseInt(request.getParameter("id_tipo_cliente"));
         String dni = request.getParameter("dni");
         
@@ -80,6 +82,9 @@ public class ClienteList extends HttpServlet {
             }
             if(dni!=null && !dni.equals("")){
                 mapFiltro.put("dni",dni);
+            }
+            if (carpeta!=0){
+                mapFiltro.put("carpeta",carpeta.toString());
             }
 //            lista =  tp.getListFiltro(mapFiltro);
 //           lista = tp.getList();

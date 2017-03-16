@@ -2,14 +2,14 @@
 <%@page import="utils.OptionsCfg"%>
 <%@page import="utils.PathCfg"%>
 <div class="modal fade" id="mdlCliente">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
                 <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h4 class="modal-title" id="mdlTitle">Buscar cliente</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="col-lg-4">
+                    <div class="col-lg-3">
                         <div clas="form-group row">
                             <label class="control-label" for="nombre_search">Nombre</label>
                             <div class="control-group">                                                                                            
@@ -19,7 +19,7 @@
                         </div>
                        
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-3">
                      <div clas="form-group row">
                             <label for="apellido_search">Apellido</label>
                             <div class="input-group">                                                                                            
@@ -28,7 +28,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-3">
                         <div clas="form-group row">
                             <label for="dni_search">Dni</label>
                             <div class="controls">                                                      
@@ -39,7 +39,17 @@
                             </div>
                         </div>
                     </div>
-                    
+                    <div class="col-lg-3">
+                        <div clas="form-group row">
+                            <label for="dni_search">Carpeta</label>
+                            <div class="controls">                                                      
+                                <div class="input-group">                                                                                            
+                                    <input type="text" class="form-control" name="carpeta_search" id="carpeta_search" size="20" value="">
+                                    <!--<span class="input-group-addon" id="btnBuscar" ><span class="fa fa-search fa-fw"></span></span>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <table class="table table-striped table-condensed" id="tblCliente">
                         <thead>
                             <tr>
@@ -63,7 +73,8 @@
 <script>
     $(document).ready(function(){
        $('#mdlCliente').on('show.bs.modal',function(){
-           loadDataCliente({});
+           //cleanDataClienteSearch();
+           filtrar_mdl_cliente();
            var $id_tipo_cliente=$('#id_tipo_cliente').val();
            var titulo = "Buscar cliente";
            if(parseInt($id_tipo_cliente)===<%=OptionsCfg.CLIENTE_TIPO_INQUILINO%>   ) titulo = "Buscar Inquilino" ;
@@ -78,19 +89,27 @@
        $('#nombre_search').change(filtrar_mdl_cliente);
        $('#apellido_search').change(filtrar_mdl_cliente);
        $('#dni_search').change(filtrar_mdl_cliente);
+       $('#carpeta_search').change(filtrar_mdl_cliente);
     });
+    function cleanDataClienteSearch(){
+        $('#nombre_search').val("");
+        $('#apellido_search').val("");
+        $('#dni_search').val("");
+        $('#carpeta_search').val("");
+    }
     function filtrar_mdl_cliente(){            
-           var nombre_search = $('#nombre_search').val();
-           var apellido_search = $('#apellido_search').val();
-           var dni_search = $('#dni_search').val();
+        var data = getDataClienteSearch();
            
-           loadDataCliente({
-               nombre: nombre_search,           
-               apellido: apellido_search,
-               dni: dni_search  ,
-           });
-           
-        }
+           loadDataCliente(data);           
+    }
+    function getDataClienteSearch(){
+       var data = {};
+       data.nombre = $('#nombre_search').val();
+        data.apellido = $('#apellido_search').val();
+        data.dni = $('#dni_search').val();
+        data.carpeta = $('#carpeta_search').val();
+        return data;
+    }
     function loadDataCliente(data){
             var $tabla = $('#tblCliente');
             //$tabla.DataTable().destroy();
@@ -149,7 +168,7 @@
        html +="<tr class=''>";
        d = data[i];
 
-       html += wrapTag('td',d.id,'');
+       html += wrapTag('td',d.carpeta,'');
        html += wrapTag('td',d.apellido+ ", " + d.nombre  ,'');
        html += wrapTag('td',d.dni,'');
 

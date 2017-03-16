@@ -121,7 +121,8 @@
                                                                     <div class="controls">
                                                                         <label class="control-label" for="id_inquilino">N&uacute;mero carpeta</label>
                                                                           <div class="input-group ">
-                                                                            <input type="text" id="id_inquilino" name="id_inquilino" class="form-control" value="<%=cliente.getId()%>" readonly>
+                                                                            <input type="hidden" id="id_inquilino" name="id_inquilino" class="form-control" value="<%=cliente.getId()%>" >
+                                                                            <input type="text" id="nro_carpeta" name="id_inquilino" class="form-control" value="<%=cliente.getCarpeta()%>" >
                                                                           </div>
                                                                     </div>
                                                                 </div>

@@ -1083,12 +1083,12 @@ function agregarMonto(data){
 }
 function recuperarDatosGasto(){
     var data = {};
-    data.concepto = $('#gasto_concepto').val();
-    data.aplica   = $('#gasto_aplica').val()===1?"Inquilino":"Propietario";
+    data.concepto     = $('#gasto_concepto').val();
+    data.aplica       = parseInt($('#gasto_aplica').val())===1?"Inquilino":"Propietario";
     data.importe      = $('#gasto_importe').val();
     data.cuotas       = $('#gasto_cuota').val();
-    data.gasto_aplica =$('#gasto_aplica').val();
-    data.gasto_cuota=$('#gasto_cuota').val();
+    data.gasto_aplica = $('#gasto_aplica').val();
+    data.gasto_cuota  = $('#gasto_cuota').val();
     return data;
 }
                     
@@ -1105,6 +1105,7 @@ function agregarGasto(target){
                 className: "btn-success",
                 callback: function () {
                     var data = recuperarDatosGasto();
+                    console.log(data);
                     var template = Handlebars.templates["agregarLineaGasto"];
                     $(table).find('tbody').append(template(data));
                     $('.btn-del').click(borrar);

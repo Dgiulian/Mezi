@@ -68,14 +68,14 @@ public class ReciboInternoPdf extends ReciboPdf {
     
     @Override
     public void printDetalle(PdfContentByte cb){
-       lineStart = 690;       
+       lineStart = 685;       
        
        Recibo_detalle detalle = lstRecibo_detalle.get(0);
        if (detalle!=null ){
-            addTextAligned(cb, 50, lineStart, this.baseFontSize,String.format("En concepto de: %s",detalle.getConcepto()),Element.ALIGN_LEFT);
+            addTextAligned(cb, 45, lineStart, this.baseFontSize,String.format("En concepto de: %s",detalle.getConcepto()),Element.ALIGN_LEFT);
             String nombre_cuenta = getUsuarioCuenta(recibo.getId_cuenta());
             if(!"".equals(nombre_cuenta)){
-                addTextAligned(cb, 50, lineStart - 12, this.baseFontSize,String.format("A cuenta: %s",nombre_cuenta),Element.ALIGN_LEFT);
+                addTextAligned(cb, 45, lineStart - 15, this.baseFontSize,String.format("A cuenta: %s",nombre_cuenta),Element.ALIGN_LEFT);
             }
        }
     }
@@ -100,15 +100,15 @@ public class ReciboInternoPdf extends ReciboPdf {
     
     @Override
     public void printHeader(PdfContentByte cb){
-        lineStart = 720;
-        addText(cb, 50, lineStart - lineHeight  * 0, String.format("Recibimos de: %s","INMOBILIARIA MEZI"));
+        lineStart = 715;
+        addText(cb, 45, lineStart - lineHeight  * 0, String.format("Recibimos de: %s","INMOBILIARIA MEZI"));
     }
      @Override
      public void printTotalPago(PdfContentByte cb,Integer lineStart){
         Float total = 0f;
         Recibo_detalle detalle = lstRecibo_detalle.get(0);        
         if(detalle!=null) {
-            addText(cb, 50,lineStart, String.format("La cantidad de: $%.2f",detalle.getHaber()));
+            addText(cb, 45,lineStart, String.format("La cantidad de: $%.2f",detalle.getHaber()));
         }
     }
 

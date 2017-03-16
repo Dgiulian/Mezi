@@ -421,7 +421,7 @@
                $tabla       = $('#tblCuentaOficial');
                $btnAjustar  = $('#btnAjOficial');
                $btnLiquidar = $('#btnLiqOficial');
-               $saldoTotal = $('#')
+               //$saldoTotal = $('#')
                
             }
             
@@ -435,7 +435,7 @@
                     $tabla.find('tbody').html("<tr><td colspan='" + cant_cols + "'><center><img src='assets/img/ajax-loader.gif'/></center></td></tr>");
                },
                success: function(result) {
-                   if(result.Result === "OK") {
+                    if(result.Result === "OK") {
                        if(result.Record.fecha_liquidacion!==undefined)
                         $('#fecha_desde').val(convertirFecha(result.Record.fecha_liquidacion));
                        $tabla.find('tbody').html(createTableCuenta(result.Records));                       
@@ -444,7 +444,8 @@
                        var mnt_liq = parseFloat($tabla.find('tr:last').find('td:last').text());
                        $btnLiquidar.data('mnt_liq',mnt_liq);
                    } else { 
-                       var  html = result.Message;
+                       var  html = result.Message?result.Message:"Ocurri&oacute; un error al consultar la cuenta";
+                       
                        html = "<td colspan='5' style='text-align:center'>" + html + "</td>";
                        html = wrapTag("tr",html);
                        $tabla.find('tbody').html(html);                       

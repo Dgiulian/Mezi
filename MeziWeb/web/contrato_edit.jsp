@@ -620,12 +620,14 @@
                                                                 <%}%>
                                                             </tbody>
                                                             <tfoot>
-                                                                <tr><td colspan="5">
+                                                                <tr>
+                                                                    <td colspan="5">
                                                                 <% if(lstContrato_gasto.size() == 0) {%>
-                                                               <!--  No se agreg&oacute; ning&uacute;n gasto adicional al contrato -->
-                                                                <% } else { %>
-                                                                <span class="btn btn-sm btn-primary" id="btnGasto">Agregar Gasto</span>
-                                                                <% } %>
+                                                                     <!--  No se agreg&oacute; ning&uacute;n gasto adicional al contrato -->
+                                                                    <span class="btn btn-sm btn-primary" id="btnGasto">Agregar Gasto </span>
+                                                                     <% } else { %>
+
+                                                                     <% } %>
                                                                 </td></tr>
                                                                 
                                                             </tfoot>

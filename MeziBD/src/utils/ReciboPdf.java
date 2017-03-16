@@ -128,15 +128,15 @@ public class ReciboPdf extends BasePdf{
     public void printFormaPago(PdfContentByte cb,Integer lineStart,Integer colStart){
        if(pago==null) return;
        
-       createHeadings(cb, colStart,lineStart, "FORMAS DE PAGO:");
+       createHeadings(cb, colStart,lineStart, "Formas de pago:");
         if(pago.getEfectivo()> 0) {
             lineStart -= 20;
-            addText(cb, colStart,lineStart, "EFECTIVO:");
+            addText(cb, colStart,lineStart, "Efectivo:");
             addTextAligned(cb, colStart + 120, lineStart, this.baseFontSize,String.format("$ %.2f",pago.getEfectivo()),Element.ALIGN_RIGHT);
         }   
         if(pago.getCheque_mnt()> 0) {
             lineStart -= 20;
-            addText(cb, colStart,lineStart, "CHEQUE:");
+            addText(cb, colStart,lineStart, "Cheque:");
             addTextAligned(cb, colStart + 120, lineStart,this.baseFontSize, String.format("$ %.2f",pago.getCheque_mnt()),Element.ALIGN_RIGHT);
             addText(cb, colStart + 130,lineStart, String.format("%s (Nº:%s)",pago.getCheque_ban(),pago.getCheque_num()));
             
@@ -144,7 +144,7 @@ public class ReciboPdf extends BasePdf{
         
         if(pago.getTransf_mnt()>0) {
             lineStart -= 20;
-            addText(cb, colStart,lineStart, "TRANSFERENCIA:");
+            addText(cb, colStart,lineStart, "Transferencia:");
             addTextAligned(cb, colStart + 120,lineStart,this.baseFontSize,  String.format("$ %.2f", pago.getTransf_mnt()),Element.ALIGN_RIGHT);
             addText(cb, colStart + 130,lineStart, String.format("(Nº:%s)",pago.getTransf_num()));
         }

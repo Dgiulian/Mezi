@@ -19,4 +19,9 @@ public class TContrato_gasto extends TransaccionBase<Contrato_gasto> {
 				id);
 		return super.getById(query);
 	}
+        
+        public List<Contrato_gasto> getById_contrato(Integer id_contrato){
+            String query = String.format("select * from contrato_gasto where contrato_gasto.id_contrato = %d ",id_contrato);            
+            return super.getList(query);
+        }
 }

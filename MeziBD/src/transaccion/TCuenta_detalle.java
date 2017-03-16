@@ -31,7 +31,10 @@ public class TCuenta_detalle extends TransaccionBase<Cuenta_detalle> {
 				id);
 		return super.getById(query);
 	}
-        
+        public List<Cuenta_detalle> getById_cuenta(Integer id_cuenta){
+            String query = String.format("select * from cuenta_detalle where cuenta_detalle.id_cuenta = %d",id_cuenta);
+            return super.getList(query);
+        }
         
         
 public List<Cuenta_detalle> crearDetalleInquilino(Contrato contrato){
@@ -86,7 +89,7 @@ public List<Cuenta_detalle> crearDetalle(Contrato contrato,Contrato_valor[] lstV
             //LocalDate fecha = desde.plusMonths(i).withDayOfMonth(1);
             
             Float monto = valor.getMonto();
-            String concepto = String.format("Mes Alquiler %s",OptionsCfg.MESES[fecha.getMonthOfYear()]);
+            String concepto = String.format("Mes Alquiler %s",OptionsCfg.MESES[fecha.getMonthOfYear() - 1]);
             
             cd.setConcepto(concepto);
             cd.setId_concepto(OptionsCfg.CONCEPTO_ALQUILER);

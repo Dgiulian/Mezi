@@ -114,11 +114,12 @@ public class CuentaDetList extends HttpServlet {
                     if (cd.getId_concepto()==OptionsCfg.CONCEPTO_ALQUILER || cd.getId_concepto()==OptionsCfg.CONCEPTO_DOCUMENTO){
                         int days = Days.daysBetween(fecha, fecha_consulta).getDays() - 1;
                         if (days >=contrato.getPunitorio_desde()){
+                            float monto_punitorio = days * punitorio_porc * cd.getDebe() ;
                             Cuenta_detalle punitorio = new Cuenta_detalle();
                             punitorio.setFecha(cd.getFecha());
-                            punitorio.setConcepto(String.format("Punitorio mes %d (%d dias)",cd.getId_referencia(),days));
+                            punitorio.setConcepto(String.format("Punitorio %s (%d dias)",OptionsCfg.MESES[fecha.getMonthOfYear() - 1],days));
                             punitorio.setId_concepto(OptionsCfg.CONCEPTO_PUNITORIO);
-                            float monto_punitorio = days * punitorio_porc * cd.getDebe() ;
+                            
                             punitorio.setDebe(monto_punitorio);
                             listaDetalle.add(punitorio);                            
                         }

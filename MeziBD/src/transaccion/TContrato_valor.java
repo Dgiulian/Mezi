@@ -19,4 +19,9 @@ public class TContrato_valor extends TransaccionBase<Contrato_valor> {
 				id);
 		return super.getById(query);
 	}
+        public List<Contrato_valor> getById_contrato(Integer id_contrato){
+            String query = String.format("select * from contrato_valor where contrato_valor.id_contrato = %d order by desde",id_contrato);
+            return super.getList(query);
+        }
+        
 }

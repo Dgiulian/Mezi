@@ -118,10 +118,11 @@ public class PathCfg {
     public static final String CAJA_DEL  = CAJA + "Del";
     public static final String CAJA_CIERRE = CAJA + "Cierre";
     
-    public static final String CAJA_DETALLE     = "CajaDetalle";
-    public static final String CAJA_DETALLE_LIST = CAJA_DETALLE + "List";
-    public static final String CAJA_DETALLE_EDIT = CAJA_DETALLE + "Edit";
-    public static final String CAJA_DETALLE_DEL  = CAJA_DETALLE + "Del";
+    public static final String CAJA_DETALLE         = "CajaDetalle";
+    public static final String CAJA_DETALLE_LIST    = CAJA_DETALLE + "List";
+    public static final String CAJA_DETALLE_EDIT    = CAJA_DETALLE + "Edit";
+    public static final String CAJA_DETALLE_DEL     = CAJA_DETALLE + "Del";
+    public static final String CAJA_DETALLE_CIERRE  = CAJA_DETALLE + "Cierre";
     
     public static final String CUENTA_INTERNA      = "CuentaInterna"; 
     public static final String CUENTA_INTERNA_LIST = CUENTA_INTERNA + "List";

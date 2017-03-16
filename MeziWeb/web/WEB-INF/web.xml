@@ -40,6 +40,7 @@
         <url-pattern>/CajaEdit</url-pattern>
         <url-pattern>/CuentaInterna</url-pattern>
         <url-pattern>/CuentaInternaEdit</url-pattern>
+        <url-pattern>/Recibo</url-pattern>
     </filter-mapping>
     <servlet>
         <servlet-name>ClientePath</servlet-name>
@@ -341,6 +342,18 @@
         <servlet-name>PagoAdelantado</servlet-name>
         <servlet-class>Pago.PagoAdelantado</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CajaDetalleCierre</servlet-name>
+        <servlet-class>CajaDetalle.CajaDetalleCierre</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ContratoReplicar</servlet-name>
+        <servlet-class>Contrato.ContratoReplicar</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CuentaReplicar</servlet-name>
+        <servlet-class>Cuenta.CuentaReplicar</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ClientePath</servlet-name>
         <url-pattern>/Cliente</url-pattern>
@@ -636,6 +649,18 @@
     <servlet-mapping>
         <servlet-name>PagoAdelantado</servlet-name>
         <url-pattern>/PagoAdelantado</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CajaDetalleCierre</servlet-name>
+        <url-pattern>/CajaDetalleCierre</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ContratoReplicar</servlet-name>
+        <url-pattern>/ContratoReplicar</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CuentaReplicar</servlet-name>
+        <url-pattern>/CuentaReplicar</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

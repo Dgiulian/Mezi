@@ -11,7 +11,7 @@ MeziBD/nbactions.xml
 MeziBD/nb-configuration.xml
 
 
-### EventPassWeb2 ###
+### MeziWeb ###
 MeziWeb/nbproject/private/
 MeziWeb/build/
 MeziWeb/nbbuild/
@@ -19,7 +19,7 @@ MeziWeb/dist/
 MeziWeb/nbdist/
 MeziWeb/nbactions.xml
 MeziWeb/nb-configuration.xml
-
+MeziWeb/nbproject/
 # Class Files #
 *.class
 
@@ -30,3 +30,7 @@ MeziWeb/nb-configuration.xml
 /MeziImport/nbproject/private/
 /MeziImport/build/
 /MeziImport/dist/
+MeziImport/manifest.mf
+
+/PortalSSDB/nbproject/private/
+/JavaApplication31/nbproject/private/

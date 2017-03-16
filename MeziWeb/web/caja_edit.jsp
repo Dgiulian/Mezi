@@ -322,28 +322,27 @@
            $('#btnAgregar').click(agregarDetalle);
            $('#btnCerrar').click(cerrarCaja);
            $('#id_forma').change(filtrar_mdl_caja);
-        filtrar_mdl_caja();
-        loadCuentasInternas();
+           filtrar_mdl_caja();
+           loadCuentasInternas();
         });
-        function loadCuentasInternas(data){            
-            $.ajax({
-               url: '<%= PathCfg.CUENTA_INTERNA_LIST%>',
-               data: data,
-               method:"POST",
-               dataType: "json",
-               beforeSend:function(){
-                cuentas_internas = [];
-               },
-               success: function(result) {
-                   if(result.Result === "OK") {
-                       cuentas_internas = result.Records;                       
-                   }
+    function loadCuentasInternas(data){            
+        $.ajax({
+           url: '<%= PathCfg.CUENTA_INTERNA_LIST%>',
+           data: data,
+           method:"POST",
+           dataType: "json",
+           beforeSend:function(){
+            cuentas_internas = [];
+           },
+           success: function(result) {
+               if(result.Result === "OK") {
+                   cuentas_internas = result.Records;                       
                }
-           });
+           }
+       });
     }
         function loadDataCajaDetalle(data){
             var $tabla = $('#tblCajaDetalle');
-            //$tabla.DataTable().destroy();
             $.ajax({
                url: '<%= PathCfg.CAJA_DETALLE_LIST %>',
                data: data,
@@ -371,11 +370,6 @@
            html += wrapTag('td',d.concepto,'');
            html += wrapTag('td',d.importe,'');
            html += wrapTag('td',d.saldo,'');
-           
-//            var htmlEdit = "<a href='<%= PathCfg.CAJA_EDIT%>?id="+ d.id +"' class='btn btn-xs btn-circle  btn-warning'><span class='fa fa-edit fw'></span></a> ";
-//            var htmlDel  = "<span href='' data-nombre='" + d.nombre+ "' data-apellido='"+d.apellido+"' data-index='"+ d.id + "' class='btn btn-xs btn-danger btn-circle btn-del'><span class='fa fa-trash-o'></span></span>";
-//            html +='<td style="width:75px"  >' + htmlEdit + htmlDel + '</td>';
-//            html +=wrapTag('td',htmlEdit + htmlDel,'');
            html +="</tr>";
        }      
        return html;
@@ -384,16 +378,12 @@
         var data = {};
         data.id_caja = $('#id_caja').val();
         data.id_forma = $('#id_forma').val();
-        console.log(data);
         loadDataCajaDetalle(data);
 
      }
    function agregarDetalle(){
        var template = Handlebars.compile($('#agregarCajaDetalle').html());
-   
-    //var template = Handlebars.templates['agregarCajaDetalle'];
-    
-    bootbox.dialog({
+       bootbox.dialog({
         title: "Agregar movimiento de caja",
         
         message: template({cuentas_internas:cuentas_internas}),
@@ -440,42 +430,43 @@ function getDatosDetalle(){
 }
 
 function cerrarCaja(){
-       var template = Handlebars.compile($('#cerrarCaja').html());
-   
-    //var template = Handlebars.templates['cerrarCaja'];
-    var data = calcularSaldos();
-    
-    bootbox.dialog({
-        title: "Cierre de caja",
-        message: template(data),
-        buttons: {
-            success: {
-                label: "Guardar",
-                className: "btn-success",
-                callback: function () {
-                    var data = getDatosCierre();
-                    $.ajax({
-                        url: '<%=PathCfg.CAJA_CIERRE%>',
-                        method: "POST",
-                        dataType: "json",
-                        data: data,
-                        success:function(result){
-                            if(result.Result ==="OK"){
-                                window.location='<%=PathCfg.CAJA%>';
-                            } else {
-                                bootbox.alert(result.Message);
-                            }
-                        },
-                    });
-                }
-            },
-            cancel: {
-                label: "Cancelar",
-                callback: function () {}
-            }
-        }
+    calcularSaldos().then(mostrarDialogoCierre,function(message){
+        bootbox.alert(message);
     });
  }
+ function mostrarDialogoCierre(data){
+        var template = Handlebars.compile($('#cerrarCaja').html());
+        bootbox.dialog({
+            title: "Cierre de caja",
+            message: template(data),
+            buttons: {
+                success: {
+                    label: "Guardar",
+                    className: "btn-success",
+                    callback: function () {
+                        var data = getDatosCierre();
+                        $.ajax({
+                            url: '<%=PathCfg.CAJA_CIERRE%>',
+                            method: "POST",
+                            dataType: "json",
+                            data: data,
+                            success:function(result){
+                                if(result.Result ==="OK"){
+                                    window.location='<%=PathCfg.CAJA%>';
+                                } else {
+                                    bootbox.alert(result.Message);
+                                }
+                            },
+                        });
+                    }
+                },
+                cancel: {
+                    label: "Cancelar",
+                    callback: function () {}
+                }
+            }
+        });
+    }
  function getDatosCierre(){
     var data = {};
     data.id_caja = $('#id_caja').val();
@@ -488,20 +479,22 @@ function cerrarCaja(){
     data.motivo_diferencia    = $('#motivo_diferencia').val();
     return data;
  }
-function calcularSaldos(){
-    var data ={};
-    data.saldo_efectivo = 0;
-    data.saldo_cheques       = 0;
-    data.saldo_transferencia = 0;
-    $("#tblCajaDetalle tbody tr").each(function(index,el){
-        var row = $(this).find("td");
-        var forma = $(row[2]).text();        
-        var importe = parseFloat($(row[4]).text());
-        if(forma==="Efectivo") data.saldo_efectivo += importe;
-        else if(forma==="Cheque")  data.saldo_cheques += importe;
-        else if(forma==="Transferencia")  data.saldo_transferencia += importe;
+function calcularSaldos(result){
+    return new Promise(function(resolve,reject){
+         $.ajax({url:'<%=PathCfg.CAJA_DETALLE_CIERRE%>',
+            data:{id_caja : $('#id_caja').val()},
+            method:'POST',
+            dataType:'json',
+            beforeSend:function(){},
+            success:function(result){
+                console.log(result);
+                if(result.Result==="OK") resolve(result.Record);
+                else reject(result.Message);
+            },
+            error: function() {reject("Ocurri&oacute; un error al cerrar la caja. Intentelo nuevamente");}
+        }); 
+        
     });
-    return data;
 }
     </script>
 </body>

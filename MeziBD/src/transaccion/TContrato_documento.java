@@ -19,4 +19,8 @@ public class TContrato_documento extends TransaccionBase<Contrato_documento> {
 						id);
 		return super.getById(query);
 	}
+        public List<Contrato_documento> getById_contrato(Integer id_contrato){
+            String query = String.format("select * from contrato_documento where contrato_documento.id_contrato = %d order by desde",id_contrato);
+            return super.getList(query);
+        }
 }

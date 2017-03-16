@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.joda.time.Days;
+import org.joda.time.DurationFieldType;
 import org.joda.time.LocalDate;
 import transaccion.TCaja;
 import transaccion.TCaja_detalle;
@@ -240,8 +241,11 @@ public class PagoEdit extends HttpServlet {
             Contrato contrato = tcr.getById(cuenta.getId_contrato());
             Float punitorio_porc = contrato.getPunitorio_monto() / 100;
             String ult_liquidacion;
-            if(cuenta.getFecha_liquidacion()==null || cuenta.getFecha_liquidacion().equals(""))
-                ult_liquidacion = contrato.getFecha_inicio();
+            if(cuenta.getFecha_liquidacion()==null || cuenta.getFecha_liquidacion().equals("")) {
+                //ult_liquidacion = contrato.getFecha_inicio();
+                ult_liquidacion = new LocalDate(contrato.getFecha_inicio()).minusDays(1).toString();
+//                System.out.println("Se toma la fecha de inicio del contrato");
+            }
             else  ult_liquidacion  = cuenta.getFecha_liquidacion();
             /* Si es la primer liquidación, tomamos como ultima liquidacion, el inicio del contrato */
             
@@ -261,22 +265,13 @@ public class PagoEdit extends HttpServlet {
                 
                 
                 if  (fecha_det.isAfter(fecha_conslta)) continue; // No se considera nada posterior a la fecha de liquidacion
-                
+//                System.out.println(String.format("%s;%s;%.2f;%.2f;%.2f",cuenta_detalle.getFecha(),cuenta_detalle.getConcepto(),cuenta_detalle.getHaber(),cuenta_detalle.getDebe(),saldo));
                 if (cuenta.getId_tipo_cliente()==OptionsCfg.CLIENTE_TIPO_PROPIETARIO) {
                     saldo += cuenta_detalle.getHaber() - cuenta_detalle.getDebe() ;
                 } else{
                     
                     saldo += cuenta_detalle.getDebe() - cuenta_detalle.getHaber();
                 }
-//                System.out.print(cuenta_detalle.getFecha() );
-//                System.out.print(" " );
-//                System.out.print(cuenta_detalle.getId_concepto() );
-//                System.out.print(" " );
-//                System.out.print(cuenta_detalle.getDebe() );
-//                System.out.print(" " );
-//                System.out.print(cuenta_detalle.getHaber());
-//                System.out.print(" ");
-//                System.out.println(saldo);
                 
                 if (cuenta.getId_tipo_cliente()==OptionsCfg.CLIENTE_TIPO_PROPIETARIO) continue;
                 
@@ -291,6 +286,8 @@ public class PagoEdit extends HttpServlet {
                         punitorio.setId_concepto(OptionsCfg.CONCEPTO_PUNITORIO);
                         punitorio.setDebe(monto_punitorio);
                         listaPunitorio.add(punitorio);
+                        System.out.println(String.format("%s;%s;%.2f;%.2f;%.2f",punitorio.getFecha(),punitorio.getConcepto(),punitorio.getHaber(),punitorio.getDebe(),saldo));
+                
                     }
                 }
             }
@@ -311,7 +308,7 @@ public class PagoEdit extends HttpServlet {
             else {
                 cd.setHaber(total);
             }
-            
+//            System.out.println(String.format("%.2f;%.2f",saldo,total));
             saldo = saldo - total;
             listaPunitorio.add(cd);
             if(saldo!=0){ // Si existe un saldo. Lo cargamos en la cuenta.

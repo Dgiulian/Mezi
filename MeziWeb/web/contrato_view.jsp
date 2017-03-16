@@ -63,7 +63,7 @@
     }
     List<Contrato_valor> lstValor = (List<Contrato_valor>) request.getAttribute("lstValor");
     List<Contrato_documento> lstDocum= (List<Contrato_documento>) request.getAttribute("lstDocum");
-    List<Contrato_gasto> lstContrato_gasto = (List<Contrato_gasto>) request.getAttribute("lstContrato_gasto");
+    List<Contrato_gasto> lstContrato_gasto = (List<Contrato_gasto>) request.getAttribute("lstGasto");
     DecimalFormat df = new DecimalFormat("#.#####");
 %>
 <!DOCTYPE html>
@@ -946,6 +946,12 @@
             onPrevious:mover
         });
     });
+    function mover(tab, navigation, index){
+    if(index===3){
+        $('#btnRow').css('display','block');
+        
+    } else $('#btnRow').css('display','none');
+}
 </script>
  <%@include file="mdl_cliente.jsp" %>
  <%@include file="mdl_propiedad.jsp" %>

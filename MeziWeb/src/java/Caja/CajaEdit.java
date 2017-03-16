@@ -162,15 +162,16 @@ public class CajaEdit extends HttpServlet {
                     Integer id_detalle = new TCaja_detalle().alta(detalle);
                     detalle.setId(id_detalle);
                 }
-//               if(cheque_anterior!=0f){
-//                    Caja_detalle detalle = new Caja_detalle();
-//                    detalle.setId_caja(caja.getId());
-//                    detalle.setImporte(cheque_anterior);
-//                    detalle.setId_forma(OptionsCfg.FORMA_CHEQUE);
-//                    detalle.setConcepto("Apertura caja del " + fecha);
-//                    Integer id_detalle = new TCaja_detalle().alta(detalle);
-//                    detalle.setId(id_detalle);                    
-//                }
+               if(cheque_anterior!=0f){
+                    Caja_detalle detalle = new Caja_detalle();
+                    detalle.setId_caja(caja.getId());
+                    detalle.setImporte(cheque_anterior);
+                    detalle.setId_tipo(OptionsCfg.TIPO_INGRESO);
+                    detalle.setId_forma(OptionsCfg.FORMA_CHEQUE);
+                    detalle.setConcepto("Apertura caja del " + fecha);
+                    Integer id_detalle = new TCaja_detalle().alta(detalle);
+                    detalle.setId(id_detalle);                    
+                }
 //                if(transferencia_anterior!=0f){
 //                    Caja_detalle detalle = new Caja_detalle();
 //                    detalle.setId_caja(caja.getId());

@@ -32,7 +32,8 @@ public class ReciboPropietarioPdf extends ReciboPdf {
         addText(cb, 50, lineStart - lineHeight * 0, "Recibimos de: ");
         addText(cb, 120,lineStart - lineHeight * 0, "INMOBILIARIA MEZI");
         if (contrato!=null){
-            addText(cb, 520,lineStart - lineHeight * 0, "NºC " + contrato.getNumero().toString());
+            //addText(cb, 520,lineStart - lineHeight * 0, "NºC " + contrato.getNumero().toString());
+            addText(cb, 520,lineStart - lineHeight * 0, "NºC: " + cliente.getCarpeta().toString());
         }
         addText(cb, 50,710, "Domicilio: ");
         addText(cb, 120,710, "RODHE 902");

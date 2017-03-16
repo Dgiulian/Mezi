@@ -95,8 +95,8 @@ public class ReciboPdf extends BasePdf{
 //       addTextAligned(cb, 50,  lineStart + 25, this.baseFontSize,"Concepto",Element.ALIGN_LEFT);       
        addTextAligned(cb, 45,  lineStart + 13, this.baseFontSize,"Fecha",Element.ALIGN_LEFT);
        addTextAligned(cb, 105, lineStart + 13, this.baseFontSize,"Concepto",Element.ALIGN_LEFT);
-       addTextAligned(cb, 430, lineStart + 13, this.baseFontSize,"Debe",Element.ALIGN_LEFT);
-       addTextAligned(cb, 480, lineStart + 13, this.baseFontSize,"Haber",Element.ALIGN_LEFT);
+       addTextAligned(cb, 410, lineStart + 13, this.baseFontSize,"Debe",Element.ALIGN_LEFT);
+       addTextAligned(cb, 460, lineStart + 13, this.baseFontSize,"Haber",Element.ALIGN_LEFT);
        addTextAligned(cb, 525, lineStart + 13, this.baseFontSize,"Saldo",Element.ALIGN_LEFT);
        cb.moveTo(40, lineStart   + 13 - 2);
        cb.lineTo(560, lineStart  + 13 - 2);
@@ -105,10 +105,10 @@ public class ReciboPdf extends BasePdf{
        Integer i = 0;
        for(Recibo_detalle rd :lstRecibo_detalle){
            addText(cb, 45, lineStart, TFecha.formatearFechaBdVista(rd.getFecha()));
-           addText(cb, 105,lineStart, rd.getConcepto());
-           addTextAlignedRight(cb, 460,lineStart, this.baseFontSize,String.format("%.2f",rd.getDebe()));
-           addTextAlignedRight(cb, 505,lineStart, this.baseFontSize,String.format("%.2f",rd.getHaber()));
-           addTextAlignedRight(cb, 555,lineStart, this.baseFontSize,String.format("%.2f",rd.getSaldo()));
+           addText(cb, 105,lineStart, rd.getConcepto());           
+           addTextAlignedRight(cb, 430,lineStart, this.baseFontSize,String.format("%7.2f",rd.getDebe()));
+           addTextAlignedRight(cb, 490,lineStart, this.baseFontSize,String.format("%7.2f",rd.getHaber()));
+           addTextAlignedRight(cb, 555,lineStart, this.baseFontSize,String.format("%7.2f",rd.getSaldo()));
            lineStart -= lineHeight;
            i++;
        }

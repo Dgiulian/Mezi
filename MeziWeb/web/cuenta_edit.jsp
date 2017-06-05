@@ -80,7 +80,7 @@
                                                                     <div class="controls">
                                                                         <label class="control-label" for="carpeta">Nº Carpeta</label>
                                                                         <div class="input-group ">
-                                                                            <input type="text" name="carpeta" id="carpeta" class="form-control" value="<%= cliente.getId() %>" readonly>
+                                                                            <input type="text" name="carpeta" id="carpeta" class="form-control" value="<%= cliente.getCarpeta() %>" readonly>
                                                                         </div>
                                                                     </div>
                                                                 </div>

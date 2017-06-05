@@ -43,6 +43,9 @@ public class ContratoBase {
 	public String garante_3_nombre = "";
 	public String garante_3_telefono = "";
 	public Integer garante_3_id_garantia = 0;
+	public Float llave_monto = 0f;
+	public String llave_desde = "";
+	public Integer llave_cuotas = 0;
 
 	public ContratoBase() {
 	}
@@ -102,6 +105,9 @@ public class ContratoBase {
 		this.garante_3_nombre = contratobase.getGarante_3_nombre();
 		this.garante_3_telefono = contratobase.getGarante_3_telefono();
 		this.garante_3_id_garantia = contratobase.getGarante_3_id_garantia();
+		this.llave_monto = contratobase.getLlave_monto();
+		this.llave_desde = contratobase.getLlave_desde();
+		this.llave_cuotas = contratobase.getLlave_cuotas();
 	}
 
 	public Integer getId() {
@@ -491,6 +497,33 @@ public class ContratoBase {
 
 	public ContratoBase setGarante_3_id_garantia(Integer garante_3_id_garantia) {
 		this.garante_3_id_garantia = garante_3_id_garantia;
+		return this;
+	}
+
+	public Float getLlave_monto() {
+		return this.llave_monto;
+	}
+
+	public ContratoBase setLlave_monto(Float llave_monto) {
+		this.llave_monto = llave_monto;
+		return this;
+	}
+
+	public String getLlave_desde() {
+		return this.llave_desde;
+	}
+
+	public ContratoBase setLlave_desde(String llave_desde) {
+		this.llave_desde = llave_desde;
+		return this;
+	}
+
+	public Integer getLlave_cuotas() {
+		return this.llave_cuotas;
+	}
+
+	public ContratoBase setLlave_cuotas(Integer llave_cuotas) {
+		this.llave_cuotas = llave_cuotas;
 		return this;
 	}
 

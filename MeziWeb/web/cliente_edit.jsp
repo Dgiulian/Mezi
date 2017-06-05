@@ -1,3 +1,4 @@
+<%@page import="transaccion.TCliente"%>
 <%@page import="transaccion.TLocalidad"%>
 <%@page import="java.util.List"%>
 <%@page import="bd.Localidad"%>
@@ -7,6 +8,7 @@
     Boolean nuevo = false;
     if(cliente==null){
         cliente = new Cliente();
+        cliente.setCarpeta(new TCliente().siguienteNumero());
         nuevo = true;
     }    
     String action = PathCfg.CLIENTE_EDIT;

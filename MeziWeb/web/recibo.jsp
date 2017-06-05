@@ -24,7 +24,9 @@
 				<div class="col-lg-12">
                                     <div class="box">
                                         <div class="box-header">
-                                            <H3>Listado de recibos</H3>
+                                            <H3>Listado de recibos
+                                            <a href="<%=PathCfg.RECIBO_ANULAR%>" class="btn btn-danger">Anular recibo </a>
+                                            </H3>
                                         </div>
                                     <div  class="box-content">
 
@@ -33,16 +35,18 @@
                                                 <tr>
                                                     <th>Fecha</th>
                                                     <th>N&uacute;mero</th>
-                                                    <th>Tipo</th>                                                    
+                                                    <th>Cliente</th>
+                                                    <th>Cliente</th>
+                                                    <th>Tipo</th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody class=""></tbody>
                                         </table>
-                                        </div> <!-- tab-content-->
-					</div>
-				</div><!--/col-->
-			</div><!--/row-->
+                                    </div> <!-- tab-content-->
+                                </div>
+                        </div><!--/col-->
+                </div><!--/row-->
 					
 			</div>
 			<!-- end: Content -->
@@ -132,11 +136,13 @@
         if(data.length===0) html ="<tr><td colspan='5' style='text-align:center'>A&uacute;n no se ha creado ninguna caja</td></tr>";
         for(var i = 0;i< data.length;i++){
            html +="<tr class=''>";
-           d = data[i];
+           var d = data[i];
                       
-           html += wrapTag('td',convertirFecha(d.fecha.fecha),'');
+           html += wrapTag('td',convertirFecha(d.fecha),'');
            html += wrapTag('td',d.numero,'');
-           html += wrapTag('td',d.tipo_recibo,'');           
+           html += wrapTag('td',d.cliente,'');
+           html += wrapTag('td',d.tipo_cliente,'');           
+           html += wrapTag('td',d.tipo_recibo,'');
            var htmlPrint = "<a href='<%= PathCfg.RECIBO_PRINT%>?id="+ d.id +"' class='btn btn-xs btn-circle btn-primary'><span class='fa fa-print fw'></span></a> ";
             html +=wrapTag('td',htmlPrint,'');
            html +="</tr>";

@@ -53,6 +53,24 @@ public List<Cuenta_detalle> crearDetalleInquilino(Contrato contrato){
     if(comision_monto>0f){
        lstDetalle.addAll(detalleComision(comision_monto,comision_cuotas,fecha));
     }
+    Integer cuota = contrato.getLlave_cuotas();
+    if (cuota<=0) cuota = 1;
+    if(contrato.getLlave_monto() > 0) {
+        Float monto = contrato.getLlave_monto() / cuota ;
+        LocalDate llave_desde = new LocalDate(contrato.getLlave_desde());
+        for(int i = 1;i<=cuota;i++){
+            Cuenta_detalle cd = new Cuenta_detalle();
+            String concepto = "Fondo entrega llaves" ;
+            if(cuota>1) concepto += String.format(" cuota %d",i);
+            cd.setConcepto(concepto);
+            cd.setDebe(monto);
+            cd.setFecha(TFecha.formatearFecha(llave_desde.toDate(), TFecha.formatoBD));
+            cd.setId_concepto(OptionsCfg.CONCEPTO_FONDO_ENTREGA_LLAVES);
+            cd.setId_referencia(i);
+            llave_desde = llave_desde.plusMonths(1).withDayOfMonth(1);
+            lstDetalle.add(cd);
+        }
+    }
     return lstDetalle;
 }
 public List<Cuenta_detalle> crearDetallePropietario(Contrato contrato){
@@ -77,17 +95,17 @@ public List<Cuenta_detalle> crearDetallePropietario(Contrato contrato){
 
 public List<Cuenta_detalle> crearDetalle(Contrato contrato,Contrato_valor[] lstValores,Integer id_tipo){
     ArrayList<Cuenta_detalle> lstDetalle = new ArrayList<Cuenta_detalle>();
-    for(Contrato_valor valor:lstValores){
-        
+    int i = 0;
+    for(Contrato_valor valor:lstValores){        
         LocalDate desde = new LocalDate(valor.getDesde());
         LocalDate hasta = new LocalDate(valor.getHasta());        
         Integer mes_desde = desde.getMonthOfYear();
         Integer mes_hasta = hasta.getMonthOfYear();
-        int i = 1;
+
         for(LocalDate fecha = desde;fecha.isBefore(hasta);fecha = fecha.plusMonths(1).withDayOfMonth(1)){
             Cuenta_detalle cd = new Cuenta_detalle();
             //LocalDate fecha = desde.plusMonths(i).withDayOfMonth(1);
-            
+            i+=1;
             Float monto = valor.getMonto();
             String concepto = String.format("Mes Alquiler %s",OptionsCfg.MESES[fecha.getMonthOfYear() - 1]);
             
@@ -96,7 +114,7 @@ public List<Cuenta_detalle> crearDetalle(Contrato contrato,Contrato_valor[] lstV
             
             if (id_tipo== OptionsCfg.CLIENTE_TIPO_PROPIETARIO) cd.setHaber(monto);
             else if (id_tipo== OptionsCfg.CLIENTE_TIPO_INQUILINO) cd.setDebe(monto);            
-            cd.setId_referencia(i++);
+            cd.setId_referencia(i);
             cd.setFecha(TFecha.formatearFecha(fecha.toDate(), TFecha.formatoBD));
             lstDetalle.add(cd);
              
@@ -105,10 +123,11 @@ public List<Cuenta_detalle> crearDetalle(Contrato contrato,Contrato_valor[] lstV
               cd_adm.setConcepto("Comisión administración");
               cd_adm.setId_concepto(OptionsCfg.CONCEPTO_COMISION_ADMINISTRACION);
               cd_adm.setDebe(monto * contrato.getComision_mensual_propietario() / 100); // <--- Ver esto
-              cd_adm.setId_referencia(i++);
+              cd_adm.setId_referencia(i);
               cd_adm.setFecha(TFecha.formatearFecha(fecha.toDate(), TFecha.formatoBD));
               lstDetalle.add(cd_adm);
-             } 
+             }
+            
             //else if (id_tipo== OptionsCfg.CLIENTE_TIPO_INQUILINO) cd.setDebe(monto);
             
         }
@@ -148,12 +167,13 @@ public List<Cuenta_detalle> crearDetalle(Contrato_gasto[] lstGasto, String desde
         if (cuota<=0) cuota = 1;
         Float monto = gasto.getImporte() / cuota ;
         LocalDate fecha = new LocalDate(desde);
-        for(int i = 0;i<cuota;i++){
+        for(int i = 1;i<=cuota;i++){
             Cuenta_detalle cd = new Cuenta_detalle();
             String concepto = gasto.getConcepto() ;
-            if(cuota>1) concepto += String.format(" Cuota %d",i+1);
+            if(cuota>1) concepto += String.format(" Cuota %d",i);
             cd.setConcepto(concepto);
-            cd.setDebe(monto);            
+            cd.setDebe(monto);
+            cd.setId_referencia(i);
             cd.setFecha(TFecha.formatearFecha(fecha.toDate(), TFecha.formatoBD));
             cd.setId_concepto(OptionsCfg.CONCEPTO_GASTO);
             fecha = fecha.plusMonths(1).withDayOfMonth(1);
@@ -187,7 +207,8 @@ public List<Cuenta_detalle> detalleComision(Float monto,Integer cuotas,String de
             d_comision.setConcepto(String.format("Comisión cuota %s",i));
             d_comision.setDebe( monto / cuotas);
             d_comision.setFecha(TFecha.formatearFecha(fecha.toDate(), TFecha.formatoBD));
-            d_comision.setId_concepto(OptionsCfg.CONCEPTO_GASTO_COMISION);;
+            d_comision.setId_concepto(OptionsCfg.CONCEPTO_GASTO_COMISION);
+            d_comision.setId_referencia(i);
             fecha = fecha.plusMonths(1).withDayOfMonth(1);            
             lstDetalle.add(d_comision);
         }

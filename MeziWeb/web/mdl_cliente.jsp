@@ -84,7 +84,7 @@
        });
        $('#btnCancelar').click(function(){
             $('#mdlCliente').modal('hide');
-            completarCliente({id:0,nombre:'',apellido:''});
+            completarCliente({id:0,carpeta:0,nombre:'',apellido:''});
        });
        $('#nombre_search').change(filtrar_mdl_cliente);
        $('#apellido_search').change(filtrar_mdl_cliente);
@@ -145,6 +145,7 @@
                 dataType: 'json',
                 beforeSend:function(){
                     completarCliente({id: 0,
+                                      carpeta:0,
                                       nombre: '',
                                       apellido: '',
                                       dni: '',
@@ -172,7 +173,7 @@
        html += wrapTag('td',d.apellido+ ", " + d.nombre  ,'');
        html += wrapTag('td',d.dni,'');
 
-        var htmlSel = "<span href='' data-index='"+ d.id + "' data-nombre='"+ d.nombre + "' data-apellido='"+ d.apellido + "'  class='btn btn-xs btn-primary btn-circle btnSelCliente'><span class='fa fa-plus'></span></span>";
+        var htmlSel = "<span data-carpeta='" + d.carpeta + "' data-index='"+ d.id + "' data-nombre='"+ d.nombre + "' data-apellido='"+ d.apellido + "'  class='btn btn-xs btn-primary btn-circle btnSelCliente'><span class='fa fa-plus'></span></span>";
         html +='<td style="width:75px"  >' + htmlSel + '</td>';
 //            html +=wrapTag('td',htmlEdit + htmlDel,'');
        html +="</tr>";

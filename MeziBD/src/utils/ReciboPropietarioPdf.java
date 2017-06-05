@@ -23,7 +23,7 @@ public class ReciboPropietarioPdf extends ReciboPdf {
         if(pago==null) return;
         Float total = pago.getEfectivo() + pago.getCheque_mnt() + pago.getTransf_mnt();
         addText(cb, 50,lineStart, "La cantidad de: ");
-        addText(cb, 110,lineStart, String.format("$%.2f",total));
+        addText(cb, 120,lineStart, String.format("$%.2f",total));
         addText(cb, 100,680, String.format("PAGO DEL SIGUIENTE DETALLE DE ALQUILERES: %s",propiedad.getDireccion()));
     }
     @Override

@@ -16,15 +16,15 @@ public class Contrato_valorTest {
     public static List<Contrato_valor> getList(){
         List<Contrato_valor>  contrato_valor =  new ArrayList<Contrato_valor>();
         Contrato_valor cv = new Contrato_valor();
-            cv.setDesde("2016-01-01").setHasta("2016-04-30").setMonto(10000f);            
+            cv.setDesde("2017-01-01").setHasta("2017-04-30").setMonto(10000f);            
             contrato_valor.add(cv);
             
             cv = new Contrato_valor();
-            cv.setDesde("2016-05-01").setHasta("2016-06-30").setMonto(12500f);
+            cv.setDesde("2017-05-01").setHasta("2017-06-30").setMonto(12500f);
             contrato_valor.add(cv);
             
             cv = new Contrato_valor();
-            cv.setDesde("2016-07-01").setHasta("2016-12-31").setMonto(15000f);
+            cv.setDesde("2017-07-01").setHasta("2017-12-31").setMonto(15000f);
             contrato_valor.add(cv);
             return contrato_valor;
     }

@@ -24,7 +24,10 @@ public class ReciboInquilinoPdf extends ReciboPdf {
         Float total = pago.getEfectivo() + pago.getCheque_mnt() + pago.getTransf_mnt();        
         addText(cb, 50,lineStart, String.format("La cantidad de: $%.2f",total));
         if(propietario!=null){
-            addText(cb, 100,680, String.format("PAGO DEL SIGUIENTE DETALLE POR CUENTA Y ORDEN DE %s (NRO CUIT/CUIL: %s)",propietario.getApellido().toUpperCase() + ", " + propietario.getNombre().toUpperCase(),propietario.getCuil()));
+            String texto = String.format("PAGO DEL SIGUIENTE DETALLE POR CUENTA Y ORDEN DE ");
+            addText(cb, 50,680, texto);            
+            texto = String.format("%s (NRO CUIT/CUIL: %s)",propietario.getApellido().toUpperCase() + ", " + propietario.getNombre().toUpperCase(),propietario.getCuil());
+            addText(cb, 50,670, texto);
         }
     }
     @Override
@@ -35,7 +38,7 @@ public class ReciboInquilinoPdf extends ReciboPdf {
         }
         if ( contrato!=null)
             //addText(cb, 520,lineStart - lineHeight * 0, "NºC " + contrato.getNumero().toString());        
-            addText(cb, 520,lineStart - lineHeight * 0, "NºC: " + cliente.getCarpeta().toString());        
+            addText(cb, 520,lineStart - lineHeight * 0, "NºC: " + cliente.getCarpeta().toString() + "/" + propietario.getCarpeta().toString());        
         if(propiedad!=null) {
             addText(cb, 50,710, "Domicilio: ");
             addText(cb, 110,710, propiedad.getDireccion());
@@ -56,7 +59,7 @@ public class ReciboInquilinoPdf extends ReciboPdf {
     public static void main(String[] args){
         String fileName = "c:\\recibo.pdf";
         Recibo recibo;
-        recibo = new TRecibo().getById(1);
+        recibo = new TRecibo().getById(53);
         ReciboInquilinoPdf recibopdf = new ReciboInquilinoPdf(recibo);
         fileName = "c:\\ReciboDocumento.pdf";
         recibopdf.createPdf(fileName);

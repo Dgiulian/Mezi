@@ -55,7 +55,8 @@
                                                                     <div class="controls">
                                                                         <label class="control-label" for="id_inquilino">Carpeta</label>
                                                                           <div class="input-group ">
-                                                                            <input type="text" id="id_inquilino" name="id_inquilino" class="form-control" value="<%=cliente.getId()%>" readonly>
+                                                                            <input type="hidden" id="id_inquilino" name="id_inquilino" class="form-control" value="<%=cliente.getId()%>" readonly>
+                                                                            <input type="text" id="carpeta" name="carpeta" class="form-control" value="<%=cliente.getCarpeta()%>" readonly>
                                                                           </div>
                                                                     </div>
                                                                 </div>
@@ -166,7 +167,7 @@
                                                 <% if(caja!=null && caja.getId_estado()==OptionsCfg.CAJA_ABIERTA) {%>
                                                     <span class="btn btn-sm btn-primary" id="btnLiqOficial" data-id_cuenta='' data-toggle="modal" data-target="#mdlLiquidar" id="btnLiquidar">Liquidar</span>
                                                 <% } else {%>
-                                                <h6> No hay ninguna caja abierta. No se puede liquidar</h6>
+                                                <h5 style="color:red"> No hay ninguna caja abierta. No se puede liquidar</h5>
                                                 <% } %>
                                             </h2>
                                             <table class="table table-bordered table-condensed table-striped" id="tblCuentaOficial">
@@ -204,7 +205,7 @@
                                                 <% if(caja!=null && caja.getId_estado()==OptionsCfg.CAJA_ABIERTA) {%>
                                                 <span class="btn btn-sm btn-primary" id="btnLiqNoOficial" data-id_cuenta='' data-toggle="modal" data-target="#mdlLiquidar" id="btnLiquidar">Liquidar</span></h2>                                                
                                                  <% } else {%>
-                                                <h6> No hay ninguna caja abierta. No se puede liquidar</h6>
+                                                <h5 style="color:red"> No hay ninguna caja abierta. No se puede liquidar</h5>
                                                 <% } %>
                                             <table class="table table-bordered table-condensed table-striped" id="tblCuentaNoOficial">
                                                     <colgroup>
@@ -507,13 +508,14 @@
         });
    }
    function completarCliente(data){
+       console.log(data);
         $('#id_inquilino').val(data.id);
+        $('#carpeta').val(data.carpeta);
         $('#nombre').val(data.nombre);
         $('#apellido').val(data.apellido);
         $('#dni').val(data.dni);
         $('#cuil').val(data.cuil);
         var $id_tipo_cliente = $('#id_tipo_cliente').val();
-        console.log(data.id);
         if(data.id !==0)
             listar_contrato({id_cliente:data.id,id_tipo:$id_tipo_cliente});
         //buscar_contrato({id_cliente:data.id,id_tipo:$id_tipo_cliente});
@@ -554,7 +556,7 @@
         var html = "";
         for(var i = 0;i< data.length;i++){
            html +="<tr class=''>";
-           d = data[i];
+           var d = data[i];
            html += wrapTag('td',d.direccion,'');
            html += wrapTag('td',d.estado_contrato,'');           
            var htmlRadio = "<span class='btn btn-xs btn-circle  btn-primary'><input name='rdPropiedad' type='radio' value='" + d.id + "'></span></a> ";
@@ -587,12 +589,6 @@
 function completarPropiedad(data){
     $('#id_propiedad').val(data.id);
     $('#direccion').val(data.direccion);
-//    $('#calle').val(data.calle);
-//    $('#numero').val(data.numero);
-//    $('#piso').val(data.piso);
-//    $('#dpto').val(data.dpto);
-//    $('#barrio').val(data.barrio);    
-//    $('#localidad').val(data.localidad);
 }
 
     </script>

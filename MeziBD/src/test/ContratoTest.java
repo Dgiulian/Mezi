@@ -14,8 +14,8 @@ import utils.OptionsCfg;
 public class ContratoTest extends Contrato{
     public ContratoTest(){
             this.setNumero(555);
-            this.setFecha_inicio("2016-01-01");
-            this.setFecha_fin("2016-12-31");
+            this.setFecha_inicio("2017-01-01");
+            this.setFecha_fin("2017-12-31");
             this.setMeses(12);
             this.setAsegura_renta(1);
             this.setPunitorio_monto(0.017f);
@@ -40,8 +40,10 @@ public class ContratoTest extends Contrato{
             this.setObservaciones("Observaciones");
             this.setId_propiedad(9);
             this.setId_inquilino(12);
-            this.setId_vendedor(7);
-            
+            this.setId_vendedor(5);
+            this.setLlave_monto(200f);
+            this.setLlave_desde(this.getFecha_inicio());
+            this.setLlave_cuotas(2);            
             this.setGarante_1_dni("garante_1_dni");
 this.setGarante_1_nombre("garante_1_nombre");
 this.setGarante_1_telefono("garante_1_telefono");

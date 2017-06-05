@@ -17,15 +17,15 @@ public class Contrato_documentoTest {
      
      List<Contrato_documento> contrato_documento = new ArrayList<Contrato_documento>();
         Contrato_documento cd = new Contrato_documento();
-        cd.setDesde("2016-01-01").setHasta("2016-04-30").setMonto(1000f);
+        cd.setDesde("2017-01-01").setHasta("2017-04-30").setMonto(1000f);
         contrato_documento.add(cd);
 
         cd = new Contrato_documento();
-        cd.setDesde("2016-05-01").setHasta("2016-06-30").setMonto(1250f);
+        cd.setDesde("2017-05-01").setHasta("2017-06-30").setMonto(1250f);
         contrato_documento.add(cd);
 
         cd = new Contrato_documento();
-        cd.setDesde("2016-07-01").setHasta("2016-12-31").setMonto(1500f);
+        cd.setDesde("2017-07-01").setHasta("2017-12-31").setMonto(1500f);
         contrato_documento.add(cd);
      return contrato_documento;
  }   

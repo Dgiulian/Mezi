@@ -95,7 +95,13 @@ public class ClienteEdit extends HttpServlet {
             if (cliente==null) {
                 cliente = new Cliente();                
                 nuevo = true;
+            } else {
+                
             }
+            Cliente c = tc.getByCarpeta(carpeta);
+            
+            if(c!=null && !c.getId().equals(cliente.getId())) throw new BaseException("ERROR","Ya existe un cliente con ese n&uacute;mero de carpeta");
+            
             cliente.setCarpeta(carpeta);
             cliente.setNombre(nombre);
             cliente.setApellido(apellido);

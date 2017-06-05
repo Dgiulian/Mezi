@@ -57,13 +57,19 @@ public class OptionsCfg {
     
     public static final int CONCEPTO_PUNITORIO        = 7;
     public static final int CONCEPTO_AJUSTE           = 8;
-    public static final int CONCEPTO_PAGO             = 9;
-    public static final int CONCEPTO_SALDO            = 10;
+    public static final int CONCEPTO_PAGO                    = 9;
+    public static final int CONCEPTO_SALDO                   = 10;
     public static final int CONCEPTO_COMISION_ADMINISTRACION = 12;
+    public static final int CONCEPTO_FONDO_ENTREGA_LLAVES = 13;
+    public static final int CONCEPTO_ANULA_PAGO           = 14;        
     
     public static final int CONTRATO_ESTADO_ACTIVO    = 1;
     public static final int CONTRATO_ESTADO_FIN = 2;
    
+    public static final int RECIBO_PAGO  = 1;
+    public static final int RECIBO_ANULA = 2;
+    
+    
     public static final String RECIBO_IMAGE = "fondo_recibo";
     public static final String CUENTA_IMAGE = "fondo_cuenta";
     

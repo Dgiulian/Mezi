@@ -41,6 +41,7 @@
         <url-pattern>/CuentaInterna</url-pattern>
         <url-pattern>/CuentaInternaEdit</url-pattern>
         <url-pattern>/Recibo</url-pattern>
+        <url-pattern>/ReciboAnular</url-pattern>
     </filter-mapping>
     <servlet>
         <servlet-name>ClientePath</servlet-name>
@@ -354,6 +355,14 @@
         <servlet-name>CuentaReplicar</servlet-name>
         <servlet-class>Cuenta.CuentaReplicar</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ReciboAnular</servlet-name>
+        <servlet-class>Recibo.ReciboAnular</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReciboSearch</servlet-name>
+        <servlet-class>Recibo.ReciboSearch</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ClientePath</servlet-name>
         <url-pattern>/Cliente</url-pattern>
@@ -661,6 +670,14 @@
     <servlet-mapping>
         <servlet-name>CuentaReplicar</servlet-name>
         <url-pattern>/CuentaReplicar</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReciboAnular</servlet-name>
+        <url-pattern>/ReciboAnular</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReciboSearch</servlet-name>
+        <url-pattern>/ReciboSearch</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

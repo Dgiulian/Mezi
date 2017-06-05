@@ -24,6 +24,7 @@
                         <% if(id_tipo_usuario<=2) {%>
                             <li><a href="<%=PathCfg.CAJA%>"><i class="fa fa-inbox"></i><span class="hidden-sm text"> Cajas diarias</span></a></li>
                             <li><a href="<%=PathCfg.CUENTA_INTERNA%>"><i class="fa fa-dollar"></i><span class="hidden-sm text"> Cuentas Internas</span></a></li>
+                            <li><a href="<%=PathCfg.RECIBO%>"><i class="fa fa-list-alt"></i><span class="hidden-sm text"> Recibos</span></a></li>
                         <% }%>
                         <li><a href="<%=PathCfg.LOCALIDAD%>"><i class="fa fa-flag"></i><span class="hidden-sm text"> Localidades</span></a></li>
                         <li><a href="<%=PathCfg.BARRIO%>"><i class="fa fa-building-o"></i><span class="hidden-sm text"> Barrios</span></a></li>

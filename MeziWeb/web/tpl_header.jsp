@@ -29,7 +29,7 @@
 			<div class="nav-no-collapse header-nav">
 				<ul class="nav navbar-nav pull-right">					
 					<li>
-                                            <a class="btn" href="index.html#"><i class="fa fa-wrench"></i></a>
+                                           <!--  <a class="btn" href="index.html#"><i class="fa fa-wrench"></i></a> -->
                                             <%if(id_caja!=null) {%>
                                                 <a class="btn" href="<%=PathCfg.CAJA_EDIT%>?id=<%=id_caja%>"><i class="fa fa-inbox"></i></a>
                                             <% }%>

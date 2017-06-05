@@ -4,6 +4,7 @@
  */
 package Recibo;
 
+import bd.Cliente;
 import bd.Recibo;
 import com.google.gson.Gson;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import transaccion.TCliente;
 import transaccion.TRecibo;
 import utils.JsonRespuesta;
 import utils.OptionsCfg;
@@ -80,24 +82,33 @@ public class ReciboList extends HttpServlet {
     private class ReciboDet extends Recibo{
         String tipo_recibo = "";
         String tipo_cliente = "";
+        String cliente = "";
+        
         public ReciboDet(Recibo recibo){
             super(recibo);
             
             
-            switch (recibo.getId_tipo_recibo()){
+            switch (recibo.getId_tipo_cliente()){
                case OptionsCfg.CLIENTE_TIPO_INQUILINO:
-                   tipo_recibo = "Inquilino";
+                   tipo_cliente = "Inquilino";
                    break;
                 case OptionsCfg.CLIENTE_TIPO_PROPIETARIO:
-                    tipo_recibo = "Propietario";
+                    tipo_cliente = "Propietario";
                     break;
                 case OptionsCfg.CLIENTE_TIPO_INTERNA: 
-                    tipo_recibo = "Interna";
+                    tipo_cliente = "Interna";
                     break;
             }
-            switch (recibo.getId_tipo_cliente()){
-                
+            switch (recibo.getId_tipo_recibo()){
+                case OptionsCfg.RECIBO_PAGO:
+                    tipo_recibo = "Pago"; 
+                    break;
+                case OptionsCfg.RECIBO_ANULA:
+                    tipo_recibo = "Anula";
+                    break;
             }
+            Cliente  c = new TCliente().getById(recibo.getId_cliente());
+            if(c!=null) cliente = c.getApellidoyNombre();
             
         }
     }

@@ -553,7 +553,37 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>                                                       
+                                                        </div>
+                                                        <div class="col-lg-12 ">
+                                                            <div class="form-group row">
+                                                                <div class="col-lg-3 ">
+                                                                    <label class="control-label" for="llave_monto">Fondo entrega llave</label>
+                                                                    <div class="controls">
+                                                                        <div class="input-group">
+                                                                          <input type="text" id="llave_monto" name="llave_monto" class="form-control  numeric"  value="<%=contrato.getLlave_monto()%>">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-lg-4">
+                                                                    <label class="control-label" for="llave_desde">Fecha Inicio</label>
+                                                                    <div class="controls">
+                                                                        <div class="input-group date date-picker " >
+                                                                          <input type="text" id="comision_desde_inquilino" id="llave_desde" name="llave_desde" class="form-control date-input "  value="<%=TFecha.formatearFechaBdVista(contrato.getLlave_desde())%>">
+                                                                          <span class="add-on input-group-addon"><span class="fa fa-calendar"></span></span>  
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2 ">
+                                                                    <label class="control-label" for="llave_cuotas">Cuotas</label>
+                                                                    <div class="controls">
+                                                                        <div class="input-group">
+                                                                          <input type="text" id="llave_cuotas" name="llave_cuotas" class="form-control numeric"  value="<%=contrato.getLlave_cuotas()%>">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>                                                                        
                                                     </fieldset> <!--Inquilino -->
                                                 </div> <!--col-lg-g -->
                                                 <div class="col-lg-6">

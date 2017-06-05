@@ -74,6 +74,7 @@ public class ContratoEdit extends HttpServlet {
         contrato.setPunitorio_desde(10);
         
         contrato.setComision_mensual_propietario(10f);
+        contrato.setNumero(new TContrato().siguienteNumero());
         List<Contrato_valor>     contrato_valor     = new ArrayList<Contrato_valor>();
         List<Contrato_gasto>     contrato_gasto     = new ArrayList<Contrato_gasto>();
         List<Contrato_documento> contrato_documento = new ArrayList<Contrato_documento>();
@@ -146,6 +147,11 @@ public class ContratoEdit extends HttpServlet {
         String   comision_desde_propietario    = TFecha.formatearFechaVistaBd(request.getParameter("comision_desde_propietario"));
         Integer  comision_cuotas_propietario   = Parser.parseInt(request.getParameter("comision_cuotas_propietario"));
         Float    comision_mensual_propietario  = Parser.parseFloat(request.getParameter("comision_mensual_propietario"));
+        
+        Float    llave_monto                   = Parser.parseFloat(request.getParameter("llave_monto"));
+        String   llave_desde                   = TFecha.formatearFechaVistaBd(request.getParameter("llave_desde"));
+        Integer  llave_cuotas                  = Parser.parseInt(request.getParameter("llave_cuotas"));
+        
         Float    gastos_escribania_propietario = Parser.parseFloat(request.getParameter("gastos_escribania_propietario"));
         Float    gastos_sellado_propietario    = Parser.parseFloat(request.getParameter("gastos_sellado_propietario"));
         Float    deposito_monto                = Parser.parseFloat(request.getParameter("deposito_monto"));
@@ -247,9 +253,14 @@ public class ContratoEdit extends HttpServlet {
            contrato.setComision_cuotas_inquilino(comision_cuotas_inquilino);
            contrato.setComision_monto_propietario(comision_monto_propietario);
            
+           contrato.setLlave_monto(llave_monto);
+           contrato.setLlave_desde(llave_desde);
+           contrato.setLlave_cuotas(llave_cuotas);
+           
            contrato.setComision_desde_propietario(comision_desde_propietario);
            contrato.setComision_cuotas_propietario(comision_cuotas_propietario);
            contrato.setComision_mensual_propietario(comision_mensual_propietario);
+           
            contrato.setGastos_escribania_propietario(gastos_escribania_propietario);
            contrato.setGastos_sellado_propietario(gastos_sellado_propietario);
            contrato.setDeposito_monto(deposito_monto);

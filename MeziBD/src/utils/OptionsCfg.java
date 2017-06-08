@@ -60,11 +60,13 @@ public class OptionsCfg {
     public static final int CONCEPTO_PAGO                    = 9;
     public static final int CONCEPTO_SALDO                   = 10;
     public static final int CONCEPTO_COMISION_ADMINISTRACION = 12;
-    public static final int CONCEPTO_FONDO_ENTREGA_LLAVES = 13;
-    public static final int CONCEPTO_ANULA_PAGO           = 14;        
-    
-    public static final int CONTRATO_ESTADO_ACTIVO    = 1;
-    public static final int CONTRATO_ESTADO_FIN = 2;
+    public static final int CONCEPTO_FONDO_ENTREGA_LLAVES    = 13;
+    public static final int CONCEPTO_ANULA_PAGO              = 14;        
+
+    public static final int CONTRATO_ESTADO_INICIAL = 1;
+    public static final int CONTRATO_ESTADO_ACTIVO  = 2;
+    public static final int CONTRATO_ESTADO_ENTREGA = 3;
+    public static final int CONTRATO_ESTADO_FIN     = 4;
    
     public static final int RECIBO_PAGO  = 1;
     public static final int RECIBO_ANULA = 2;
@@ -143,7 +145,9 @@ public class OptionsCfg {
    } 
    public static ArrayList<Option> getEstadosContrato(){
         ArrayList<Option> lista = new ArrayList();
+        lista.add(new Option(CONTRATO_ESTADO_INICIAL,"Inicial"));        
         lista.add(new Option(CONTRATO_ESTADO_ACTIVO,"Activo"));
+        lista.add(new Option(CONTRATO_ESTADO_ENTREGA,"Entrega llaves"));
         lista.add(new Option(CONTRATO_ESTADO_FIN, "Fin"));        
         return lista;
    }

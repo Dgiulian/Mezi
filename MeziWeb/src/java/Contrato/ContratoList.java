@@ -66,7 +66,7 @@ public class ContratoList extends HttpServlet {
             mapPropietarios = new TPropietario().getMap();
             mapInquilinos   = new TInquilino().getMap();
             mapPropiedades  = new TPropiedad().getMap();
-            mapEstados = OptionsCfg.getMap(OptionsCfg.getEstadosContrato());
+            mapEstados      = OptionsCfg.getMap(OptionsCfg.getEstadosContrato());
             
             TContrato tp = new TContrato();
             HashMap<String,String> mapFiltro = new HashMap<String,String> ();                        

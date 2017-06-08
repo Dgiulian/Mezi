@@ -60,8 +60,9 @@
                                                       <div class="input-group">
                                                         <select type="text" id="id_estado" name="id_estado" class="form-control">
                                                             <option value="0" selected>Todos</option>
-                                                            <option value="1">Disponible </option>
-                                                            <option value="2">Alquilada</option>
+                                                            <% for(OptionsCfg.Option o: OptionsCfg.getEstadosContrato()) { %>
+                                                                <option value="<%=o.getId()%>"><%=o.getDescripcion()%> </option>
+                                                            <% } %>
                                                         </select>
                                                       </div>
                                                 </div>

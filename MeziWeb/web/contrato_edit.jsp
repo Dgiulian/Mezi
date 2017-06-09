@@ -95,6 +95,7 @@
 
 			<!-- start: Content -->
 			<div id="content" class="col-lg-10 col-sm-11 ">
+                            
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="box" id="rootwizard">
@@ -110,6 +111,7 @@
                                                 </ul>
                                             </div>
                                         <form role="form" method="POST">
+                                            <input type="hidden" id="id_contrato" name="id_contrato" class="form-control" value="<%=contrato.getId()%>" >
                                         <div  class="tab-content box-content">
                                             <div class="tab-pane row active" id="tab1">
                                                <div class="col-lg-8">

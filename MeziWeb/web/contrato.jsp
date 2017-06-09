@@ -91,7 +91,7 @@
 			</div>
 			<!-- end: Content -->
 				
-				</div><!--/row-->		
+                </div><!--/row-->		
 		
 	</div><!--/container-->
 	
@@ -136,34 +136,26 @@
 	<!-- page scripts -->
 	<script src="assets/js/jquery-ui-1.10.3.custom.min.js"></script>
 	<script src="assets/js/jquery.sparkline.min.js"></script>
-	<!--<script src="assets/js/jquery.chosen.min.js"></script>-->
-	<!--<script src="assets/js/jquery.cleditor.min.js"></script>-->
-	<!--<script src="assets/js/jquery.autosize.min.js"></script>-->
 	<script src="assets/js/jquery.placeholder.min.js"></script>
-	<!--<script src="assets/js/jquery.maskedinput.min.js"></script>-->
-	<!--<script src="assets/js/jquery.inputlimiter.1.3.1.min.js"></script>-->
 	<!--<script src="assets/js/bootstrap-datepicker.min.js"></script>-->
 	<!--<script src="assets/js/bootstrap-timepicker.min.js"></script>-->
 	<script src="assets/js/moment.min.js"></script>
-	<!--<script src="assets/js/daterangepicker.min.js"></script>-->
-	<!--<script src="assets/js/jquery.hotkeys.min.js"></script>-->
-	<!--<script src="assets/js/bootstrap-wysiwyg.min.js"></script>-->
- 	<!--<script src="assets/js/bootstrap-colorpicker.min.js"></script>-->
 	
 	<!-- theme scripts -->
 	<script src="assets/js/custom.min.js"></script>
 	<script src="assets/js/core.min.js"></script>
 	
-	<!-- inline scripts related to this page -->
-	<!--<script src="assets/js/pages/form-elements.js"></script>-->
-	
 	<!-- end: JavaScript-->
-        <script src="assets/js/bootbox.min.js"></script>	
+        <script src="assets/js/bootbox.min.js"></script>
+        <script src="assets/js/handlebars.runtime-v4.0.5.js"></script>
+        <script src="assets/templates/contrato.accion.js"></script>
+        
         <script src="assets/js/common-functions.js"></script>
-  <script language="">
+        
+  <script language="">      
         $(document).ready(function(){
            loadData({});
-            $('#id_tipo_inmueble').change(filtrar);
+           $('#id_tipo_inmueble').change(filtrar);
            $('#id_estado').change(filtrar);
            $('#id_operacion').change(filtrar);
            $('#btnBuscar').click(filtrar);
@@ -197,24 +189,13 @@
                success: function(result) {
                    if(result.Result === "OK") {
                        $tabla.find('tbody').html(createTable(result.Records));
-                        $('.btn-del').click(borrar);
-                        
-//                        $tabla.DataTable({
-//                                responsive: true,
-//                                retrieve: true,
-//                                paging: false,
-//                                ordering: true,
-//                                searching: false,
-//                                lengthChange:false,
-//                                bInfo: false,
-//                                language: {
-//                                    url:'bower_components/datatables-plugins/i18n/Spanish.json',
-//                                }
-//                        });
+                       $('.btn-del').click(borrar);
+                       $('.btn-view').click(acciones);
                    }
                }
            });
     }
+   
    function createTable(data){
         var html = "";
         for(var i = 0;i< data.length;i++){
@@ -228,24 +209,48 @@
            html += wrapTag('td',d.estado_contrato,'');
            html += wrapTag('td',d.propietario,'');
             //var htmlEdit = "<a href='<%= PathCfg.CONTRATO_EDIT%>?id="+ d.id +"' class='btn btn-xs btn-circle  btn-warning'><span class='fa fa-edit fw'></span></a> ";
-            var htmlView = "<a href='<%= PathCfg.CONTRATO_VIEW%>?id="+ d.id +"' class='btn btn-xs btn-circle  btn-primary'><span class='fa fa-search fw'></span></a> ";
-            var htmlDel = "<span href='' data-index='"+ d.id + "' class='btn btn-xs btn-danger btn-circle btn-del'><span class='fa fa-trash-o'></span></span>";
+            //var htmlView = "<a href='<%= PathCfg.CONTRATO_VIEW%>?id="+ d.id +"' class='btn btn-xs btn-circle  btn-primary'><span class='fa fa-search fw'></span></a> ";
+            // var htmlDel  = "<span  class='btn btn-xs btn-danger btn-del'  data-index='"+ d.id + "' ><span class='fa fa-trash-o'></span></span>";
+            var htmlView = "<span class='btn btn-xs btn-primary btn-view' data-index='"+ d.id + "' ><span class='fa fa-search fw'></span></span>";
+            var htmlDel  = "";           
             html +='<td style="width:75px"  >' + htmlView + htmlDel + '</td>';
-//            html +=wrapTag('td',htmlEdit + htmlDel,'');
            html +="</tr>";
        }      
        return html;
     }
+    
    function borrar(){
         var id = $(this).data('index');
         var $tr = $(this).parent().parent();
         deleteData('<%= PathCfg.CONTRATO_DEL %>',{id:id},function(result) {     
                 if(result.Result === "OK") {
                     $tr.remove();
+                    bootbox.hideAll();
+                    bootbox.alert(result.Message);
+                    filtrar();
                 } else if (result.Message) bootbox.alert(result.Message);
         });
     }
-    
-        </script>
+    function acciones(){
+        var data = {};
+        data.id = $(this).data('index');        
+        var template = Handlebars.templates['contrato.accion'];
+        bootbox.dialog({
+                title: "Ejecutar acci&oacute;n sobre el contrao",
+                size: "small",
+                message: template(data), 
+                buttons: {
+                   cancel: {
+                        label: "Cancelar",
+                        callback: function () {
+                        }
+                    }
+                }
+            }).init(function(){  
+                $('.btn-del').click(borrar);
+            });;
+        
+    }
+    </script>
 </body>
 </html>

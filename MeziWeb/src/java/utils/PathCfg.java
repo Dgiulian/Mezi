@@ -53,12 +53,13 @@ public class PathCfg {
     public static final String BARRIO_EDIT = BARRIO + "Edit";
     public static final String BARRIO_DEL  = BARRIO + "Del";
     
-    public static final String CONTRATO      = "Contrato"; 
-    public static final String CONTRATO_LIST = CONTRATO + "List";
-    public static final String CONTRATO_EDIT = CONTRATO + "Edit";
-    public static final String CONTRATO_DEL  = CONTRATO + "Del";
-    public static final String CONTRATO_VIEW  = CONTRATO + "View";
-    public static final String CONTRATO_SEARCH  = CONTRATO + "Search";
+    public static final String CONTRATO        = "Contrato"; 
+    public static final String CONTRATO_LIST   = CONTRATO + "List";
+    public static final String CONTRATO_EDIT   = CONTRATO + "Edit";
+    public static final String CONTRATO_DEL    = CONTRATO + "Del";
+    public static final String CONTRATO_VIEW   = CONTRATO + "View";
+    public static final String CONTRATO_SEARCH = CONTRATO + "Search";
+    public static final String CONTRATO_ESTADO = CONTRATO + "Estado";
 
     public static final String SERVICIO      = "Servicio"; 
     public static final String SERVICIO_LIST = SERVICIO + "List";

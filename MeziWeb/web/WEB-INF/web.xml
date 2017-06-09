@@ -23,6 +23,7 @@
         <url-pattern>/ClienteEdit</url-pattern>
         <url-pattern>/Contrato</url-pattern>
         <url-pattern>/ContratoEdit</url-pattern>
+        <url-pattern>/ContratoEstado</url-pattern>
         <url-pattern>/ContratoView</url-pattern>
         <url-pattern>/Cuenta</url-pattern>
         <url-pattern>/CuentaEdit</url-pattern>
@@ -363,6 +364,10 @@
         <servlet-name>ReciboSearch</servlet-name>
         <servlet-class>Recibo.ReciboSearch</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ContratoEstado</servlet-name>
+        <servlet-class>Contrato.ContratoEstado</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ClientePath</servlet-name>
         <url-pattern>/Cliente</url-pattern>
@@ -678,6 +683,10 @@
     <servlet-mapping>
         <servlet-name>ReciboSearch</servlet-name>
         <url-pattern>/ReciboSearch</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ContratoEstado</servlet-name>
+        <url-pattern>/ContratoEstado</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

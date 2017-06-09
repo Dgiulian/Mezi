@@ -291,7 +291,7 @@ private static Contrato getContrato(){
       contrato.setNumero(666);      
       return contrato;
   }
-  public List<Cuenta_detalle> detalleInquilino(Contrato contrato, ArrayList<Contrato_valor> lstValor,  ArrayList<Contrato_gasto> lstGasto){
+  public List<Cuenta_detalle> detalleInquilino(Contrato contrato, List<Contrato_valor> lstValor,  List<Contrato_gasto> lstGasto){
        ArrayList<Cuenta_detalle> lstDetalle = new ArrayList<Cuenta_detalle>();
        lstDetalle.addAll(this.crearDetalle(contrato,lstValor.toArray(new Contrato_valor[lstValor.size()]),OptionsCfg.CLIENTE_TIPO_INQUILINO));
        lstDetalle.addAll(this.crearDetalleInquilino(contrato));
@@ -299,19 +299,19 @@ private static Contrato getContrato(){
        lstDetalle.addAll(this.crearDetalle(lstGasto.toArray(new Contrato_gasto[lstGasto.size()]),contrato.getFecha_inicio()));
        return lstDetalle;
   }
-  public List<Cuenta_detalle> detalleInquilino( ArrayList<Contrato_documento> lstDocum){
+  public List<Cuenta_detalle> detalleInquilino( List<Contrato_documento> lstDocum){
        ArrayList<Cuenta_detalle> lstDetalle = new ArrayList<Cuenta_detalle>();
        lstDetalle.addAll(this.crearDetalle(lstDocum.toArray(new Contrato_documento[lstDocum.size()]),OptionsCfg.CLIENTE_TIPO_INQUILINO));
        return lstDetalle;
   }
-  public List<Cuenta_detalle> detallePropietario(Contrato contrato,ArrayList<Contrato_valor> lstValor, ArrayList<Contrato_gasto> lstGasto){
+  public List<Cuenta_detalle> detallePropietario(Contrato contrato,List<Contrato_valor> lstValor, List<Contrato_gasto> lstGasto){
        ArrayList<Cuenta_detalle> lstDetalle = new ArrayList<Cuenta_detalle>();
        lstDetalle.addAll(this.crearDetalle(contrato,lstValor.toArray(new Contrato_valor[lstValor.size()]),OptionsCfg.CLIENTE_TIPO_PROPIETARIO));
        lstDetalle.addAll(this.crearDetalle(lstGasto.toArray(new Contrato_gasto[lstGasto.size()]),contrato.getFecha_inicio()));
        lstDetalle.addAll(this.crearDetallePropietario(contrato));
        return lstDetalle;
   }
-  public List<Cuenta_detalle> detallePropietario( ArrayList<Contrato_documento> lstDocum){
+  public List<Cuenta_detalle> detallePropietario( List<Contrato_documento> lstDocum){
        ArrayList<Cuenta_detalle> lstDetalle = new ArrayList<Cuenta_detalle>();
        lstDetalle.addAll(this.crearDetalle(lstDocum.toArray(new Contrato_documento[lstDocum.size()]),OptionsCfg.CLIENTE_TIPO_PROPIETARIO));
        return lstDetalle;

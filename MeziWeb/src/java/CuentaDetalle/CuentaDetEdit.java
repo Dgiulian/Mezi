@@ -81,12 +81,14 @@ public class CuentaDetEdit extends HttpServlet {
         HttpSession sesion = request.getSession(false);
         Integer id_usuario = (Integer) sesion.getAttribute("id_usuario");
         Integer id_tipo_usuario_actual = (Integer) sesion.getAttribute("id_tipo_usuario");
+        Integer id_cuenta  = Parser.parseInt(request.getParameter("id_cuenta"));
+        String  fecha      = TFecha.convertirFecha(request.getParameter("fecha"), TFecha.formatoVista, TFecha.formatoBD);
+        String  concepto   = request.getParameter("concepto");
+        Float   monto      = Parser.parseFloat(request.getParameter("monto"));
+        Integer tipo       = Parser.parseInt(request.getParameter("tipo"));
+        String contra      = request.getParameter("contra");
+        Float contra_monto = Parser.parseFloat(request.getParameter("contra_monto"));
         
-        String  fecha     = TFecha.convertirFecha(request.getParameter("fecha"), TFecha.formatoVista, TFecha.formatoBD);
-        String  concepto  = request.getParameter("concepto");
-        Float   monto     = Parser.parseFloat(request.getParameter("monto"));
-        Integer tipo      = Parser.parseInt(request.getParameter("tipo"));
-        Integer id_cuenta = Parser.parseInt(request.getParameter("id_cuenta"));
         JsonRespuesta jr  = new JsonRespuesta();
         TCuenta tc = new TCuenta();
         TCuenta_detalle tcd = new TCuenta_detalle();
@@ -94,13 +96,10 @@ public class CuentaDetEdit extends HttpServlet {
         try{
             Cuenta cuenta = tc.getById(id_cuenta);
             
-            
-            
             if(cuenta==null) throw new BaseException("ERROR","Debe indicar la cuenta a ajustar");            
             
             Contrato contrato = new TContrato().getById(cuenta.getId_contrato());
             if(contrato==null) throw new BaseException("ERROR","No se encontr&oacute; el contrato");
-            
 
             
             /*
@@ -129,6 +128,7 @@ public class CuentaDetEdit extends HttpServlet {
             if(tipo==0) throw new BaseException("ERROR","Seleccione el tipo de ajuste");
             if(tipo==1) cd.setDebe(monto);
             else cd.setHaber(monto);
+            
             int id = tcd.alta(cd);
             if(id!=0){
                 TAuditoria.guardar(id_usuario,id_tipo_usuario_actual,OptionsCfg.MODULO_CUENTA,OptionsCfg.ACCION_ALTA,id,tc.auditar(cuenta)); 
@@ -138,6 +138,20 @@ public class CuentaDetEdit extends HttpServlet {
             } else {
                 throw new BaseException("ERROR","Ocurr&oacute; un error al cargar el ajuste");
             }
+            if(contra.equals("true")){
+                Cuenta relacionada = new TCuenta().getRelacionada(cuenta);
+                if(relacionada!=null){
+                    Integer id_relacionada = relacionada.getId();
+                    Cuenta_detalle det_contra = new Cuenta_detalle(cd);
+                    det_contra.setDebe(0f);
+                    det_contra.setHaber(0f);
+                    det_contra.setId_cuenta(id_relacionada);
+                    if(tipo==1) det_contra.setHaber(contra_monto);
+                    else det_contra.setDebe(contra_monto);
+                    tcd.alta(det_contra);
+                } else throw new BaseException("ERROR","No se encontr&oacute; la cuenta relacionada.");
+            }
+         
         } catch (BaseException ex) {
             jr.setResult(ex.getResult());
             jr.setMessage(ex.getMessage());

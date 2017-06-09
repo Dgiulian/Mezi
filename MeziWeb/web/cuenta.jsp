@@ -558,8 +558,11 @@
            html +="<tr class=''>";
            var d = data[i];
            html += wrapTag('td',d.direccion,'');
-           html += wrapTag('td',d.estado_contrato,'');           
-           var htmlRadio = "<span class='btn btn-xs btn-circle  btn-primary'><input name='rdPropiedad' type='radio' value='" + d.id + "'></span></a> ";
+           html += wrapTag('td',d.estado_contrato,'');
+           var htmlRadio = "";
+           if(d.id_estado!== 1){
+                htmlRadio = "<span class='btn btn-xs btn-circle  btn-primary'><input name='rdPropiedad' type='radio' value='" + d.id + "'></span></a> ";
+           }
            html +='<td style="width:75px"  >' + htmlRadio + '</td>';
            html +="</tr>";
        }      

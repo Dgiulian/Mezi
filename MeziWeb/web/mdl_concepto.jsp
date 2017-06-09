@@ -40,6 +40,29 @@
                         <input id="ajTipoHaber" name="ajTipo" type="radio" class="radio-inline input-md" value="2">Haber
                     </div>
                 </div>
+                <div class="form-group">
+                    <label class="col-md-4 control-label">Aplicar relacionado</label>
+                    <div class="col-md-6">
+                        <div class="form-group row">                            
+                            <div class="col-md-1">
+                               <input id="ajContra"      name="ajTipo" type="checkbox" class="radio-inline input-md" value="1">
+                            </div>
+                            
+                            <div class="col-md-6">                                
+                                <input id="ajContraMonto" name="ajTipo" type="text"    class="form-control numeric"  value="" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <label class="col-md-4 " for=""></label>
+                    <div class="col-md-6"> 
+                        <div class=" input-group">
+                        
+                        
+                        </div>
+                    </div>
+                </div>
                 </form>
                 </div>
                 </div>
@@ -61,7 +84,21 @@
             $('#aj_id_cuenta').val(id_cuenta);            
             $('#ajFecha').val("");
             $('#ajConcepto').val("");
-            $('#ajMonto').val("");                        
+            $('#ajMonto').val("");
+            $('#ajContra').prop('checked',false);
+            $('#ajContraMonto').val('');
+            $('#ajContra').change(function(){
+                var valor = $('#ajMonto').val();
+                var checked = $('#ajContra').prop('checked')
+                if(checked) {
+                    $('#ajContraMonto').val(valor);
+                    $('#ajContraMonto').attr('disabled',false);
+                } else {
+                    $('#ajContraMonto').val("");
+                    $('#ajContraMonto').attr('disabled',true);
+                }
+                
+            });                        
             var tipo = $('input[name="ajTipo"]:checked').prop('checked',false);
         });
         
@@ -69,20 +106,21 @@
             guardarConcepto();
         });
     });
-    
+    function recuperarDataConcepto(){
+        var data = {};
+        data.id_cuenta = parsearInt($('#aj_id_cuenta').val());
+        data.fecha     = $('#ajFecha').val();
+        data.concepto  = $('#ajConcepto').val();
+        data.monto = $('#ajMonto').val();                        
+        data.tipo = parsearFloat($('input[name="ajTipo"]:checked').val());
+        data.contra = $('#ajContra').prop('checked')
+        data.contra_monto = $('#ajContraMonto').val();
+        return data;
+    }
     function guardarConcepto() {
         $('#mdlConcepto').modal('hide');
          
-        var id_cuenta = $('#aj_id_cuenta').val();
-        var fecha     = $('#ajFecha').val();
-        var concepto  = $('#ajConcepto').val();
-        var monto = $('#ajMonto').val();                        
-        var tipo = $('input[name="ajTipo"]:checked').val();
-        var data = {id_cuenta: parsearInt(id_cuenta),
-                   fecha: fecha,
-                   concepto: concepto,
-                   monto: parsearFloat(monto),
-                   tipo: tipo};
+      var data = recuperarDataConcepto();
        if(!validarAltaConcepto(data)) return;
 
 

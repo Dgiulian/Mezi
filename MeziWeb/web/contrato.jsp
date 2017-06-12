@@ -159,6 +159,9 @@
            $('#id_estado').change(filtrar);
            $('#id_operacion').change(filtrar);
            $('#btnBuscar').click(filtrar);
+           Handlebars.registerHelper('isActive', function(id_estado) {
+            return (id_estado >= 2);
+           });
         
         });
         function getDataContrato(){
@@ -211,7 +214,7 @@
             //var htmlEdit = "<a href='<%= PathCfg.CONTRATO_EDIT%>?id="+ d.id +"' class='btn btn-xs btn-circle  btn-warning'><span class='fa fa-edit fw'></span></a> ";
             //var htmlView = "<a href='<%= PathCfg.CONTRATO_VIEW%>?id="+ d.id +"' class='btn btn-xs btn-circle  btn-primary'><span class='fa fa-search fw'></span></a> ";
             // var htmlDel  = "<span  class='btn btn-xs btn-danger btn-del'  data-index='"+ d.id + "' ><span class='fa fa-trash-o'></span></span>";
-            var htmlView = "<span class='btn btn-xs btn-primary btn-view' data-index='"+ d.id + "' ><span class='fa fa-search fw'></span></span>";
+            var htmlView = "<span class='btn btn-xs btn-primary btn-view' data-index='"+ d.id + "'  data-id_estado='"+ d.id_estado + "'><span class='fa fa-search fw'></span></span>";
             var htmlDel  = "";           
             html +='<td style="width:75px"  >' + htmlView + htmlDel + '</td>';
            html +="</tr>";
@@ -233,10 +236,11 @@
     }
     function acciones(){
         var data = {};
-        data.id = $(this).data('index');        
+        data.id        = $(this).data('index');
+        data.id_estado = $(this).data('id_estado');
         var template = Handlebars.templates['contrato.accion'];
         bootbox.dialog({
-                title: "Ejecutar acci&oacute;n sobre el contrao",
+                title: "Ejecutar acci&oacute;n sobre el contrato",
                 size: "small",
                 message: template(data), 
                 buttons: {

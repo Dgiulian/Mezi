@@ -101,5 +101,9 @@
             text-align: center;
             border-right: 1px solid #dbdee0;
         }
-        
+        .link-disabled{
+            pointer-events: none;
+            cursor: default;
+            opacity: 0.6;
+        }
     </style>

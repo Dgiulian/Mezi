@@ -36,14 +36,15 @@ public class ReciboInquilinoPdf extends ReciboPdf {
         if(contrato!=null) {
             addText(cb, 50, lineStart - lineHeight  * 0, String.format("Recibimos de: %s",cliente.getApellido() + ", " + cliente.getNombre()));                
         }
-        if ( contrato!=null)
+        if ( cliente!=null && propietario!=null){
             //addText(cb, 520,lineStart - lineHeight * 0, "NºC " + contrato.getNumero().toString());        
             addText(cb, 520,lineStart - lineHeight * 0, "NºC: " + cliente.getCarpeta().toString() + "/" + propietario.getCarpeta().toString());        
-        if(propiedad!=null) {
-            addText(cb, 50,710, "Domicilio: ");
-            addText(cb, 110,710, propiedad.getDireccion());
         }
-    }
+        if(propiedad!=null) {
+                addText(cb, 50,710, "Domicilio: ");
+                addText(cb, 110,710, propiedad.getDireccion());
+            }
+        }
     @Override
     public void printFirma(PdfContentByte cb,Integer lineStart,Integer colStart){
        cb.moveTo(colStart, lineStart);

@@ -109,10 +109,11 @@ public class ReciboAnular extends HttpServlet {
             if(pago==null) throw new BaseException("ERROR","No se encontr&oacute; el pago");
             
             // cuando se anula un recibo, la fecha de ultima liquidación es la del recibo anterior            
-            String fecha_anterior = "";
+            String fecha_anterior;
             anterior = tr.getAnterior(recibo);            
-            if (anterior!=null) fecha_anterior = anterior.getFecha();
-            else fecha_anterior = contrato.getFecha_inicio();            
+            
+            fecha_anterior = (anterior!=null)?anterior.getFecha():contrato.getFecha_inicio();
+            
             cuenta.setFecha_liquidacion(fecha_anterior);
             
             //Creamos el concepto de anulacion en la cuenta
@@ -125,7 +126,7 @@ public class ReciboAnular extends HttpServlet {
             cd.setFecha_creacion(TFecha.ahora());
             cd.setId_referencia(recibo.getId());
             
-            if (cuenta.getId_tipo_cliente()==OptionsCfg.CLIENTE_TIPO_PROPIETARIO) {
+            if (cuenta.getId_tipo_cliente().equals(OptionsCfg.CLIENTE_TIPO_PROPIETARIO)) {
                 cd.setHaber(total);
             } else {
                 cd.setDebe(total);
@@ -145,8 +146,12 @@ public class ReciboAnular extends HttpServlet {
             anula.setId_tipo_recibo(OptionsCfg.RECIBO_ANULA);
             anula.setNumero(tr.getNumero());
             
+            
             Integer id_anula = tr.alta(anula);
             anula.setId(id_anula);
+            
+            recibo.setId_estado(OptionsCfg.RECIBO_ANULA);
+            
             // Se revierte el pago en caja
             if(pago.getEfectivo()>0){
                 Caja_detalle caja_detalle = tcaja_detalle.creaEgresoEfectivo(caja, cuenta, anula, pago.getEfectivo());                

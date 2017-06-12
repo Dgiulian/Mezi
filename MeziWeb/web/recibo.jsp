@@ -38,6 +38,7 @@
                                                     <th>Cliente</th>
                                                     <th>Cliente</th>
                                                     <th>Tipo</th>
+                                                    <th>Estado</th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
@@ -143,6 +144,7 @@
            html += wrapTag('td',d.cliente,'');
            html += wrapTag('td',d.tipo_cliente,'');           
            html += wrapTag('td',d.tipo_recibo,'');
+           html += wrapTag('td',d.estado,'');
            var htmlPrint = "<a href='<%= PathCfg.RECIBO_PRINT%>?id="+ d.id +"' class='btn btn-xs btn-circle btn-primary'><span class='fa fa-print fw'></span></a> ";
             html +=wrapTag('td',htmlPrint,'');
            html +="</tr>";

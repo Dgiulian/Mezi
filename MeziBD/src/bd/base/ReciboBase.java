@@ -10,9 +10,9 @@ public class ReciboBase {
 	public Integer id_cliente = 0;
 	public Integer id_tipo_cliente = 0;
 	public Integer id_pago = 0;
-	public String fecha_creacion = "";
+	public String  fecha_creacion = "";
 	public Integer id_caja = 0;
-
+        public Integer id_estado = 1;
 	public ReciboBase() {
 	}
 
@@ -125,4 +125,13 @@ public class ReciboBase {
         public void setId_caja(Integer id_caja) {
             this.id_caja = id_caja;
         }
+
+    public Integer getId_estado() {
+        return id_estado;
+    }
+
+    public void setId_estado(Integer id_estado) {
+        this.id_estado = id_estado;
+    }
+        
 }

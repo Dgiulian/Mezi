@@ -62,8 +62,11 @@ public class ReciboSearch extends HttpServlet {
             Recibo recibo = null;
             recibo = tc.getByNumero(numero);            
             if(recibo==null) throw new BaseException("ERROR","No se encontr&oacute; el recibo ");
+            
             if(numero>0) mapFiltro.put("id_recibo",recibo.getId().toString());
             List<Recibo_detalle> lstDetalle = trd.getListFiltro(mapFiltro);
+            if(recibo.getId_tipo_recibo().equals(OptionsCfg.RECIBO_ANULA)) throw new BaseException("ERROR","El recibo indicado corresponde a un Comprobante de Anulaci&oacute;n no se puede anular");
+            if(recibo.getId_estado().equals(OptionsCfg.RECIBO_ANULA)) throw new BaseException("ERROR","El recibo indicado ya fu&eacute; anulado. No se puede volver a anular.");
             
             jr.setResult("OK");
             jr.setTotalRecordCount(1);

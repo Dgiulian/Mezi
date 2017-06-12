@@ -84,6 +84,7 @@ public class ReciboList extends HttpServlet {
         String tipo_recibo = "";
         String tipo_cliente = "";
         String cliente = "";
+        String estado = "";
         
         public ReciboDet(Recibo recibo){
             super(recibo);
@@ -106,6 +107,14 @@ public class ReciboList extends HttpServlet {
                     break;
                 case OptionsCfg.RECIBO_ANULA:
                     tipo_recibo = "Anula";
+                    break;
+            }
+            switch (recibo.getId_estado()){
+                case OptionsCfg.RECIBO_PAGO:
+                    estado = ""; 
+                    break;
+                case OptionsCfg.RECIBO_ANULA:
+                    estado = "Anulado";
                     break;
             }
             Cliente  c = new TCliente().getById(recibo.getId_cliente());

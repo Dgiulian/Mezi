@@ -85,10 +85,10 @@
                                                           </div>                                                        
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-2">
+                                                <div class="col-lg-4">
                                                     <div class="controls">
-                                                        <label class="control-label" for="cliente">Tipo cliente</label>
-                                                          <div class="input-group ">
+                                                        <label class="control-label" for="cliente">Nombre y Apellido</label>
+                                                          <div class="input-group col-lg-12 ">
                                                             <input type="text" id="cliente" name="cliente" class="form-control" value="" readonly>                                                            
                                                           </div>                                                        
                                                     </div>

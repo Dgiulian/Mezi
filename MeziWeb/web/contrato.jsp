@@ -161,22 +161,22 @@
            $('#btnBuscar').click(filtrar);
         
         });
+        function getDataContrato(){
+            var data = {};
+            data.id_tipo_inmueble = $('#id_tipo_inmueble').val();
+            data.id_estado = $('#id_estado').val();
+            data.numero = $('#numero').val();
+            data.id_operacion = $('#id_operacion').val();
+            data.id = $('#id').val();
+            return data;
+        }
         function filtrar(){
-           var id_tipo_inmueble = $('#id_tipo_inmueble').val();
-           var id_estado = $('#id_estado').val();
-           var id_operacion = $('#id_operacion').val();
-           var id = $('#id').val();
-           loadData({
-               id_tipo_inmueble: id_tipo_inmueble,           
-               id_estado: id_estado, 
-               id_operacion: id_operacion,
-               id: id
-           });
+           var data = getDataContrato();
+           loadData(data);
            
         }
         function loadData(data){
             var $tabla = $('#tblContrato');
-            //$tabla.DataTable().destroy();
             $.ajax({
                url: '<%= PathCfg.CONTRATO_LIST %>',
                data: data,

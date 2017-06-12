@@ -22,6 +22,8 @@ public class ContratoBase {
 	public Integer comision_menusal_inquilino = 0;
 	public Float gastos_escribania_propietario = 0f;
 	public Float gastos_sellado_propietario = 0f;
+        public Integer agente_retencion = 0;
+
 	public Float comision_monto_propietario = 0f;
 	public String comision_desde_propietario = "";
 	public Integer comision_cuotas_propietario = 0;
@@ -526,7 +528,14 @@ public class ContratoBase {
 		this.llave_cuotas = llave_cuotas;
 		return this;
 	}
+        
+        public Integer getAgente_retencion() {
+            return agente_retencion;
+        }
 
+        public void setAgente_retencion(Integer agente_retencion) {
+            this.agente_retencion = agente_retencion;
+        }
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this)

@@ -40,7 +40,8 @@
     List<Vendedor> lstVendedores = new TVendedor().getListFiltro(filtroVendedores);
     if(lstVendedores==null) lstVendedores = new ArrayList<Vendedor>();
 
-
+    String[] lstOpcAgente={"","Si","No"};
+    
     boolean con_propiedad = true;
     boolean con_cliente   = true;
     boolean con_vendedor  = true;
@@ -203,9 +204,9 @@
                                                                 </div>
                                                                 <div class="col-lg-2 nopadding">
                                                                     <div class="controls">
-                                                                        <label class="control-label" for="numero">N&uacute;mero</label>
+                                                                        <label class="control-label" for="prop_numero">N&uacute;mero</label>
                                                                           <div class="input-group ">
-                                                                            <input type="text" id="numero" name="numero" class="form-control" value="<%=propiedad.getNumero()%>"  readonly>
+                                                                            <input type="text" id="prop_numero" name="prop_numero" class="form-control" value="<%=propiedad.getNumero()%>"  readonly>
                                                                           </div>
                                                                     </div>
                                                                 </div>
@@ -575,7 +576,20 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-
+                                                                 <div class="col-lg-4 ">
+                                                                    <label class="control-label" for="agente_retencion">Agente retenci&oacute;n</label>
+                                                                    <div class="controls">
+                                                                        <div class="input-group">
+                                                                          <select id="agente_retencion" name="agente_retencion" class="form-control" >
+                                                                              <% for(int i=0;i<lstOpcAgente.length;i++) {
+                                                                                String selected = contrato.getAgente_retencion().equals(i)?"selected":"";
+                                                                              %>
+                                                                              <option value="<%=i%>" <%=selected%>><%=lstOpcAgente[i]%></option>
+                                                                              <%}%>
+                                                                          </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>        
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-12 ">
@@ -973,29 +987,6 @@
     $('#btnSubmit').click(submitForm);
 });
 
-
-//function buscarCliente(data){
-//    $.ajax({url: '<%=PathCfg.CLIENTE_SEARCH%>',
-//            data: data,
-//            method: 'POST',
-//            dataType: 'json',
-//            beforeSend:function(){
-//                completarCliente({id_inquilino: '',
-//                                  nombre: '',
-//                                  apellido: '',
-//                                  dni: '',
-//                                  cuil: '',
-//                                  id_tipo_persona: ''});
-//            },
-//            success:function(result){
-//                if(result.Result==='OK'){
-//                    completarCliente(result.Record);
-//                } else {
-//                    //bootbox.alert(result.Message);
-//                }
-//            }
-//    });
-//}
 function completarCliente(data){
     $('#id_inquilino').val(data.id);
     $('#carpeta').val(data.carpeta);
@@ -1004,29 +995,7 @@ function completarCliente(data){
     $('#dni').val(data.dni);
     $('#cuil').val(data.cuil);
 }
-//function buscarPropiedad(data){
-//    completarPropiedad({id_propiedad: '',
-//                        calle: '',
-//                        numero: '',
-//                        piso: '',
-//                        dpto: '',
-//                        barrio: '',
-//                        localidad: ''});
-//    $.ajax({
-//        url:'<%=PathCfg.PROPIEDAD_SEARCH%>',
-//        data:data,
-//        method:'POST',
-//        dataType:'json',
-//        beforeSend:function(){},
-//        success: function(result) {
-//            if(result.Result==='OK'){
-//                completarPropiedad(result.Record);
-//            } else {
-//                bootbox.alert(result.Message);
-//            }
-//        }
-//    });
-//}
+
 function completarPropiedad(data){
     $('#id_propiedad').val(data.id);
     $('#calle').val(data.calle);
@@ -1036,77 +1005,6 @@ function completarPropiedad(data){
     $('#barrio').val(data.barrio);
     $('#localidad').val(data.localidad);
 }
-
-//function agregarValor(target){
-//    var title = target==="Valor"?"Agregar valor de contrato":"Agregar Documento";
-//    var table = target==="Valor"?"#tblValor":"#tblDocumento";
-//    var template = Handlebars.templates['agregarValor'];    
-//    bootbox.dialog({
-//                title: title,
-//                message: template({}),
-//                buttons: {
-//                    success: {
-//                        label: "Guardar",
-//                        className: "btn-success",
-//                        callback: function () {
-//                            var fecha_desde = $('#valor_fecha_inicio').val();
-//                            var fecha_hasta = $('#valor_fecha_fin').val();
-//                            var monto = $('#valor_importe').val();
-//                            if (!validarAnterior(fecha_desde,fecha_hasta)){
-//                                bootbox.alert("La fecha desde debe ser anterior a la fecha hasta");
-//                                return;
-//                            }
-//                            var html_desde, html_hasta,html_monto;
-//                            if(target==="Valor"){
-//                                html_desde = fecha_desde + ' <input type="hidden" name="valor_desde" value="'+fecha_desde+'">';
-//                                html_hasta = fecha_hasta + ' <input type="hidden" name="valor_hasta" value="'+fecha_hasta+'">';
-//                                html_monto = monto + ' <input type="hidden" name="valor_monto" value="'+monto+'">';
-//                            } else {
-//                                html_desde = fecha_desde +  ' <input type="hidden" name="documento_desde" value="'+fecha_desde+'">';
-//                                html_hasta = fecha_hasta + ' <input type="hidden" name="documento_hasta" value="'+fecha_hasta+'">';
-//                                html_monto = monto + ' <input type="hidden" name="documento_monto" value="'+monto+'">';
-//                            }
-//                            var html = '';
-//                            html += wrapTag('td',html_desde,'');
-//                            html += wrapTag('td',html_hasta,'');
-//                            html += wrapTag('td',html_monto,'');
-//                            var span = "<span class='btn btn-xs btn-danger btn-circle btn-del'><span class='fa fa-trash-o'></span>";
-//                            html += wrapTag('td',span,'');
-//                            html = wrapTag('tr',html,'');
-//                            $(table).find('tbody').append(html);
-//                            $('.btn-del').click(borrar);
-//                        }
-//                    },
-//                    cancel: {
-//                        label: "Cancelar",
-//                        callback: function () {}
-//                    }
-//                }
-//            }).init(function(){
-//        if($().mask) {
-////            $('.date-picker').mask('99/99/9999');
-//            $('.hora').mask('99:99:99');
-//        }
-//        if($().datepicker) {
-//            $('.date-picker').datepicker({
-//                language: 'es',
-//                locale:'es-AR',
-//                format:'dd/mm/yyyy',
-//                dateFormat:'dd/mm/yyyy',
-//                autoclose: true
-//            });
-////             $('.date-picker').on('changeDate', function(ev){
-////                $(this).datepicker('hide');
-////            });
-//        }
-//        $('#valor_meses').focusout(function(){
-//            var fecha_inicio = $('#valor_fecha_inicio').val();
-//            var meses = $('#valor_meses').val();
-//            $('#valor_fecha_fin').val(calcularHasta(fecha_inicio,meses));
-//            $('#valor_fecha_fin').datepicker('setDate',$('#valor_fecha_fin').val());
-//        });
-//    });
-//}
 
 function agregarMonto(data){    
     var table = data.target==="Valor"?"#tblValor":"#tblDocumento";
@@ -1181,19 +1079,16 @@ function recuperarValores(){
 }
 function validar(data){
     var todoOk = true;
-//    var $id_inquilino = $('#id_inquilino');
-//    var $id_propiedad = $('#id_propiedad');
-//    var $id_vendedor  = $('#id_vendedor');
-//    var $fecha_inicio = $('#fecha_inicio');
-//    var $fecha_fin = $('#fecha_fin');
-//    var $meses     = $('#meses');
-//    var $numero    = $('#numero');
-
     todoOk &= validarInquilino();
     todoOk &= validarPropiedad();   
     todoOk &= validarFechasContrato();
     todoOk &= validarGarantes();
+    todoOk &= validarAgenteRetencion();
     return todoOk;
+}
+function validarAgenteRetencion(){
+    var $agente_retencion =$('#agente_retencion');
+    return validarCampo($agente_retencion,"Debe seleccionar seleccionar si es agente retención",validarNoCero);
 }
 function validarGarantes(){
     var $garante_1_dni         =$('#garante_1_dni');

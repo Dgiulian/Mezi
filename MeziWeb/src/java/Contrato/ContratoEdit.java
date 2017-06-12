@@ -9,13 +9,10 @@ import bd.Contrato;
 import bd.Contrato_documento;
 import bd.Contrato_gasto;
 import bd.Contrato_valor;
-import bd.Cuenta;
-import bd.Cuenta_detalle;
 import bd.Parametro;
 import bd.Propiedad;
 import bd.Vendedor;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -31,8 +28,6 @@ import transaccion.TContrato;
 import transaccion.TContrato_documento;
 import transaccion.TContrato_gasto;
 import transaccion.TContrato_valor;
-import transaccion.TCuenta;
-import transaccion.TCuenta_detalle;
 import transaccion.TInquilino;
 import transaccion.TParametro;
 import transaccion.TPropiedad;
@@ -70,9 +65,9 @@ public class ContratoEdit extends HttpServlet {
         String entorno       = request.getParameter("entorno");
         TContrato tc = new TContrato();
         Contrato contrato = tc.getById(id_contrato);
-        List<Contrato_valor>     contrato_valor     = new ArrayList<Contrato_valor>();
-        List<Contrato_gasto>     contrato_gasto     = new ArrayList<Contrato_gasto>();
-        List<Contrato_documento> contrato_documento = new ArrayList<Contrato_documento>();
+        List<Contrato_valor>     contrato_valor;
+        List<Contrato_gasto>     contrato_gasto;
+        List<Contrato_documento> contrato_documento;
         
         if(contrato!=null ) {
             contrato_valor = new TContrato_valor().getById_contrato(id_contrato);
@@ -168,6 +163,7 @@ public class ContratoEdit extends HttpServlet {
         
         Float    gastos_escribania_propietario = Parser.parseFloat(request.getParameter("gastos_escribania_propietario"));
         Float    gastos_sellado_propietario    = Parser.parseFloat(request.getParameter("gastos_sellado_propietario"));
+        Integer  agente_retencion              = Parser.parseInt(request.getParameter("agente_retencion"));
         Float    deposito_monto                = Parser.parseFloat(request.getParameter("deposito_monto"));
         String   deposito_desde                = TFecha.formatearFechaVistaBd(request.getParameter("deposito_desde"));
         Integer  deposito_cuotas               = Parser.parseInt(request.getParameter("deposito_cuotas"));
@@ -284,6 +280,8 @@ public class ContratoEdit extends HttpServlet {
            
            contrato.setGastos_escribania_propietario(gastos_escribania_propietario);
            contrato.setGastos_sellado_propietario(gastos_sellado_propietario);
+           contrato.setAgente_retencion(agente_retencion);                      
+           
            contrato.setDeposito_monto(deposito_monto);
            contrato.setDeposito_desde(deposito_desde);
            contrato.setDeposito_cuotas(deposito_cuotas);

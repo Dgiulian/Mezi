@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -52,9 +53,9 @@ public class ReciboList extends HttpServlet {
             List<Recibo> lista ;
 
             TRecibo tp = new TRecibo();
-//            HashMap<String,String> mapFiltro = new HashMap<String,String> ();
-            
-            lista =  tp.getList();
+            HashMap<String,String> mapFiltro = new HashMap<String,String> ();
+            tp.setOrderBy(" fecha desc ");
+            lista =  tp.getListFiltro(mapFiltro);
            //lista = tp.getList();
             ArrayList<ReciboDet> listaDet = new ArrayList();
             for(Recibo c:lista){

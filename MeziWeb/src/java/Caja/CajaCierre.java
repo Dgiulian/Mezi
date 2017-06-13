@@ -123,6 +123,16 @@ public class CajaCierre extends HttpServlet {
             if(todoOk){
                 TAuditoria.guardar(id_usuario,id_tipo_usuario_actual,OptionsCfg.MODULO_CAJA,nuevo?OptionsCfg.ACCION_ALTA:OptionsCfg.ACCION_MODIFICAR,id_caja,tc.auditar(caja));
                 TCaja_detalle tcaja_detalle = new TCaja_detalle();
+                
+                Caja_detalle det_efectivo  = new Caja_detalle();
+                det_efectivo.setImporte(efectivo_cierre);
+                det_efectivo.setId_caja(caja.getId());
+                det_efectivo.setId_forma(OptionsCfg.FORMA_EFECTIVO);
+                det_efectivo.setId_tipo(OptionsCfg.TIPO_EGRESO);
+                det_efectivo.setConcepto("Cierre de caja");
+                tcaja_detalle.alta(det_efectivo);
+                TAuditoria.guardar(id_usuario,id_tipo_usuario_actual,OptionsCfg.MODULO_CAJA_DETALLE,nuevo?OptionsCfg.ACCION_ALTA:OptionsCfg.ACCION_MODIFICAR,id_caja,tc.auditar(det_efectivo));
+                
                 if(!saldo_efectivo.equals(efectivo_cierre)){
                     Caja_detalle detalle  = new Caja_detalle();
                     detalle.setImporte(efectivo_cierre - saldo_efectivo);
@@ -132,6 +142,16 @@ public class CajaCierre extends HttpServlet {
                     tcaja_detalle.alta(detalle);
                     TAuditoria.guardar(id_usuario,id_tipo_usuario_actual,OptionsCfg.MODULO_CAJA_DETALLE,nuevo?OptionsCfg.ACCION_ALTA:OptionsCfg.ACCION_MODIFICAR,id_caja,tc.auditar(detalle));
                 }
+                
+                Caja_detalle det_cheque  = new Caja_detalle();
+                det_cheque.setImporte(cheque_cierre);
+                det_cheque.setId_caja(caja.getId());
+                det_cheque.setId_forma(OptionsCfg.FORMA_CHEQUE);
+                det_cheque.setId_tipo(OptionsCfg.TIPO_EGRESO);
+                det_cheque.setConcepto("Cierre de caja");
+                tcaja_detalle.alta(det_cheque);
+                TAuditoria.guardar(id_usuario,id_tipo_usuario_actual,OptionsCfg.MODULO_CAJA_DETALLE,nuevo?OptionsCfg.ACCION_ALTA:OptionsCfg.ACCION_MODIFICAR,id_caja,tc.auditar(det_cheque));
+                    
                 if(!saldo_cheques.equals(cheque_cierre)){
                     Caja_detalle detalle  = new Caja_detalle();
                     detalle.setImporte(cheque_cierre - saldo_cheques);

@@ -190,7 +190,7 @@ public class PagoEdit extends HttpServlet {
             Integer id_recibo = tr.alta(recibo );   
             
             if(p.getEfectivo()>0){
-                Caja_detalle caja_detalle = tcaja_detalle.creaIngresoEfectivo(caja, cuenta, recibo, liqTraMnt);                
+                Caja_detalle caja_detalle = tcaja_detalle.creaIngresoEfectivo(caja, cuenta, recibo, p.getEfectivo());                
                 tcaja_detalle.alta(caja_detalle);
             }
             if(p.getCheque_mnt()>0){
@@ -198,7 +198,7 @@ public class PagoEdit extends HttpServlet {
                 tcaja_detalle.alta(caja_detalle);
             }
             if(p.getTransf_mnt()>0){
-                Caja_detalle caja_detalle = tcaja_detalle.creaIngresoTransferencia(caja,cuenta,recibo,liqTraMnt);                
+                Caja_detalle caja_detalle = tcaja_detalle.creaIngresoTransferencia(caja,cuenta,recibo,p.getTransf_mnt());                
                 tcaja_detalle.alta(caja_detalle);
             }
             lista = tcd.setOrderBy("fecha").getListFiltro(filtroCuenta);

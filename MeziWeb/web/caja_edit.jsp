@@ -487,7 +487,6 @@ function calcularSaldos(result){
             dataType:'json',
             beforeSend:function(){},
             success:function(result){
-                console.log(result);
                 if(result.Result==="OK") resolve(result.Record);
                 else reject(result.Message);
             },

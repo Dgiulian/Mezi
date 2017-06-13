@@ -55,7 +55,10 @@ public class ReciboInquilinoPdf extends ReciboPdf {
     }
     @Override
     public void printTitle(PdfContentByte cb){
-        this.addTextAligned(cb, 320,740, 14,"Liquidación de inquilino",Element.ALIGN_CENTER);
+        if(recibo.getId_tipo_recibo().equals(OptionsCfg.RECIBO_ANULA))
+            this.addTextAligned(cb, 320,740, 14,"Comprobante de anulación de recibo de inquilino",Element.ALIGN_CENTER);
+        else            
+            this.addTextAligned(cb, 320,740, 14,"Liquidación de inquilino",Element.ALIGN_CENTER);
     }
     public static void main(String[] args){
         String fileName = "c:\\recibo.pdf";

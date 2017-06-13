@@ -24,7 +24,8 @@ public class ReciboPropietarioPdf extends ReciboPdf {
         Float total = pago.getEfectivo() + pago.getCheque_mnt() + pago.getTransf_mnt();
         addText(cb, 50,lineStart, "La cantidad de: ");
         addText(cb, 120,lineStart, String.format("$%.2f",total));
-        addText(cb, 100,680, String.format("PAGO DEL SIGUIENTE DETALLE DE ALQUILERES: %s",propiedad.getDireccion()));
+        if(propiedad!=null)
+            addText(cb, 100,680, String.format("PAGO DEL SIGUIENTE DETALLE DE ALQUILERES: %s",propiedad.getDireccion()));
     }
     @Override
     public void printHeader(PdfContentByte cb){
@@ -48,7 +49,10 @@ public class ReciboPropietarioPdf extends ReciboPdf {
     }
      @Override
     public void printTitle(PdfContentByte cb){
-        this.addTextAligned(cb, 320,740, 12,"Liquidación de propietario",Element.ALIGN_CENTER);
+         if(recibo.getId_tipo_recibo().equals(OptionsCfg.RECIBO_ANULA))
+            this.addTextAligned(cb, 320,740, 14,"Comprobante de anulación de recibo de propietario",Element.ALIGN_CENTER);
+        else                        
+            this.addTextAligned(cb, 320,740, 12,"Liquidación de propietario",Element.ALIGN_CENTER);
     }
         public static void main(String[] args){
         String fileName = "c:\\recibo.pdf";

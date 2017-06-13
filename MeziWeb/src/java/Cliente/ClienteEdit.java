@@ -99,9 +99,11 @@ public class ClienteEdit extends HttpServlet {
                 
             }
             Cliente c = tc.getByCarpeta(carpeta);
-            
             if(c!=null && !c.getId().equals(cliente.getId())) throw new BaseException("ERROR","Ya existe un cliente con ese n&uacute;mero de carpeta");
             
+            c = tc.getByDocumento(dni);            
+            if(c!=null && !c.getId().equals(cliente.getId())) throw new BaseException("ERROR","Ya existe un cliente con ese n&uacute;mero de documento");
+
             cliente.setCarpeta(carpeta);
             cliente.setNombre(nombre);
             cliente.setApellido(apellido);
@@ -128,10 +130,9 @@ public class ClienteEdit extends HttpServlet {
             Integer id_tipo_usuario_actual = (Integer) session.getAttribute("id_tipo_usuario");
             TAuditoria.guardar(id_usuario_actual,id_tipo_usuario_actual,OptionsCfg.MODULO_CLIENTE,nuevo?OptionsCfg.ACCION_ALTA:OptionsCfg.ACCION_MODIFICAR,id,tc.auditar(cliente));
             if(modo.equalsIgnoreCase("modal")){
-                 response.setContentType("application/json;charset=UTF-8");
+               response.setContentType("application/json;charset=UTF-8");
                PrintWriter out = response.getWriter();
-               JsonRespuesta jr = new JsonRespuesta();
-               String jsonResult = null;
+               JsonRespuesta jr = new JsonRespuesta();               
                jr.setResult("OK");
                jr.setMessage("Cliente creado correctamente");
                jr.setRecord(cliente);

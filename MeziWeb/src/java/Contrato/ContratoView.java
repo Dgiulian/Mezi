@@ -10,6 +10,7 @@ import bd.Contrato_documento;
 import bd.Contrato_gasto;
 import bd.Contrato_valor;
 import bd.Propiedad;
+import bd.Propietario;
 import bd.Vendedor;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -26,6 +27,7 @@ import transaccion.TContrato_documento;
 import transaccion.TContrato_gasto;
 import transaccion.TContrato_valor;
 import transaccion.TPropiedad;
+import transaccion.TPropietario;
 import transaccion.TVendedor;
 import utils.Parser;
 
@@ -75,11 +77,15 @@ public class ContratoView extends HttpServlet {
         Propiedad propiedad = new TPropiedad().getById(contrato.getId_propiedad());
         if(propiedad!=null) 
             request.setAttribute("propiedad", propiedad);
+        if(propiedad!=null) {
+            Propietario propietario = new TPropietario().getById(propiedad.getId_propietario());
+            if(propietario!=null)
+                request.setAttribute("propietario",propietario);
+        }
         
         Cliente inquilino = new TCliente().getById(contrato.getId_inquilino());
         if(inquilino!=null)
             request.setAttribute("inquilino",inquilino);
-        
         
         Vendedor vendedor = new TVendedor().getById(contrato.getId_vendedor());
         if (vendedor!=null)

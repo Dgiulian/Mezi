@@ -11,6 +11,7 @@ import bd.Contrato_gasto;
 import bd.Contrato_valor;
 import bd.Parametro;
 import bd.Propiedad;
+import bd.Propietario;
 import bd.Vendedor;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -112,6 +113,11 @@ public class ContratoEdit extends HttpServlet {
         if(propiedad!=null) 
             request.setAttribute("propiedad", propiedad);
         
+        if(propiedad!=null) {
+            Propietario propietario = new TPropietario().getById(propiedad.getId_propietario());
+            if(propietario!=null)
+                request.setAttribute("propietario",propietario);
+        }
         Cliente inquilino = new TCliente().getById(id_cliente);
         if(inquilino!=null)
             request.setAttribute("inquilino",inquilino);

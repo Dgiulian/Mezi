@@ -7,6 +7,7 @@ package Propiedad;
 import bd.Barrio;
 import bd.Localidad;
 import bd.Propiedad;
+import bd.Propietario;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import transaccion.TBarrio;
 import transaccion.TLocalidad;
 import transaccion.TPropiedad;
+import transaccion.TPropietario;
 import utils.JsonRespuesta;
 import utils.OptionsCfg;
 import utils.OptionsCfg.Option;
@@ -122,12 +124,15 @@ public class PropiedadSearch extends HttpServlet {
     }// </editor-fold>
     
     private class PropiedadDet extends Propiedad {
-        String barrio      = "";
-        String tipo_inmueble        = "";
-        String estado      = "";
-        String operacion   = "";
-        String localidad   = "";
-        String direccion   = "";
+        String  barrio      = "";
+        String  tipo_inmueble        = "";
+        String  estado      = "";
+        String  operacion   = "";
+        String  localidad   = "";
+        String  direccion   = "";
+        //Integer carpeta     = 0;
+        Propietario  propietario;
+        
         PropiedadDet(Propiedad p){
             super(p);
             Barrio b = mapBarrios.get(p.getId_barrio());
@@ -146,6 +151,10 @@ public class PropiedadSearch extends HttpServlet {
                 tipo_inmueble = arrTipo_propiedad[p.getId_tipo_inmueble()];
             } catch(Exception ex){
                 tipo_inmueble = p.getId_tipo_inmueble().toString();
+            }
+            Propietario prop = new TPropietario().getById(p.getId_propietario());
+            if(prop!=null) {
+                propietario = prop;                
             }
         }
     }

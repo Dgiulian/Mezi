@@ -1,4 +1,5 @@
 
+<%@page import="bd.Propietario"%>
 <%@page import="utils.OptionsCfg.Option"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="bd.Contrato_gasto"%>
@@ -41,11 +42,16 @@
         propiedad = new Propiedad();
         con_propiedad = false;
     }
+    Propietario propietario = (Propietario) request.getAttribute("propietario");
+    if (propietario==null){
+        propietario = new Propietario();        
+    }
     Cliente cliente = (Cliente) request.getAttribute("inquilino");
     if (cliente==null){
         cliente = new Cliente();
         con_cliente = false;
     }
+   
     Barrio barrio = new TBarrio().getById(propiedad.getId_barrio());
     if(barrio==null){
         barrio = new Barrio();
@@ -112,46 +118,7 @@
                                                <div class="col-lg-8">
                                                    <fieldset disabled>
                                                        <legend>Datos del inquilino</legend>
-<!--                                                     <div class="col-lg-12">
-                                                        <div class="form-group row">
-                                                            <div class="col-lg-4 nopadding ">
-                                                                <div class="controls">
-                                                                    <label class="control-label" for="id_inquilino_search">Nº Carpeta</label>
-                                                                      <div class="input-group ">
-                                                                        <input type="text" id="id_inquilino_search" name="id_inquilino_search" class="form-control" >
-                                                                      </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-4 ">
-                                                                <div class="controls">
-                                                                    <label class="control-label" for="dni_search">DNI</label>
-                                                                      <div class="input-group ">
-                                                                        <input type="text" id="dni_search" name="dni_search" class="form-control" >
-                                                                      </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="col-lg-4 ">
-                                                                <div class="controls">
-                                                                    <label class="control-label" for="id_inquilino">Buscar</label>
-                                                                      <div class="input-group ">
-                                                                        <span class="btn btn-primary" id="btnBuscarCliente"> Buscar</span>
-                                                                      </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-4 ">
-                                                                <div class="controls">
-                                                                    <label class="control-label" for="id_inquilino">Buscar</label>
-                                                                      <div class="input-group ">
-                                                                        <span class="btn btn-primary" data-toggle="modal" data-target="#mdlCliente">Seleccionar</span>
-                                                                      </div>
-                                                                </div>
-                                                            </div>
-
-                                                        </div> row
-                                                    </div>
-                                                   <hr style=""/>-->
-                                                   <div class="col-lg-12">
+                                                       <div class="col-lg-12">
                                                         <div class="form-group row">
                                                             
                                                                 <div class="col-lg-2 nopadding">
@@ -220,9 +187,9 @@
                                         </div> <!-- tab1 -->
 
                                             <div class="tab-pane row " id="tabProp">
-                                                <div class="col-lg-8">
-                                                    <fieldset disabled>
+                                                <fieldset disabled>
                                                     <legend>Datos de la propiedad</legend>
+                                                    <div class="col-lg-7">
                                                      <div class="col-lg-12" >
                                                          <input type="hidden" name="id_propiedad" id="id_propiedad" value="<%=propiedad.getId()%>">
                                                         <div class="form-group row">
@@ -291,8 +258,29 @@
 
                                                         </div>
                                                     </div>
-                                                    </fieldset>
                                                 </div>
+                                                <div class="col-lg-5 nopadding">
+                                                    <div class="form-group row">
+                                                        <div class=" col-lg-3 ">
+                                                               <label class="control-label" for="localidad">Carpeta</label>
+                                                               <div class="controls">
+                                                                     <div class="input-group col-lg-12">
+                                                                       <input type="text" name="carpeta_propietario" id="carpeta_propietario" class="form-control" value="<%=propietario.getCarpeta()%>"readonly>
+                                                                     </div>
+                                                               </div>
+                                                        </div>
+                                                        <div class="col-lg-9 ">
+                                                               <label class="control-label" for="barrio">Propietario</label>
+                                                               <div class="controls">
+                                                                     <div class="input-group col-lg-12">
+                                                                       <input type="text" name="nombre_propietario" id="nombre_propietario" class="form-control" value="<%=propietario.getApellidoyNombre()%>" readonly>
+                                                                     </div>
+                                                               </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </fieldset>
                                             </div> <!-- tab1 -->
                                             <div class="tab-pane row " id="tabBasicos">
                                                 <div class="col-lg-12 ">

@@ -35,6 +35,17 @@ public class TContrato extends TransaccionBase<Contrato> {
 				"select * from contrato where contrato.id = %d ", id);
 		return super.getById(query);
 	}
+        public Contrato getSolapado(Contrato c){
+        
+        String query = String.format("select *\n" +
+            "from contrato\n" +
+            "where contrato.id_propiedad = %d \n" +
+            "and contrato.id_inquilino = %d\n" +
+            "and contrato.fecha_inicio <= '%s'\n" +
+            "and contrato.fecha_fin >='%s'",c.getId_propiedad(),c.getId_inquilino(),c.getFecha_fin(),c.getFecha_inicio());
+            System.out.println(query);
+            return getById(query);
+        }
         public Integer siguienteNumero(){
             Integer numero = 1000;
             String query = " select max(numero) from contrato where contrato.numero > 1000";
@@ -201,7 +212,14 @@ public class TContrato extends TransaccionBase<Contrato> {
             return true;
         }
         public static void main(String[ ] args){
-            Integer numero = new TContrato().siguienteNumero();
-            System.out.println(numero);
+            TContrato tc = new TContrato();
+            Contrato c = new Contrato();
+            c.setId_inquilino(12);
+            c.setId_propiedad(9);
+            c.setFecha_inicio("2016-01-01");
+            c.setFecha_fin("2017-01-01");
+            Contrato c2 = new TContrato().getSolapado(c);
+            
+            System.out.println(c2);
         }
 }

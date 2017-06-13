@@ -303,6 +303,10 @@ public class ContratoEdit extends HttpServlet {
            contrato.setGarante_3_id_garantia(garante_3_id_garantia);
            contrato.setObservaciones(observaciones);
            contrato.setId_estado(OptionsCfg.CONTRATO_ESTADO_INICIAL);
+           
+           Contrato existente = new TContrato().getSolapado(contrato);
+           if (existente!=null) throw new BaseException("ERROR","Ya existe un contrato para ese cliente y esa propiedad en el rango de fechas indicado");
+           
            id_contrato = tcontrato.alta(contrato);
            if(id_contrato!=0){ // Si se guardo bien el contrato
                if(arr_valor_desde!=null){

@@ -119,7 +119,13 @@ public class CuentaDetEdit extends HttpServlet {
             if(fecha_ajuste.isBefore(localDate) || 
               (fecha_ajuste.isEqual(localDate) && !contrato_nuevo) ) throw new BaseException("ERROR","La fecha del ajuste debe ser posterior a la fecha actual");
             
+            if(!tcd.puedeAjustar(cuenta,fecha)) throw new BaseException("ERROR","No se puede ajustar la cuenta si existe un pago en la misma fecha");
+            
+            
+            
             Cuenta_detalle cd = new Cuenta_detalle();
+            Cuenta_detalle det_contra = null;
+            
             cd.setId_cuenta(cuenta.getId());
             cd.setFecha(fecha);
             cd.setFecha_creacion(TFecha.ahora(TFecha.formatoBD));
@@ -129,28 +135,32 @@ public class CuentaDetEdit extends HttpServlet {
             if(tipo==1) cd.setDebe(monto);
             else cd.setHaber(monto);
             
-            int id = tcd.alta(cd);
-            if(id!=0){
-                TAuditoria.guardar(id_usuario,id_tipo_usuario_actual,OptionsCfg.MODULO_CUENTA,OptionsCfg.ACCION_ALTA,id,tc.auditar(cuenta)); 
-                jr.setResult("OK");
-                jr.setRecord(cd);
-                
-            } else {
-                throw new BaseException("ERROR","Ocurr&oacute; un error al cargar el ajuste");
-            }
             if(contra.equals("true")){
                 Cuenta relacionada = new TCuenta().getRelacionada(cuenta);
                 if(relacionada!=null){
+                    if(!tcd.puedeAjustar(relacionada,fecha)) throw new BaseException("ERROR","No se puede ajustar la cuenta relacionada ya que existe un pago en la misma fecha");
                     Integer id_relacionada = relacionada.getId();
-                    Cuenta_detalle det_contra = new Cuenta_detalle(cd);
+                    det_contra = new Cuenta_detalle(cd);
                     det_contra.setDebe(0f);
                     det_contra.setHaber(0f);
                     det_contra.setId_cuenta(id_relacionada);
                     if(tipo==1) det_contra.setHaber(contra_monto);
                     else det_contra.setDebe(contra_monto);
-                    tcd.alta(det_contra);
+                    
                 } else throw new BaseException("ERROR","No se encontr&oacute; la cuenta relacionada.");
             }
+            
+            int id = tcd.alta(cd);
+            if(id!=0){
+                TAuditoria.guardar(id_usuario,id_tipo_usuario_actual,OptionsCfg.MODULO_CUENTA,OptionsCfg.ACCION_ALTA,id,tc.auditar(cuenta)); 
+                if(det_contra!=null) 
+                    tcd.alta(det_contra);
+                jr.setResult("OK");
+                jr.setRecord(cd);
+                jr.setMessage("La cuenta fue ajustada correctamente");
+            } else {
+                throw new BaseException("ERROR","Ocurr&oacute; un error al cargar el ajuste");
+            }            
          
         } catch (BaseException ex) {
             jr.setResult(ex.getResult());

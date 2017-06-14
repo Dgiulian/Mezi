@@ -131,11 +131,11 @@
             dataType:'json',
             success:function(result){
                if(result.Result==="OK"){
-                $('#mdlConcepto').modal('hide');
+                $('#mdlConcepto').modal('hide');                
                 filtrar_cuenta();
-               } else{
-                   bootbox.alert(result.Message);
-               }
+               } else{}
+               if(result.Message)
+                bootbox.alert(result.Message);
             }
         });
     }

@@ -337,12 +337,24 @@ private static Contrato getContrato(){
 //                System.out.println("");
 //                
 //            }
+      public boolean puedeAjustar(Cuenta cuenta, String fecha) {
+        String query = String.format("select *\n" +
+            "  from cuenta_detalle\n" +
+            " where cuenta_detalle.id_cuenta = %d\n" +
+            "   and cuenta_detalle.id_concepto = %d\n" +
+            "   and cuenta_detalle.fecha >= '%s' ",cuenta.getId(),OptionsCfg.CONCEPTO_PAGO,fecha);
+        return this.getList(query).isEmpty();
+    }
 public static void main(String[] args){
     
-     HashMap<String,String> mapFiltro = new HashMap<String,String>();
-     TCuenta_detalle     tcd = new TCuenta_detalle();
-     mapFiltro.put("id_contrato","");
-    List<Cuenta_detalle> listaDetalle = tcd.getListFiltro(mapFiltro);
+    HashMap<String,String> mapFiltro = new HashMap<String,String>();
+    TCuenta_detalle     tcd = new TCuenta_detalle();
+    mapFiltro.put("id_contrato","");
+    //List<Cuenta_detalle> listaDetalle = tcd.getListFiltro(mapFiltro);
+    boolean puede = tcd.puedeAjustar(new TCuenta().getById(9), "2017-06-14");
+    System.out.println(puede);
+    
+    
     
 //            Cuenta cuenta = new TCuenta().getById(27);
 //            System.out.print("Fecha Liquidacion: ");
@@ -373,4 +385,6 @@ public static void main(String[] args){
             //
             //            }
 }        
+
+
 }

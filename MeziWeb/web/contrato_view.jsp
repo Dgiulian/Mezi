@@ -22,17 +22,6 @@
 <%
     Contrato contrato = (Contrato) request.getAttribute("contrato");    
     TPropiedad tp = new TPropiedad();
-    HashMap<String,String> mapFiltro = new HashMap<String,String>();
-    HashMap<String,String> filtroVendedores = new HashMap<String,String>();
-
-    mapFiltro.put("id_estado","1");
-    List<Propiedad> lstPropiedades = tp.getListFiltro(mapFiltro);
-    if (lstPropiedades==null) lstPropiedades = new ArrayList<Propiedad>();
-
-    filtroVendedores.put("activo","1");
-    List<Vendedor> lstVendedores = new TVendedor().getListFiltro(filtroVendedores);
-    if(lstVendedores==null) lstVendedores = new ArrayList<Vendedor>();
-
     Propiedad propiedad = (Propiedad) request.getAttribute("propiedad");
     boolean con_propiedad = true;
     boolean con_cliente = true;
@@ -283,6 +272,7 @@
                                             </fieldset>
                                             </div> <!-- tab1 -->
                                             <div class="tab-pane row " id="tabBasicos">
+                                                <fieldset disabled>
                                                 <div class="col-lg-12 ">
                                                     <div class="form-group col-lg-3 nopadding">
                                                         <label class="control-label" for="numero">N&uacute;mero</label>
@@ -344,7 +334,7 @@
                                                                     <td><%=TFecha.formatearFechaBdVista(valor.getDesde())%><input type="hidden" name="valor_desde" value="<%=TFecha.formatearFechaBdVista(valor.getDesde())%>"></td>
                                                                     <td><%=TFecha.formatearFechaBdVista(valor.getHasta())%><input type="hidden" name="valor_hasta" value="<%=TFecha.formatearFechaBdVista(valor.getHasta())%>"></td>
                                                                     <td><%=df.format(valor.getMonto())%><input type="hidden" name="valor_monto" value="<%=valor.getMonto()%>"></td>
-                                                                    <td><span class='btn btn-xs btn-danger btn-circle btn-del'><span class='fa fa-trash-o'></span></td>
+                                                                    <td></td>
                                                                 </tr>
                                                                 <%}%>
                                                                 
@@ -385,7 +375,7 @@
                                                                     <td><%=TFecha.formatearFechaBdVista(documento.getDesde())%><input type="hidden" name="documento_desde" value="<%=TFecha.formatearFechaBdVista(documento.getDesde())%>"></td>
                                                                     <td><%=TFecha.formatearFechaBdVista(documento.getHasta())%><input type="hidden" name="documento_hasta" value="<%=TFecha.formatearFechaBdVista(documento.getHasta())%>"></td>
                                                                     <td><%=df.format(documento.getMonto())%><input type="hidden" name="documento_monto" value="<%=documento.getMonto()%>"></td>
-                                                                    <td><span class='btn btn-xs btn-danger btn-circle btn-del'><span class='fa fa-trash-o'></span></td>
+                                                                    <td></td>
                                                                 </tr>
                                                                 <%}%>                                                              
                                                             </tbody>
@@ -433,12 +423,7 @@
                                                                     <div class="controls">
                                                                         <div class="input-group  col-lg-12">
                                                                             <select name="id_vendedor" id="id_vendedor" class="form-control" >
-                                                                                <option value="0">Seleccione el vendedor</option>
-                                                                                <% for(Vendedor v:lstVendedores){
-                                                                                    String vendSel = (v.getId()==vendedor.getId())?"selected":"";
-                                                                                %>
-                                                                                <option value="<%=v.getId()%>" <%=vendSel%>><%=v.getNombre() + ", " + v.getApellido() %></option>
-                                                                                <% } %>
+                                                                                <option value="<%=vendedor.getId()%>" ><%=vendedor.getNombre() + ", " + vendedor.getApellido() %></option>
                                                                             </select>
 
                                                                         </div>
@@ -457,10 +442,11 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                              </fieldset>
                                             </div><!-- tabBasicos -->
                                                 <div class="tab-pane  row" id="tabAdic">
                                                     <div class="col-lg-6">
-                                                    <fielset>
+                                                    <fieldset disabled>
                                                         <legend >Gastos inquilino</legend>
                                                        <div class="col-lg-12 ">
                                                             <div class="form-group row">
@@ -575,7 +561,7 @@
                                                     </fieldset> <!--Inquilino -->
                                                 </div> <!--col-lg-g -->
                                                 <div class="col-lg-6">
-                                                    <fielset>
+                                                    <fieldset disabled>
                                                         <legend >Gastos propietario</legend>
                                                        <div class="col-lg-12 ">
                                                             <div class="form-group row">
@@ -667,7 +653,7 @@
                                                                     <td><%=aplica%><input type="hidden" name="gasto_aplica" value="<%=gasto.getId_aplica()%>"></td>
                                                                     <td><%=gasto.getCuotas()%><input type="hidden" name="gasto_cuotas" value="<%=gasto.getCuotas()%>"></td>
                                                                     <td><%=df.format(gasto.getImporte())%><input type="hidden" name="valor_monto" value="<%=gasto.getImporte()%>"></td>
-                                                                    <td><span class='btn btn-xs btn-danger btn-circle btn-del'><span class='fa fa-trash-o'></span></td>
+                                                                    <td></td>
                                                                 </tr>
                                                                 <%}%>                                                               
                                                             </tbody>
@@ -830,6 +816,7 @@
                                             </div>
                                         </div> <!-- tabGarantes -->
                                              <div class="tab-pane row " id="tabOtros">
+                                                 <fieldset disabled>
                                                  <div class="col-lg-12 nopadding">
                                                       <div class="form-group ">
                                                         <label for="asegura_renta" class="col-lg-2 control-label"><span class="">Asegura Renta</span></label>
@@ -845,6 +832,7 @@
                                                               <textarea class="form-control" name="observaciones" id="observaciones"><%=contrato.getObservaciones()%></textarea>
                                                         </div>
                                                 </div>
+                                                </fieldset>
                                              </div>
 
                                              <div class="row">

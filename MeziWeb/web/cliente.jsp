@@ -62,23 +62,28 @@
                                             </div>
                                         </div>
                                         </div><!--row-->
-                                      <div class="row" id="paginacion">
-                                          <input type="hidden" id="pagNro" name="pagNro" value="1">                                          
-                                          <ul class="pagination"></ul>
-                                      </div>
-                                        
-                                            <table class="table table-bordered table-condensed table-striped" id="tblCliente">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Carpeta</th>
-                                                        <th>Nombre y Apellido</th>
-                                                        <th>Tipo cliente</th>
-                                                        <th>DNI</th>
-                                                        <th></th>                                                        
-                                                    </tr>
-                                                </thead>
-                                                <tbody class=""></tbody>
-                                            </table>
+                                      <div class="row">
+                                        <div class="col-lg-1">
+                                          <div clas="form-group">                                                    
+                                            <input type="hidden" id="pagNro" name="pagNro" value="1">
+                                            <lablel for="pagination">P&aacute;gina</lablel>
+                                            <select class="form-control" id="pagination" name="pagination"></select>
+                                          </div>
+                                        </div>
+                                     </div>
+                                      
+                                        <table class="table table-bordered table-condensed table-striped" id="tblCliente">
+                                            <thead>
+                                                <tr>
+                                                    <th>Carpeta</th>
+                                                    <th>Nombre y Apellido</th>
+                                                    <th>Tipo cliente</th>
+                                                    <th>DNI</th>
+                                                    <th></th>                                                        
+                                                </tr>
+                                            </thead>
+                                            <tbody class=""></tbody>
+                                        </table>
                                         </div> <!-- tab-content-->
 					</div>
 				</div><!--/col-->
@@ -162,7 +167,7 @@
            $('#nombre_search').change(filtrar_mdl_cliente);
            $('#apellido_search').change(filtrar_mdl_cliente);
            $('#dni_search').change(filtrar_mdl_cliente);
-           $('ul.pagination li').click(gotoPage);
+           $('#pagination').change(gotoPage);
            $('#numResults').change(filtrar_mdl_cliente);
            filtrar_mdl_cliente();
         });
@@ -184,22 +189,9 @@
                success: function(result) {
                    if(result.Result === "OK") {
                        $tabla.find('tbody').html(createTable(result.Records));
-                       $('ul.pagination').html(createPagination(result.TotalRecordCount,data.pagNro,data.numResults));
-                       $('ul.pagination li').click(gotoPage);
+                       $('#pagination').html(createPagination(result.TotalRecordCount,data.pagNro,data.numResults));
                         $('.btn-del').click(borrar);
-                        
-//                        $tabla.DataTable({
-//                                responsive: true,
-//                                retrieve: true,
-//                                paging: false,
-//                                ordering: true,
-//                                searching: false,
-//                                lengthChange:false,
-//                                bInfo: false,
-//                                language: {
-//                                    url:'bower_components/datatables-plugins/i18n/Spanish.json',
-//                                }
-//                        });
+
                    }
                }
            });
@@ -246,23 +238,20 @@
         loadData(data);
 
      }
-     function gotoPage(){            
-            var pagNro = parseInt($(this).find('a').text());
-            $('ul.pagination li').removeClass('active');
-            $(this).addClass('active');
-            $('#pagNro').val(pagNro);
-            filtrar_mdl_cliente();
-        }
+    function gotoPage(){
+        var pagNro = parseInt($(this).val());
+        $('#pagNro').val(pagNro);
+        filtrar_mdl_cliente();
+    }
     function createPagination(totalRecordCount,pagNro,numResults){
         var html="";
         var numPages = Math.ceil(totalRecordCount / numResults);
         //if(numPages<=1) return html;
         for(var i=1;i<=numPages;i++){
-            var active=(i===pagNro)?'class="active"':'';
-            html += '<li '+ active +'><a href="#">'+ i +'</a></li>';
+            var active=(i===pagNro)?' selected "':'';
+            html += '<option '+ active +' value="' + i + ' "><a href="#">'+ i +'</a></option>';
         }        
-    return html;
-   }
-    </script>
+        return html;    
+   }    </script>
 </body>
 </html>

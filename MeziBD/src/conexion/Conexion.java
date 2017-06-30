@@ -53,9 +53,10 @@ public class Conexion {
             String url = "jdbc:mysql://";
             
 
-           String propiedad = "zeroDateTimeBehavior=convertToNull";           
+           String propiedad = "zeroDateTimeBehavior=convertToNull";
+            propiedad += "&verifyServerCertificate=false";
+            propiedad += "&useSSL=true";
             /* Para subir a produccion */
-
             /* Local con base local */
             String host = "127.0.0.1";
             String port = ":3306";
@@ -67,6 +68,7 @@ public class Conexion {
             Class.forName(driver).newInstance();
             try {
                 conexion = DriverManager.getConnection(url + host + port + nombrebd + "?" + propiedad, usr, password);
+
                 return true;
             } catch (SQLException ex) {
                 Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);

@@ -12,7 +12,6 @@ import bd.Vendedor;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -65,31 +64,27 @@ public class TContrato extends TransaccionBase<Contrato> {
             return numero;
         }
         public boolean eliminar(Contrato contrato) throws BaseException{
-           TContrato           tc  = new TContrato();
-           TPropiedad          tp  = new TPropiedad();
-           TContrato_valor     tvalor  = new TContrato_valor();
-           TContrato_documento tdocum  = new TContrato_documento();
-           TContrato_gasto     tgastos  = new TContrato_gasto();
-           TCuenta_detalle     tcd = new TCuenta_detalle();
-           TCuenta             tcuenta = new TCuenta();
-           HashMap<String,String> mapFiltro = new HashMap<String,String>();
-           HashMap<String,String> filtroCuenta = new HashMap<String,String>();
+           TContrato           tcontrato  = new TContrato();
+           TPropiedad          tpropiedad = new TPropiedad();
+           TContrato_valor     tvalor     = new TContrato_valor();
+           TContrato_documento tdocum     = new TContrato_documento();
+           TContrato_gasto     tgastos    = new TContrato_gasto();
+           TCuenta             tcuenta    = new TCuenta();
+           TCuenta_detalle     tcuenta_detalle = new TCuenta_detalle();
            
            if (contrato==null) throw new BaseException("ERROR","No existe el contrato");
-           mapFiltro.put("id_contrato",contrato.getId().toString());
-
-
-           boolean baja = tc.baja(contrato);
+          
+           boolean baja = tcontrato.baja(contrato);
            if ( !baja)throw new BaseException("ERROR","Ocurrio un error al eliminar el registro");
-            Propiedad propiedad = tp.getById(contrato.getId_propiedad());
+            Propiedad propiedad = tpropiedad.getById(contrato.getId_propiedad());
             //new TPropietario().baja(contrato.getId_propietario());
             List<Contrato_valor>     lstValor = tvalor.getById_contrato(contrato.getId());
             List<Contrato_documento> lstDocum = tdocum.getById_contrato(contrato.getId());
             List<Contrato_gasto>    lstGastos = tgastos.getById_contrato(contrato.getId());
-            List<Cuenta> listaCuenta          = tcuenta.getListFiltro(mapFiltro);
+            List<Cuenta> listaCuenta          = tcuenta.getById_contrato(contrato.getId());
             if(propiedad!=null){
                 propiedad.setId_estado(OptionsCfg.PROPIEDAD_DISPONIBLE);
-                tp.actualizar(propiedad);
+                tpropiedad.actualizar(propiedad);
             }
             
             for(Contrato_valor valor:lstValor)     tvalor.baja(valor);
@@ -98,9 +93,8 @@ public class TContrato extends TransaccionBase<Contrato> {
             new TInquilino().baja(contrato.getId_inquilino());
             if(listaCuenta!=null){
                 for(Cuenta cuenta: listaCuenta) {
-                    filtroCuenta.put("id_cuenta",cuenta.getId().toString());
-                    for(Cuenta_detalle cd:tcd.getListFiltro(filtroCuenta)){
-                        tcd.baja(cd);
+                    for(Cuenta_detalle cd:tcuenta_detalle.getById_cuenta(cuenta.getId())){
+                        tcuenta_detalle.baja(cd);
                     }
                     tcuenta.baja(cuenta);
 
@@ -110,19 +104,17 @@ public class TContrato extends TransaccionBase<Contrato> {
         }
         
         public boolean activar(Contrato contrato) throws BaseException{
-           TContrato        tcontrato = new TContrato();
-           TContrato_valor     tvalor = new TContrato_valor();
-           TContrato_documento tdocu  = new TContrato_documento();
-           TContrato_gasto     tgasto = new TContrato_gasto();
-           TPropiedad          tpro   = new TPropiedad();
-           TInquilino          tinq   = new TInquilino();
-           TPropietario        tprop  = new TPropietario();
-           Integer id_contrato        = contrato.getId();
-           List<Contrato_valor>     lstValor          =  tvalor.getById_contrato(id_contrato);
-           List<Contrato_documento> lstDocum           =  tdocu.getById_contrato(id_contrato);
-           List<Contrato_gasto>     lstGastos          =  tgasto.getById_contrato(id_contrato);
-           ArrayList<Contrato_gasto>     lstGastoInq   =  new ArrayList<Contrato_gasto>();
-           ArrayList<Contrato_gasto>     lstGastoProp  =  new ArrayList<Contrato_gasto>();
+           TContrato        tcontrato       = new TContrato();
+           TContrato_valor     tvalor       = new TContrato_valor();
+           TContrato_documento tdocu        = new TContrato_documento();
+           TContrato_gasto     tgasto       = new TContrato_gasto();
+           TPropiedad          tpropiedad   = new TPropiedad();
+           Integer id_contrato              = contrato.getId();
+           List<Contrato_valor>      lstValor      = tvalor.getById_contrato(id_contrato);
+           List<Contrato_documento>  lstDocum      = tdocu.getById_contrato(id_contrato);
+           List<Contrato_gasto>      lstGastos     = tgasto.getById_contrato(id_contrato);
+           ArrayList<Contrato_gasto> lstGastoInq   = new ArrayList<Contrato_gasto>();
+           ArrayList<Contrato_gasto> lstGastoProp  = new ArrayList<Contrato_gasto>();
            if(lstGastos!=null){
                for(Contrato_gasto gasto:lstGastos){
                    Integer gasto_aplica = gasto.getId_aplica();
@@ -131,16 +123,13 @@ public class TContrato extends TransaccionBase<Contrato> {
                    else if(gasto_aplica.equals(OptionsCfg.CLIENTE_TIPO_PROPIETARIO)) lstGastoProp.add(gasto);
                }
            }
-           
-           Propiedad propiedad = tpro.getById(contrato.getId_propiedad());
-           if(propiedad==null) throw new BaseException("ERROR","Seleccione la propiedad");
-          
+           Propiedad propiedad = tpropiedad.getById(contrato.getId_propiedad());
            Cliente cliente = new TCliente().getById(contrato.getId_inquilino());
-           if(cliente==null) throw new BaseException("ERROR","Seleccione el inquilino");
            Vendedor vendedor = new TVendedor().getById(contrato.getId_vendedor());
+           if(propiedad==null) throw new BaseException("ERROR","Seleccione la propiedad");
+           if(cliente==null) throw new BaseException("ERROR","Seleccione el inquilino");
            if(vendedor ==null) throw new BaseException("ERROR","Seleccione el vendedor");
-          
-                           
+                                     
             Cuenta cc_inquilino_o = new Cuenta();
             cc_inquilino_o.setId_cliente(contrato.getId_inquilino());               
             cc_inquilino_o.setId_contrato(id_contrato);
@@ -211,15 +200,47 @@ public class TContrato extends TransaccionBase<Contrato> {
             tcontrato.actualizar(contrato);
             return true;
         }
+        /*
+            Cierra el contrato y pasa la propiedad a estado disponible.
+            Si tuviera alguna deuda, se debe saldar antes de finalizar el contrato
+        */
+        public boolean cerrar(Contrato contrato) throws BaseException{
+            TContrato  tcontrato  = new TContrato();
+            TPropiedad tpropiedad = new TPropiedad();
+            Propiedad propiedad = tpropiedad.getById(contrato.getId_propiedad());
+            if(propiedad==null) throw new BaseException("ERROR","No se encontr&oacute; la propiedad");
+            propiedad.setId_estado(OptionsCfg.PROPIEDAD_DISPONIBLE);                
+            
+            contrato.setId_estado(OptionsCfg.CONTRATO_ESTADO_ENTREGA);
+            tcontrato.actualizar(contrato);
+            tpropiedad.actualizar(propiedad);
+            return false;
+        }
+        /*
+            El contrato pasa a estado finalizado. Las cuentas no debe tener ninguna saldo
+        */
+        public boolean finalizar(Contrato contrato) throws BaseException{
+            TContrato tcontrato = new TContrato();            
+            contrato.setId_estado(OptionsCfg.CONTRATO_ESTADO_FIN);
+            tcontrato.actualizar(contrato);
+            return false;
+        }
+        public Contrato getById_propiedad(Integer id_propiedad){
+            String query = String.format("select * from contrato where contrato.id_propiedad = %d and (contrato.id_estado = %d or contrato.id_estado = %d  )",id_propiedad,OptionsCfg.CONTRATO_ESTADO_INICIAL,OptionsCfg.CONTRATO_ESTADO_ACTIVO);
+            System.out.println(query);
+            return this.getById(query);
+        }
         public static void main(String[ ] args){
             TContrato tc = new TContrato();
-            Contrato c = new Contrato();
+            Contrato contrato = tc.getById_propiedad(9);
+            System.out.println(contrato.getNumero());
+            /*Contrato c = new Contrato();
             c.setId_inquilino(12);
             c.setId_propiedad(9);
             c.setFecha_inicio("2016-01-01");
             c.setFecha_fin("2017-01-01");
             Contrato c2 = new TContrato().getSolapado(c);
-            
             System.out.println(c2);
+             */
         }
 }

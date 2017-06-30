@@ -195,14 +195,15 @@ public abstract class TransaccionBase<E> {
         this.orderBy = orderBy;
         return this;
     }
-     
-    
-    public HashMap<Integer,E> getMap(){        
+    public HashMap<Integer,E> getMap(){
+        return this.getMap(this.getList());
+    }
+    public HashMap<Integer,E> getMap(List<E> lista){        
         HashMap<Integer,E> mapa = new HashMap<Integer,E>();   
         try {
             Method getterId = this.clase.getMethod("getId");
             Object id;
-            List<E> list = this.getList();
+            List<E> list = lista;
             if (list==null) return mapa;
             for (E e : list) {
                 id = getterId.invoke(e, new Object[0]);

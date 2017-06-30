@@ -174,7 +174,7 @@ public class ReciboAnular extends HttpServlet {
             detalle_anula.setConcepto(String.format("Anulación de recibo nro %d",recibo.getNumero()));
             detalle_anula.setFecha(recibo.getFecha());
             detalle_anula.setId_recibo(anula.getId());
-            if (cuenta.getId_tipo_cliente()==OptionsCfg.CLIENTE_TIPO_PROPIETARIO) { 
+            if (cuenta.getId_tipo_cliente().equals(OptionsCfg.CLIENTE_TIPO_PROPIETARIO)) { 
                 detalle_anula.setHaber(total);
             } else {
                 detalle_anula.setDebe(total);

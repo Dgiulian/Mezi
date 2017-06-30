@@ -24,18 +24,24 @@
 				<div class="col-lg-12">
                                     <div class="box">
                                         <div class="box-header">
-                                            <H3>Listado de clientes <a href="<%= PathCfg.CLIENTE_EDIT%>" class="btn btn-primary" ><span class="fa fa-file" ></span> Nuevo</a></H3>
+                                            <H3>Reporte de propietarios</H3>
                                         </div>
                                     <div  class="box-content">
                                     
                                         <div class="row">
-                                            <div class="col-lg-4">
+                                            <div class="col-lg-1">
+                                                <div clas="form-group">
+                                                    <label for="carpeta_search">Carpeta</label>
+                                                    <input type="text" class="form-control" name="carpeta_search" id="carpeta_search" size="20" value="">                                                    
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3">
                                                 <div clas="form-group">
                                                     <label for="nombre_search">Nombre</label>
                                                     <input type="text" class="form-control" name="nombre_search" id="nombre_search" size="20" value="">                                                    
                                                 </div>
                                             </div>
-                                            <div class="col-lg-4">
+                                            <div class="col-lg-3">
                                              <div clas="form-group">
                                                     <label for="apellido_search">Apellido</label>
 <!--                                                    <div class="input-group">                                                                                            -->
@@ -44,32 +50,29 @@
                                                 </div>
                                             </div>
                                             <div class="col-lg-2">
-                                             <div clas="form-group">
+                                                <div clas="form-group">
                                                     <label for="dni_search">Dni</label>
-                                                    
                                                         <input type="text" class="form-control" name="dni_search" id="dni_search" size="20" value="">
-
                                                 </div>
                                             </div>
-                                            <div class="col-lg-1">
+                                        <div class="col-lg-1">
                                             <div clas="form-group">
-                                                <label for="numResults">Mostrar: </label>
-                                           <select id="numResults" name="numResults" CLASS="form-control" >
-                                            <option value="25">25</option>
-                                            <option value="50">50</option>
-                                            <option value="100">100</option>                                                            
-                                        </select>
+                                            <label for="pagination">P&aacute;gina </label>
+                                            <select class="form-control" id="pagination" name="pagination"></select>
+                                            </div>
+                                        </div>  
+                                        <div class="col-lg-1">
+                                            <div clas="form-group">
+                                                <label for="numResults">Mostrar </label>
+                                                <select id="numResults" name="numResults" CLASS="form-control" >
+                                                 <option value="25">25</option>
+                                                 <option value="50">50</option>
+                                                 <option value="100">100</option>                                                            
+                                             </select>
                                             </div>
                                         </div>
-                                        </div><!--row-->
-                                      <div class="row">
-                                        <div class="col-lg-1">
-                                          <div clas="form-group">                                                    
-                                            <input type="hidden" id="pagNro" name="pagNro" value="1">
-                                            <lablel for="pagination">P&aacute;gina</lablel>
-                                            <select class="form-control" id="pagination" name="pagination"></select>
-                                          </div>
-                                        </div>
+                                      
+                                  
                                      </div>
                                       
                                         <table class="table table-bordered table-condensed table-striped" id="tblCliente">
@@ -77,9 +80,11 @@
                                                 <tr>
                                                     <th>Carpeta</th>
                                                     <th>Nombre y Apellido</th>
-                                                    <th>Tipo cliente</th>
-                                                    <th>DNI</th>
-                                                    <th></th>                                                        
+                                                    <th>Domicilio</th>
+                                                    <th>Estado</th>
+                                                    <th>Carpeta Inq.</th>
+                                                    <th>Inquilino</th>
+                                                    <th>Estado Contrato</th>                                                        
                                                 </tr>
                                             </thead>
                                             <tbody class=""></tbody>
@@ -164,6 +169,7 @@
         <script language="">
         $(document).ready(function(){
            
+           $('#carpeta_search').change(filtrar_mdl_cliente);
            $('#nombre_search').change(filtrar_mdl_cliente);
            $('#apellido_search').change(filtrar_mdl_cliente);
            $('#dni_search').change(filtrar_mdl_cliente);
@@ -178,7 +184,7 @@
             var $tabla = $('#tblCliente');
             //$tabla.DataTable().destroy();
             $.ajax({
-               url: '<%= PathCfg.CLIENTE_LIST %>',
+               url: '<%= PathCfg.REPORTE_PROPIETARIOS_LIST %>',
                data: data,
                method:"GET",
                dataType: "json",
@@ -190,8 +196,6 @@
                    if(result.Result === "OK") {
                        $tabla.find('tbody').html(createTable(result.Records));
                        $('#pagination').html(createPagination(result.TotalRecordCount,data.pagNro,data.numResults));
-                        $('.btn-del').click(borrar);
-
                    }
                }
            });
@@ -201,46 +205,43 @@
         var html = "";
         for(var i = 0;i< data.length;i++){
            html +="<tr class=''>";
-           d = data[i];
-                      
+           var d = data[i];
+           var carpeta_inquilino = "";
+           var nombre_inquilino = "";
+           var estado_contrato = "";
+           if (d.contrato) {
+               estado_contrato = d.estado_contrato;
+           }
+           if(d.inquilino){
+               carpeta_inquilino = d.inquilino.carpeta;
+               nombre_inquilino = d.inquilino.apellido + "," + d.inquilino.nombre;
+           }
            html += wrapTag('td',d.carpeta,'');
-           html += wrapTag('td',d.apellido + ", " + d.nombre,'');
-           html += wrapTag('td',d.tipo_cliente,'');
-           html += wrapTag('td',d.dni,'');
-           
-            var htmlEdit = "<a href='<%= PathCfg.CLIENTE_EDIT%>?id="+ d.id +"' class='btn btn-xs btn-circle  btn-warning'><span class='fa fa-edit fw'></span></a> ";
-            var htmlDel = "<span href='' data-nombre='" + d.nombre+ "' data-apellido='"+d.apellido+"' data-index='"+ d.id + "' class='btn btn-xs btn-danger btn-circle btn-del'><span class='fa fa-trash-o'></span></span>";
-            html +='<td style="width:75px"  >' + htmlEdit + htmlDel + '</td>';
-//            html +=wrapTag('td',htmlEdit + htmlDel,'');
+           html += wrapTag('td',d.propietario,'');
+           html += wrapTag('td',d.calle + ' ' + d.numero,'');
+           html += wrapTag('td',d.estado,'');
+           html += wrapTag('td',carpeta_inquilino,'');
+           html += wrapTag('td',nombre_inquilino,'');
+           html += wrapTag('td',estado_contrato,'');                       
            html +="</tr>";
        }      
        return html;
     }
-   function borrar(){   
-        var id = $(this).data('index');
-        var nombre =  $(this).data('nombre');
-        var apellido  =  $(this).data('apellido');
-        var message = "Est&aacute; seguro que desea eliminar el cliente <b>" +     apellido + ", " + nombre + "</b>?";
-        var $tr = $(this).parent().parent();
-        deleteData('<%= PathCfg.CLIENTE_DEL %>',{id:id},function(result) {     
-                if(result.Result === "OK") {
-                    $tr.remove();
-                } else if (result.Message) bootbox.alert(result.Message);
-        }, message);
-    }
+
     function filtrar_mdl_cliente(){     
         var data = {};
+        data.carpeta = parseInt($('#carpeta_search').val());
         data.nombre = $('#nombre_search').val();
         data.apellido = $('#apellido_search').val();
         data.dni = $('#dni_search').val();
-        data.pagNro = parseInt($('#pagNro').val());
+        data.pagNro = parseInt($('#pagination').val());
         data.numResults = parseInt($('#numResults').val());
+        
         loadData(data);
 
      }
     function gotoPage(){
-        var pagNro = parseInt($(this).val());
-        $('#pagNro').val(pagNro);
+        var pagNro = parseInt($(this).val());        
         filtrar_mdl_cliente();
     }
     function createPagination(totalRecordCount,pagNro,numResults){

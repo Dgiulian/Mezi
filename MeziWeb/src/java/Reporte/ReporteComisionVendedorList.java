@@ -1,17 +1,17 @@
 /*
- * To change this template, choose Tools | Templates
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 package Reporte;
 
-import Contrato.*;
-import com.google.gson.Gson;
+import Contrato.ContratoList;
 import bd.Contrato;
-import bd.Cuenta_detalle;
 import bd.Inquilino;
 import bd.Propiedad;
 import bd.Propietario;
 import bd.Vendedor;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -24,31 +24,29 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.joda.time.LocalDate;
 import transaccion.TContrato;
-import transaccion.TCuenta_detalle;
 import transaccion.TInquilino;
 import transaccion.TPropiedad;
 import transaccion.TPropietario;
 import transaccion.TVendedor;
 import utils.JsonRespuesta;
 import utils.OptionsCfg;
-import utils.OptionsCfg.Option;
 import utils.Parser;
+import utils.TFecha;
 
 /**
  *
  * @author Diego
  */
-public class ReporteContratoList extends HttpServlet {
-    private Map<Integer,Propietario> mapPropietarios;
-    private Map<Integer,Inquilino>   mapInquilinos;
-    private Map<Integer,Propiedad>   mapPropiedades;
-    private Map<Integer,Option>      mapEstados;
-    private Map<Integer,Vendedor>    mapVendedores;
+public class ReporteComisionVendedorList extends HttpServlet {
+    private Map<Integer,Propietario>       mapPropietarios;
+    private Map<Integer,Inquilino>         mapInquilinos;
+    private Map<Integer,Propiedad>         mapPropiedades;
+    private Map<Integer,OptionsCfg.Option> mapEstados;
+    private Map<Integer,Vendedor>          mapVendedor;
     
     /**
-     * Processes requests for both HTTP
-     * <code>GET</code> and
-     * <code>POST</code> methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
      *
      * @param request servlet request
      * @param response servlet response
@@ -57,15 +55,18 @@ public class ReporteContratoList extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("application/json;charset=UTF-8");
+         response.setContentType("application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
         String pagNro = request.getParameter("pagNro");
         String codigo = request.getParameter("codigo");
         Integer id_cliente = Parser.parseInt(request.getParameter("id_cliente"));
         Integer id_propiedad = Parser.parseInt(request.getParameter("id_propiedad"));
         Integer id_tipo = Parser.parseInt(request.getParameter("id_tipo"));
+        String  fecha_desde = TFecha.formatearFechaVistaBd(request.getParameter("fecha_desde"));
+        String  fecha_hasta = TFecha.formatearFechaVistaBd(request.getParameter("fecha_hasta"));
         Integer page    = Parser.parseInt(pagNro);
-        
+        LocalDate desde = null;
+        LocalDate hasta = null;
         try {
             JsonRespuesta jr = new JsonRespuesta();           
            
@@ -73,8 +74,9 @@ public class ReporteContratoList extends HttpServlet {
             mapPropietarios = new TPropietario().getMap();
             mapInquilinos   = new TInquilino().getMap();
             mapPropiedades  = new TPropiedad().getMap();
+            mapVendedor     = new TVendedor().getMap();
             mapEstados      = OptionsCfg.getMap(OptionsCfg.getEstadosContrato());
-            mapVendedores   = new TVendedor().getMap();
+            
             
             TContrato tp = new TContrato();
             HashMap<String,String> mapFiltro = new HashMap<String,String> ();                        
@@ -89,10 +91,17 @@ public class ReporteContratoList extends HttpServlet {
             lista =  tp.getListFiltro(mapFiltro);
             //lista = tp.getList();
             
+                      
+            if(fecha_desde!=null && !fecha_desde.equals(""))desde = new LocalDate(fecha_desde);
+            if(fecha_hasta!=null && !fecha_hasta.equals(""))hasta = new LocalDate(fecha_hasta);
             
             if (lista != null) {
                 List<Contrato> listaDet = new ArrayList<Contrato>();
                 for (Contrato c:lista){
+                    LocalDate fecha = new LocalDate(c.getFecha_inicio());
+                    if(desde!=null && fecha.isBefore(desde)) continue;
+                    if(hasta!=null && fecha.isAfter(hasta)) continue;
+                    
                     listaDet.add(new ContratoDet(c));
                 }
                 jr.setTotalRecordCount(listaDet.size());
@@ -111,11 +120,37 @@ public class ReporteContratoList extends HttpServlet {
             out.close();
         }
     }
-
- 
+private class ContratoDet extends Contrato{
+        String direccion   = "";
+        String inquilino   = "";
+        String vendedor    = "";
+        String propietario = "";
+        String detalles    = "";
+        String precio      = "";
+        String tipo_contrato   = "";
+        String estado_contrato = "";
+        
+        
+        ContratoDet(Contrato contrato) {
+            super(contrato);
+            Propiedad propiedad = mapPropiedades.get(contrato.getId_propiedad());
+            Inquilino inq = mapInquilinos.get(contrato.getId_inquilino());
+            Propietario pro = mapPropietarios.get(contrato.getId_propietario());
+            Vendedor vend = mapVendedor.get(contrato.getId_vendedor());
+            if(propiedad!=null) direccion = propiedad.getDireccion();
+            if(inq!=null) inquilino   = inq.getApellido() + ", " + inq.getNombre();
+            if(pro!=null) propietario = pro.getApellido() + ", " + pro.getNombre();
+            if(vend!=null) vendedor = vend.getApellido() + ", " + vend.getNombre();
+            
+            OptionsCfg.Option optEstado = mapEstados.get(contrato.getId_estado());
+            
+            estado_contrato = (optEstado!=null)?optEstado.getDescripcion():"";
+            tipo_contrato = "Alquiler";
+            //Propietario po = mapPropietarios.get(contrato.getId_propiedad());
+        }
+    }
     /**
-     * Handles the HTTP
-     * <code>GET</code> method.
+     * Handles the HTTP <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -129,8 +164,7 @@ public class ReporteContratoList extends HttpServlet {
     }
 
     /**
-     * Handles the HTTP
-     * <code>POST</code> method.
+     * Handles the HTTP <code>POST</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -152,34 +186,5 @@ public class ReporteContratoList extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
-    private class ContratoDet extends Contrato{
-        String direccion   = "";
-        String inquilino   = "";
-        String propietario = "";
-        String detalles    = "";
-        String precio      = "";
-        String tipo_contrato   = "";
-        String estado_contrato = "";
-        String vendedor        = "";
-        Float  saldo           = 0f;        
-        
-        ContratoDet(Contrato contrato) {
-            super(contrato);
-            Propiedad propiedad = mapPropiedades.get(contrato.getId_propiedad());
-            Inquilino inq = mapInquilinos.get(contrato.getId_inquilino());
-            Propietario pro = mapPropietarios.get(contrato.getId_propietario());
-            Vendedor ven = mapVendedores.get(contrato.getId_vendedor());
-            
-            if(propiedad!=null) direccion = propiedad.getDireccion();
-            if(inq!=null) inquilino   = inq.getCarpeta() + " - " + inq.getApellido() + ", " + inq.getNombre();
-            if(pro!=null) propietario = pro.getCarpeta() + " - " + pro.getApellido() + ", " + pro.getNombre();
-            Option optEstado = mapEstados.get(contrato.getId_estado());
-            
-            estado_contrato = (optEstado!=null)?optEstado.getDescripcion():"";
-            tipo_contrato = "Alquiler";
-            if(ven!=null) vendedor = ven.getApellido() + ", " + ven.getNombre();
-            //Propietario po = mapPropietarios.get(contrato.getId_propiedad());
-        }        
-    }
+
 }

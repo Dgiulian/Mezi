@@ -29,13 +29,19 @@
                                     <div  class="box-content">
                                     
                                         <div class="row">
-                                            <div class="col-lg-4">
+                                             <div class="col-lg-1">
+                                                <div clas="form-group">
+                                                    <label for="carpeta_search">Carpeta</label>
+                                                    <input type="text" class="form-control" name="carpeta_search" id="carpeta_search" size="20" value="">                                                    
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3">
                                                 <div clas="form-group">
                                                     <label for="nombre_search">Nombre</label>
                                                     <input type="text" class="form-control" name="nombre_search" id="nombre_search" size="20" value="">                                                    
                                                 </div>
                                             </div>
-                                            <div class="col-lg-4">
+                                            <div class="col-lg-3">
                                              <div clas="form-group">
                                                     <label for="apellido_search">Apellido</label>
 <!--                                                    <div class="input-group">                                                                                            -->
@@ -52,24 +58,23 @@
                                                 </div>
                                             </div>
                                             <div class="col-lg-1">
-                                            <div clas="form-group">
-                                                <label for="numResults">Mostrar: </label>
-                                           <select id="numResults" name="numResults" CLASS="form-control" >
-                                            <option value="25">25</option>
-                                            <option value="50">50</option>
-                                            <option value="100">100</option>                                                            
-                                        </select>
+                                                <div clas="form-group">
+                                                    <label for="pagination">P&aacute;gina </label>
+                                                    <select class="form-control" id="pagination" name="pagination"></select>
+                                                </div>
+                                            </div>  
+                                            <div class="col-lg-1">
+                                                <div clas="form-group">
+                                                    <label for="numResults">Mostrar </label>
+                                                    <select id="numResults" name="numResults" CLASS="form-control" >
+                                                     <option value="25">25</option>
+                                                     <option value="50">50</option>
+                                                     <option value="100">100</option>                                                            
+                                                 </select>
+                                                </div>
                                             </div>
-                                        </div>
-                                        </div><!--row-->
-                                      <div class="row">
-                                        <div class="col-lg-1">
-                                          <div clas="form-group">                                                    
-                                            <input type="hidden" id="pagNro" name="pagNro" value="1">
-                                            <lablel for="pagination">P&aacute;gina</lablel>
-                                            <select class="form-control" id="pagination" name="pagination"></select>
-                                          </div>
-                                        </div>
+                                        
+                                        
                                      </div>
                                       
                                         <table class="table table-bordered table-condensed table-striped" id="tblCliente">
@@ -164,6 +169,7 @@
         <script language="">
         $(document).ready(function(){
            
+           $('#carpeta_search').change(filtrar_mdl_cliente);
            $('#nombre_search').change(filtrar_mdl_cliente);
            $('#apellido_search').change(filtrar_mdl_cliente);
            $('#dni_search').change(filtrar_mdl_cliente);
@@ -173,8 +179,7 @@
         });
         
         function loadData(data){
-            console.log(data);
-        
+           
             var $tabla = $('#tblCliente');
             //$tabla.DataTable().destroy();
             $.ajax({
@@ -201,7 +206,7 @@
         var html = "";
         for(var i = 0;i< data.length;i++){
            html +="<tr class=''>";
-           d = data[i];
+           var d = data[i];
                       
            html += wrapTag('td',d.carpeta,'');
            html += wrapTag('td',d.apellido + ", " + d.nombre,'');
@@ -230,17 +235,17 @@
     }
     function filtrar_mdl_cliente(){     
         var data = {};
+        data.carpeta = parseInt($('#carpeta_search').val());
         data.nombre = $('#nombre_search').val();
         data.apellido = $('#apellido_search').val();
         data.dni = $('#dni_search').val();
-        data.pagNro = parseInt($('#pagNro').val());
+        data.pagNro = parseInt($('#pagination').val());
         data.numResults = parseInt($('#numResults').val());
         loadData(data);
 
      }
     function gotoPage(){
         var pagNro = parseInt($(this).val());
-        $('#pagNro').val(pagNro);
         filtrar_mdl_cliente();
     }
     function createPagination(totalRecordCount,pagNro,numResults){

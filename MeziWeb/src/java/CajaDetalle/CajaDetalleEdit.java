@@ -144,8 +144,8 @@ public class CajaDetalleEdit extends HttpServlet {
                 detalle.setId_cuenta(cuenta_interna.getId());
                 cuenta_interna_detalle.setFecha(caja.getFecha());
                 cuenta_interna_detalle.setConcepto(detalle.getConcepto());
-                if (id_tipo==OptionsCfg.TIPO_INGRESO) cuenta_interna_detalle.setHaber(detalle.getImporte());
-                else if (id_tipo==OptionsCfg.TIPO_EGRESO)cuenta_interna_detalle.setDebe(detalle.getImporte());
+                if (id_tipo.equals(OptionsCfg.TIPO_INGRESO)) cuenta_interna_detalle.setHaber(detalle.getImporte());
+                else if (id_tipo.equals(OptionsCfg.TIPO_EGRESO)) cuenta_interna_detalle.setDebe(detalle.getImporte());
                 new TCuenta_interna_detalle().alta(cuenta_interna_detalle);
                 TAuditoria.guardar(id_usuario,id_tipo_usuario_actual,OptionsCfg.MODULO_CUENTA_INTERNA_DETALLE,OptionsCfg.ACCION_ALTA,id_caja,tc.auditar(cuenta_interna_detalle));
             

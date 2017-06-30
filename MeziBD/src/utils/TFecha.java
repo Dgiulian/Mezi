@@ -14,6 +14,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.joda.time.LocalDate;
 
 /**
  *
@@ -200,5 +201,11 @@ public class TFecha {
         if (fecha!=null)
             return TFecha.formatearFecha(fecha, TFecha.formatoVista,TFecha.formatoBD);
         else return null;
+    }
+    public static boolean isBeforeEqual(LocalDate fecha1,LocalDate fecha2){
+       return fecha1.isBefore(fecha2) || fecha1.isEqual(fecha2) ;
+    }
+    public static boolean isAfterEqual(LocalDate fecha1,LocalDate fecha2){
+       return fecha1.isAfter(fecha2) || fecha1.isEqual(fecha2) ;
     }
 }

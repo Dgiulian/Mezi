@@ -1,4 +1,5 @@
 
+<%@page import="bd.Cuenta_detalle"%>
 <%@page import="bd.Propietario"%>
 <%@page import="utils.OptionsCfg.Option"%>
 <%@page import="java.text.DecimalFormat"%>
@@ -20,29 +21,25 @@
 <%@page import="java.util.HashMap"%>
 <%@page import="transaccion.TPropiedad"%>
 <%
-    Contrato contrato = (Contrato) request.getAttribute("contrato");    
-    TPropiedad tp = new TPropiedad();
-    HashMap<String,String> mapFiltro = new HashMap<String,String>();
-    HashMap<String,String> filtroVendedores = new HashMap<String,String>();
-
-    mapFiltro.put("id_estado","1");
-    List<Propiedad> lstPropiedades = tp.getListFiltro(mapFiltro);
-    if (lstPropiedades==null) lstPropiedades = new ArrayList<Propiedad>();
-
-    filtroVendedores.put("activo","1");
-    List<Vendedor> lstVendedores = new TVendedor().getListFiltro(filtroVendedores);
-    if(lstVendedores==null) lstVendedores = new ArrayList<Vendedor>();
-
+    Contrato contrato = (Contrato) request.getAttribute("contrato");
     Propiedad propiedad = (Propiedad) request.getAttribute("propiedad");
+    Propietario propietario = (Propietario) request.getAttribute("propietario");
+    ArrayList<Cuenta_detalle> cuenta_detalle_oficial = (ArrayList<Cuenta_detalle>) request.getAttribute("cuenta_inquilino_oficial");
+    ArrayList<Cuenta_detalle> cuenta_detalle_no_oficial = (ArrayList<Cuenta_detalle>) request.getAttribute("cuenta_inquilino_no_oficial");
     boolean con_propiedad = true;
     boolean con_cliente = true;
     boolean con_vendedor = true;
     
+    TPropiedad tp = new TPropiedad();
+   
+    List<Vendedor> lstVendedores = new TVendedor().getListActivo();
+    
+
     if(propiedad==null){
         propiedad = new Propiedad();
         con_propiedad = false;
     }
-    Propietario propietario = (Propietario) request.getAttribute("propietario");
+    
     if (propietario==null){
         propietario = new Propietario();        
     }
@@ -70,7 +67,25 @@
     List<Contrato_valor> lstValor = (List<Contrato_valor>) request.getAttribute("lstValor");
     List<Contrato_documento> lstDocum= (List<Contrato_documento>) request.getAttribute("lstDocum");
     List<Contrato_gasto> lstContrato_gasto = (List<Contrato_gasto>) request.getAttribute("lstGasto");
+    
+    if(lstValor==null) lstValor = new ArrayList<Contrato_valor>();
+    if(lstDocum==null) lstDocum = new ArrayList<Contrato_documento>();
+    if(lstContrato_gasto==null) lstContrato_gasto = new ArrayList<Contrato_gasto>();
+    if(lstVendedores==null) lstVendedores = new ArrayList<Vendedor>();
+    if( cuenta_detalle_oficial ==null) cuenta_detalle_oficial = new ArrayList<Cuenta_detalle>();
+    if( cuenta_detalle_no_oficial ==null) cuenta_detalle_oficial = new ArrayList<Cuenta_detalle>();
+    
     DecimalFormat df = new DecimalFormat("#.#####");
+    String txtBoton;
+    switch(contrato.getId_estado()){
+        case OptionsCfg.CONTRATO_ESTADO_INICIAL: txtBoton = "Activar"; break;
+        case OptionsCfg.CONTRATO_ESTADO_ACTIVO:  txtBoton = "Finalizar"; break;
+        case OptionsCfg.CONTRATO_ESTADO_ENTREGA: txtBoton = "Finalizar"; break;
+        default: txtBoton = "Guardar";
+    }
+    String contrato_estado = "";
+    HashMap<Integer,OptionsCfg.Option> mapEstados = OptionsCfg.getMap(OptionsCfg.getEstadosContrato());
+    contrato_estado = mapEstados.get(contrato.getId_estado()).getDescripcion();
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -88,7 +103,6 @@
 <body>
     <!-- start: Header -->
     <%@include file="tpl_header.jsp"%>
-    <%=vendedor.getId()%>
 		<div class="container">
 		<div class="row">
 
@@ -98,29 +112,37 @@
 
 			<!-- start: Content -->
 			<div id="content" class="col-lg-10 col-sm-11 ">
+                            <form action="<%=PathCfg.CONTRATO_ESTADO%>" method="POST">
+                                <input type="hidden" id="id_contrato" name="id_contrato" value="<%=contrato.getId()%>" >
+                                <input type="hidden" id="id_estado" name="id_estado" value="<%=contrato.getId_estado()%>" >
+                                <% if(contrato.getId_estado().equals(OptionsCfg.CONTRATO_ESTADO_INICIAL)) { %> <% } %>                            
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="box" id="rootwizard">
                                             <div class="box-header">
-                                                <h2><i class="fa fa-edit"></i>Ver contrato de alquiler</h2>
+                                                <h2><i class="fa fa-edit"></i>Cambiar estado contrato de alquiler</h2>
                                                 <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
-                                                    <li class="active" ><a href="#tab1" data-toggle="tab">Inquilino</a></li>
+                                                    <li class="active" ><a href="#tabContrato" data-toggle="tab">Estado</a></li>
+                                                    <li class="" ><a href="#tab1" data-toggle="tab">Inquilino</a></li>
                                                     <li><a href="#tabProp" data-toggle="tab">Propiedad</a></li>
                                                     <li><a href="#tabBasicos" data-toggle="tab">B&aacute;sicos</a></li>
-                                                    <li><a href="#tabAdic" data-toggle="tab">Adicionales</a></li>
-                                                    <li><a href="#tabGarantes" data-toggle="tab">Garantes</a></li>
-                                                    <li><a href="#tabOtros" data-toggle="tab">Otros datos</a></li>
+                                                    <% if(contrato.getId_estado().equals(OptionsCfg.CONTRATO_ESTADO_INICIAL)) { %>
+                                                        <li><a href="#tabAdic" data-toggle="tab">Adicionales</a></li>
+                                                        <li><a href="#tabGarantes" data-toggle="tab">Garantes</a></li>
+                                                        <li><a href="#tabOtros" data-toggle="tab">Otros datos</a></li>
+                                                    <% } else if(contrato.getId_estado().equals(OptionsCfg.CONTRATO_ESTADO_ACTIVO)){%>
+                                                        <li><a href="#tabCuenta" data-toggle="tab">Cuenta</a></li>
+                                                    <% } %>
                                                 </ul>
                                             </div>
                                         <form role="form" method="POST" acttion="<%=PathCfg.CONTRATO_EDIT%>">
                                         <div  class="tab-content box-content">
-                                            <div class="tab-pane row active" id="tab1">
+                                            <div class="tab-pane row" id="tab1">
                                                <div class="col-lg-8">
                                                    <fieldset disabled>
                                                        <legend>Datos del inquilino</legend>
                                                        <div class="col-lg-12">
                                                         <div class="form-group row">
-                                                            
                                                                 <div class="col-lg-2 nopadding">
                                                                     <div class="controls">
                                                                         <label class="control-label" for="id_inquilino">N&uacute;mero carpeta</label>
@@ -129,32 +151,23 @@
                                                                           </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-lg-4 ">
+                                                                <div class="col-lg-5 ">
                                                                     <div class="controls">
                                                                         <label class="control-label" for="nombre">Nombre</label>
-                                                                          <div class="input-group ">
+                                                                          <div class="input-group  col-lg-12">
                                                                             <input type="text" id="nombre" name="nombre" class="form-control" value="<%=cliente.getNombre()%>" readonly>
                                                                           </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-lg-4">
+                                                                <div class="col-lg-5">
                                                                     <div class="controls">
                                                                         <label class="control-label" for="apellido">Apellido</label>
-                                                                          <div class="input-group ">
+                                                                          <div class="input-group  col-lg-12">
                                                                             <input type="text" id="apellido" name="apellido" class="form-control" value="<%=cliente.getApellido()%>" readonly>
                                                                           </div>
                                                                     </div>
                                                                 </div>
-                                                            <%if (!con_cliente) {%>
-                                                            <div class="col-lg-2 ">
-                                                                <div class="controls">
-                                                                    <label class="control-label" for="id_inquilino">&nbsp;</label>
-                                                                      <div class="input-group ">
-                                                                        <span class="btn btn-primary" data-toggle="modal" data-target="#mdlCliente">Seleccionar</span>
-                                                                      </div>
-                                                                </div>
-                                                            </div>
-                                                            <%}%>
+                                                        
                                                            
                                                         </div><!-- row -->
                                                    </div>
@@ -178,6 +191,16 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                            <%if (!con_cliente) {%>
+                                                            <div class="col-lg-2 ">
+                                                                <div class="controls">
+                                                                    <label class="control-label" for="id_inquilino">&nbsp;</label>
+                                                                      <div class="input-group ">
+                                                                        <span class="btn btn-primary" data-toggle="modal" data-target="#mdlCliente">Seleccionar</span>
+                                                                      </div>
+                                                                </div>
+                                                            </div>
+                                                            <%}%>        
                                                         </div>
                                                     </div>
                                                 </fieldset>
@@ -193,7 +216,7 @@
                                                      <div class="col-lg-12" >
                                                          <input type="hidden" name="id_propiedad" id="id_propiedad" value="<%=propiedad.getId()%>">
                                                         <div class="form-group row">
-                                                                <div class="col-lg-7 nopadding">
+                                                                <div class="col-lg-9 nopadding">
                                                                     <div class="controls">
                                                                         <label class="control-label" for="calle">Calle</label>
                                                                           <div class="input-group col-lg-12 ">
@@ -283,6 +306,7 @@
                                             </fieldset>
                                             </div> <!-- tab1 -->
                                             <div class="tab-pane row " id="tabBasicos">
+                                                <fieldset disabled>
                                                 <div class="col-lg-12 ">
                                                     <div class="form-group col-lg-3 nopadding">
                                                         <label class="control-label" for="numero">N&uacute;mero</label>
@@ -328,15 +352,12 @@
                                                                 <col style="width:10%">
                                                             </colgroup>
                                                             <thead>
-                                                                
                                                                 <tr>
                                                                     <th>Desde</th>
                                                                     <th>Hasta</th>
                                                                     <th>Importe</th>
                                                                     <th>Acci&oacute;n</th>
                                                                 </tr>
-                                                                
-                                                              
                                                             </thead>
                                                             <tbody>
                                                                 <% for(Contrato_valor valor: lstValor) {%> 
@@ -353,7 +374,6 @@
                                                                 <% if(lstValor.size() == 0) {%>
                                                                 <tr><td colspan="5">No se agreg&oacute; ning&uacute;n valor al contrato</td></tr>
                                                                 <% }%>
-                                                                <!-- <tr><td colspan="5"><span class="btn btn-primary" id="btnValor">Agregar Valor</span></td></tr> -->
                                                             </tfoot>  
                                                             <tfoot></tfoot>
                                                         </table>
@@ -369,9 +389,7 @@
                                                                 <col style="width:25%">
                                                                 <col style="width:10%">
                                                             </colgroup>
-
                                                             <thead>
-
                                                                 <tr>
                                                                     <th>Desde</th>
                                                                     <th>Hasta</th>
@@ -390,10 +408,9 @@
                                                                 <%}%>                                                              
                                                             </tbody>
                                                             <tfoot>
-                                                                <% if(lstDocum.size() == 0) {%>
+                                                            <% if(lstDocum.size() == 0) {%>
                                                                 <tr><td colspan="5">No se agreg&oacute; ning&uacute;n documento al contrato</td></tr>
-                                                                <% }%>
-                                                                <!-- <tr><td colspan="5"><span class="btn btn-primary" id="btnDocumento">Agregar Valor</span></td></tr>-->
+                                                            <% }%>                                                                
                                                             </tfoot>                                                            
                                                         </table>
                                                             </fieldset>
@@ -432,13 +449,8 @@
                                                                     <label class="control-label" for="id_vendedor">Vendedor</label>
                                                                     <div class="controls">
                                                                         <div class="input-group  col-lg-12">
-                                                                            <select name="id_vendedor" id="id_vendedor" class="form-control" >
-                                                                                <option value="0">Seleccione el vendedor</option>
-                                                                                <% for(Vendedor v:lstVendedores){
-                                                                                    String vendSel = (v.getId()==vendedor.getId())?"selected":"";
-                                                                                %>
-                                                                                <option value="<%=v.getId()%>" <%=vendSel%>><%=v.getNombre() + ", " + v.getApellido() %></option>
-                                                                                <% } %>
+                                                                            <select name="id_vendedor" id="id_vendedor" class="form-control" >                                                                                
+                                                                                <option value="<%=vendedor.getId()%>" ><%=vendedor.getNombre() + ", " + vendedor.getApellido() %></option>                                                                                
                                                                             </select>
 
                                                                         </div>
@@ -457,10 +469,11 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                </fieldset>
                                             </div><!-- tabBasicos -->
                                                 <div class="tab-pane  row" id="tabAdic">
                                                     <div class="col-lg-6">
-                                                    <fielset>
+                                                    <fieldset disabled>
                                                         <legend >Gastos inquilino</legend>
                                                        <div class="col-lg-12 ">
                                                             <div class="form-group row">
@@ -575,7 +588,7 @@
                                                     </fieldset> <!--Inquilino -->
                                                 </div> <!--col-lg-g -->
                                                 <div class="col-lg-6">
-                                                    <fielset>
+                                                    <fieldset disabled>
                                                         <legend >Gastos propietario</legend>
                                                        <div class="col-lg-12 ">
                                                             <div class="form-group row">
@@ -830,6 +843,7 @@
                                             </div>
                                         </div> <!-- tabGarantes -->
                                              <div class="tab-pane row " id="tabOtros">
+                                                 <fieldset disabled>
                                                  <div class="col-lg-12 nopadding">
                                                       <div class="form-group ">
                                                         <label for="asegura_renta" class="col-lg-2 control-label"><span class="">Asegura Renta</span></label>
@@ -845,32 +859,152 @@
                                                               <textarea class="form-control" name="observaciones" id="observaciones"><%=contrato.getObservaciones()%></textarea>
                                                         </div>
                                                 </div>
-                                             </div>
+                                                 </fieldset>
+                                             </div><!-- tabOtros -->
+                                            <div class="tab-pane  row" id="tabCuenta">
+                                                <div class="row">
+                                                <div class="col-lg-6">
+                                                    <h2><i class="fa fa-edit"></i>Cuenta Oficial  </h2>
+                                                    <input type="hidden" name="id_cuenta_oficial" id="id_cuenta_oficial" >
 
-                                             <div class="row">
-                                                    <div class="col-lg-12">
-                                                    <ul class="pager wizard">
-                                                          <li class="previous first" style="display:none;"><a href="#">First</a></li>
-                                                          <li class="previous"><a href="#">Anterior</a></li>
-                                                          <li class="next last" style="display:none;"><a href="#">Last</a></li>
-                                                          <li class="next"><a href="#">Siguiente</a></li>
-                                                  </ul>
+                                                    <table class="table table-bordered table-condensed table-striped" id="tblCuentaOficial">
+                                                            <colgroup>
+                                                                <col style="width:10%">
+                                                                <col style="">
+                                                                <col style="width:10%;text-align: center">
+                                                                <col style="width:10%">
+                                                                <col style="width:10%">
+                                                            </colgroup>
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Fecha</th>
+                                                                    <th>Concepto</th>
+                                                                    <th style="text-align: center">Debe</th>
+                                                                    <th style="text-align: center">Haber</th>
+                                                                    <th style="text-align: center">Saldo</th>
+                                                                </tr>
+                                                            </thead>    
+                                                            <tbody>
+                                                                <% Float saldo_oficial = 0f;
+                                                                    for(Cuenta_detalle cd: cuenta_detalle_oficial) { 
+                                                                        saldo_oficial += cd.getHaber() - cd.getDebe();
+                                                                %>
+                                                                <tr>
+                                                                    <td><%=TFecha.formatearFechaBdVista(cd.getFecha())%></td>
+                                                                    <td><%=cd.getConcepto()%></td>
+                                                                    <td><%=cd.getDebe()%></td>
+                                                                    <td><%=cd.getHaber()%></td>
+                                                                    <td><%= saldo_oficial %></td>
+                                                                    <input type="hidden" name="saldo_oficial" value="<%=saldo_oficial%>">
+                                                                </tr>
+                                                                <% } %>
+                                                            </tbody>
+        <!--                                                <tfoot>
+                                                            <th>
+                                                                <td colspan=""></td>     
+                                                                <td colspan="2"><b style="text-align: right">Saldo Total</b></td>
+                                                                <td colspan="" id="saldoOficial"></td>                                                        
+                                                            </th>
+                                                      </tfoot>-->
+                                                    </table>
+                                                </div>
+                                                            
+                                            <div class="col-lg-6">
+                                                <h2><i class="fa fa-edit"></i>Cuenta no oficial </h2>
+                                                    <input type="hidden" name="id_cuenta_no_oficial" id="id_cuenta_no_oficial" >
+
+                                                <table class="table table-bordered table-condensed table-striped" id="tblCuentaNoOficial">
+                                                    <colgroup>
+                                                        <col style="width:10%">
+                                                        <col style="">
+                                                        <col style="width:10%;text-align: center">
+                                                        <col style="width:10%">
+                                                        <col style="width:10%">
+                                                    </colgroup>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Fecha</th>
+                                                            <th>Concepto</th>
+                                                            <th style="text-align: center">Debe</th>
+                                                            <th style="text-align: center">Haber</th>
+                                                            <th style="text-align: center">Saldo</th>
+                                                        </tr>
+                                                    </thead>    
+                                                     <tbody>
+                                                                <% Float saldo_no_oficial = 0f;
+                                                                    for(Cuenta_detalle cd: cuenta_detalle_no_oficial) { 
+                                                                        saldo_no_oficial += cd.getHaber() - cd.getDebe();
+                                                                %>
+                                                                <tr>
+                                                                    <td><%=TFecha.formatearFechaBdVista(cd.getFecha())%></td>
+                                                                    <td><%=cd.getConcepto()%></td>
+                                                                    <td><%=cd.getDebe()%></td>
+                                                                    <td><%=cd.getHaber()%></td>
+                                                                    <td><%= saldo_no_oficial %></td>
+                                                                </tr>
+                                                                <% } %>
+                                                            </tbody>
+                                            <!-- <tfoot>
+                                                    <th><td colspan="4"></td></th>
+                                              </tfoot> -->
+                                            </table>
+                                        </div>
+                                                </div>
+                                            </div><!-- tabCuenta -->
+                                             
+                                        <div class="tab-pane active row" id="tabContrato">                                            
+                                            <div class=" form-group row">
+                                                <fieldset disabled>
+                                                <div class="col-lg-8">                                                    
+                                                    <div class="controls col-lg-6">
+                                                        <label class="control-label" for="id_inquilino">Estado</label>
+                                                          <div class="input-group  col-lg-12">
+                                                              <input type="text" class="form-control"  name="contrato_estado" value="<%=contrato_estado %>">                                                                
+                                                          </div>
                                                     </div>
-                                              </div>
-                                             <div class="row">
-                                                <div class="col-lg-12">
-                                                   <div class="form-actions">
-                                                      <!--<button type="submit" class="btn btn-primary" id="btnSubmit">Guardar</button>-->
-                                                      <a  href="<%= PathCfg.CONTRATO%>"class="btn btn-default">Volver</a>
-                                                  </div>
-                                               </div>
+                                                    <div class="controls  col-lg-3">
+                                                        <label class="control-label" for="id_inquilino">Saldo Oficial</label>
+                                                          <div class="input-group ">
+                                                              <input type="text" class="form-control"  name="saldo_oficial" value="<%=saldo_oficial%>">                                                                
+                                                          </div>
+                                                    </div>
+                                                    <div class="controls col-lg-3">
+                                                        <label class="control-label" for="id_inquilino">Saldo No Oficial</label>
+                                                          <div class="input-group ">
+                                                              <input type="text" class="form-control"  name="saldo_no_oficial" value="<%=saldo_no_oficial%>">                                                                
+                                                          </div>
+                                                    </div>   
+                                                </div>
+                                               </fieldset>           
                                             </div>
-                                        </div> <!-- tab-content-->
+                                            
+                                    </div> <!-- tabContrato -->
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                            <ul class="pager wizard">
+                                                  <li class="previous first" style="display:none;"><a href="#">First</a></li>
+                                                  <li class="previous"><a href="#">Anterior</a></li>
+                                                  <li class="next last" style="display:none;"><a href="#">Last</a></li>
+                                                  <li class="next"><a href="#">Siguiente</a></li>
+                                            </ul>
+                                        </div>
+                                      </div>
+                                     <div class="row">
+                                        <div class="col-lg-12">
+                                           <div class="form-actions">
+                                              <button type="submit" class="btn btn-primary" id="btnSubmit"><%=txtBoton%></button>
+                                              <a  href="<%= PathCfg.CONTRATO%>"class="btn btn-default">Volver</a>
+                                          </div>
+                                       </div>
+                                    </div>
+                                </div> <!-- tab-content-->
+                                      
 					</div>
 				</div><!--/col-->
 
 			</div><!--/row-->
-
+                        </form>
+<!--                              
 
 
 
@@ -962,6 +1096,16 @@
   	$('#rootwizard').bootstrapWizard({
             onNext: mover,
             onPrevious:mover
+        });
+        $('form').submit(function(e){
+         e.preventDefault();
+         bootbox.confirm("¿Est&aacute; seguro que desea cambiar el estado del contrato?",function(result){
+         if(result) {
+            $('form').unbind('submit')
+            $('form').submit();
+            
+         }
+     });
         });
     });
     function mover(tab, navigation, index){

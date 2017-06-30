@@ -1,8 +1,6 @@
 <%@page import="utils.OptionsCfg"%>
 <%@page import="utils.PathCfg"%>
-<%
-    Integer id_tipo_usuario = (Integer) session.getAttribute("id_tipo_usuario");
-%>
+
 <!-- start: Main Menu -->
 <div id="sidebar-left" class="col-lg-2 col-sm-1 ">
 
@@ -30,6 +28,7 @@
                         <li><a href="<%=PathCfg.BARRIO%>"><i class="fa fa-building-o"></i><span class="hidden-sm text"> Barrios</span></a></li>
                         <li><a href="<%=PathCfg.VENDEDOR%>"><i class="fa fa-male"></i><span class="hidden-sm text"> Vendedores</span></a></li>
                         <li><a href="<%=PathCfg.USUARIO%>"><i class="fa fa-users"></i><span class="hidden-sm text"> Usuarios</span></a></li>                     
+                        <li><a href="<%=PathCfg.REPORTE%>"><i class="fa fa-bar-chart-o"></i><span class="hidden-sm text"> Reportes</span></a></li>                     
                 </ul>
         </div>
             <a href="#" id="main-menu-min" class="full visible-md visible-lg"><i class="fa fa-angle-double-left"></i></a>

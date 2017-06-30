@@ -27,18 +27,11 @@
     Propiedad propiedad = (Propiedad) request.getAttribute("propiedad");
     Cliente   cliente   = (Cliente)   request.getAttribute("inquilino");
     Vendedor  vendedor  = (Vendedor)  request.getAttribute("vendedor");
-
+    Propietario propietario = (Propietario) request.getAttribute("propietario");
+    
     TPropiedad tp = new TPropiedad();
-    HashMap<String,String> mapFiltro = new HashMap<String,String>();
-
-    HashMap<String,String> filtroVendedores = new HashMap<String,String>();
-
-    mapFiltro.put("id_estado","1");
-    List<Propiedad> lstPropiedades = tp.getListFiltro(mapFiltro);
-    if (lstPropiedades==null) lstPropiedades = new ArrayList<Propiedad>();
-
-    filtroVendedores.put("activo","1");
-    List<Vendedor> lstVendedores = new TVendedor().getListFiltro(filtroVendedores);
+    
+    List<Vendedor> lstVendedores =  new TVendedor().getListActivo();
     if(lstVendedores==null) lstVendedores = new ArrayList<Vendedor>();
 
     String[] lstOpcAgente={"","Si","No"};
@@ -50,7 +43,7 @@
         propiedad = new Propiedad();
         con_propiedad = false;
     }
-    Propietario propietario = (Propietario) request.getAttribute("propietario");
+    
     if (propietario==null){
         propietario = new Propietario();        
     }
@@ -133,32 +126,23 @@
                                                                           </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-lg-4 ">
+                                                                <div class="col-lg-5 ">
                                                                     <div class="controls">
                                                                         <label class="control-label" for="nombre">Nombre</label>
-                                                                          <div class="input-group ">
+                                                                          <div class="input-group  col-lg-12">
                                                                             <input type="text" id="nombre" name="nombre" class="form-control" value="<%=cliente.getNombre()%>" readonly>
                                                                           </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-lg-4">
+                                                                <div class="col-lg-5">
                                                                     <div class="controls">
                                                                         <label class="control-label" for="apellido">Apellido</label>
-                                                                          <div class="input-group ">
+                                                                          <div class="input-group  col-lg-12">
                                                                             <input type="text" id="apellido" name="apellido" class="form-control" value="<%=cliente.getApellido()%>" readonly>
                                                                           </div>
                                                                     </div>
                                                                 </div>
-                                                            <%if (!con_cliente) {%>
-                                                            <div class="col-lg-2 ">
-                                                                <div class="controls">
-                                                                    <label class="control-label" for="id_inquilino">&nbsp;</label>
-                                                                      <div class="input-group ">
-                                                                        <span class="btn btn-sm btn-primary" data-toggle="modal" data-target="#mdlCliente">Seleccionar</span>
-                                                                      </div>
-                                                                </div>
-                                                            </div>
-                                                            <%}%>
+                                                            
 
                                                         </div><!-- row -->
                                                    </div>
@@ -182,6 +166,16 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                            <%if (!con_cliente) {%>
+                                                            <div class="col-lg-2 ">
+                                                                <div class="controls">
+                                                                    <label class="control-label" for="id_inquilino">&nbsp;</label>
+                                                                      <div class="input-group ">
+                                                                        <span class="btn btn-sm btn-primary" data-toggle="modal" data-target="#mdlCliente">Seleccionar</span>
+                                                                      </div>
+                                                                </div>
+                                                            </div>
+                                                            <%}%>        
                                                         </div>
                                                     </div>
                                                 </fieldset>
@@ -198,7 +192,7 @@
                                                          <input type="hidden" name="id_propiedad" id="id_propiedad" value="<%=propiedad.getId()%>">
 
                                                         <div class="form-group row">
-                                                                <div class="col-lg-6 nopadding">
+                                                                <div class="col-lg-8 nopadding">
                                                                     <div class="controls">
                                                                         <label class="control-label" for="calle">Calle</label>
                                                                           <div class="input-group col-lg-12 ">
@@ -682,7 +676,7 @@
                                                             </thead>                                                            
                                                             <tbody>
                                                                 <% for(Contrato_gasto cg: lstContrato_gasto) {
-                                                                    String aplica = (cg.getId_aplica()==OptionsCfg.CLIENTE_TIPO_INQUILINO)?"Inquilino":"Propietario";
+                                                                    String aplica = (cg.getId_aplica().equals(OptionsCfg.CLIENTE_TIPO_INQUILINO))?"Inquilino":"Propietario";
                                                                 %>
                                                                 <tr>
                                                                     <td><%=cg.getConcepto()%><input type="hidden" name="gasto_concepto" value="<%=cg.getConcepto()%>"></td>

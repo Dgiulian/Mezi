@@ -78,11 +78,11 @@ public class CuentaReplicar extends HttpServlet {
                 lstDocumento.add(cv);
             }
             
-            if(cuenta.getId_tipo_cliente()==OptionsCfg.CLIENTE_TIPO_INQUILINO) {
-                if(cuenta.getId_tipo()==OptionsCfg.CUENTA_OFICIAL) lstDetalle=tcd.detalleInquilino(contrato, lstValor, lstGasto);
+            if(cuenta.getId_tipo_cliente().equals(OptionsCfg.CLIENTE_TIPO_INQUILINO)) {
+                if(cuenta.getId_tipo().equals(OptionsCfg.CUENTA_OFICIAL)) lstDetalle=tcd.detalleInquilino(contrato, lstValor, lstGasto);
                 else lstDetalle = tcd.detalleInquilino(lstDocumento);                        
             } else {
-                if(cuenta.getId_tipo()==OptionsCfg.CUENTA_OFICIAL) 
+                if(cuenta.getId_tipo().equals(OptionsCfg.CUENTA_OFICIAL)) 
                 lstDetalle  = tcd.detallePropietario(contrato, lstValor, lstGasto);
                 else lstDetalle = tcd.detallePropietario(lstDocumento);
                 

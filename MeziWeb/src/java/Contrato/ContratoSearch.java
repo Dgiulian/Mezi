@@ -59,8 +59,8 @@ public class ContratoSearch extends HttpServlet {
             
             if(id_cliente!=0) {
                 
-                if(id_tipo==OptionsCfg.CLIENTE_TIPO_PROPIETARIO) filtroContrato.put("id_propietario", id_cliente.toString());
-                else if (id_tipo==OptionsCfg.CLIENTE_TIPO_INQUILINO) filtroContrato.put("id_inquilino", id_cliente.toString());
+                if(id_tipo.equals(OptionsCfg.CLIENTE_TIPO_PROPIETARIO)) filtroContrato.put("id_propietario", id_cliente.toString());
+                else if (id_tipo.equals(OptionsCfg.CLIENTE_TIPO_INQUILINO)) filtroContrato.put("id_inquilino", id_cliente.toString());
             }
             
             if(id_contrato!=0) filtroContrato.put("id_contrato",id_contrato.toString());

@@ -36,13 +36,11 @@
 						
 			<!-- start: Content -->
 			<div id="content" class="col-lg-10 col-sm-11 ">
-			
-							
 			<div class="row">
 				<div class="col-lg-12">
                                     <div class="box">
                                         <div class="box-header">
-                                            <H3 style="font-size:15px">Administraci&oacute;n de cuenta corriente <%=(id_tipo_cliente==OptionsCfg.CLIENTE_TIPO_PROPIETARIO)?"propietario":"inquilino" %></H3>
+                                            <H3 style="font-size:15px">Administraci&oacute;n de cuenta corriente <%=(id_tipo_cliente.equals(OptionsCfg.CLIENTE_TIPO_PROPIETARIO))?"propietario":"inquilino" %></H3>
                                         </div>
                                     <div  class="box-content">
                                         <div class="col-lg-12   ">
@@ -164,7 +162,7 @@
                                             <h2><i class="fa fa-edit"></i>Cuenta Oficial 
                                                 <input type="hidden" name="id_cuenta_oficial" id="id_cuenta_oficial" >
                                                 <span class="btn btn-sm btn-primary" id="btnAjOficial"  data-id_cuenta='' data-toggle="modal" data-target="#mdlConcepto">Ajustar</span>                                             
-                                                <% if(caja!=null && caja.getId_estado()==OptionsCfg.CAJA_ABIERTA) {%>
+                                                <% if(caja!=null && caja.getId_estado().equals(OptionsCfg.CAJA_ABIERTA)) {%>
                                                     <span class="btn btn-sm btn-primary" id="btnLiqOficial" data-id_cuenta='' data-toggle="modal" data-target="#mdlLiquidar" id="btnLiquidar">Liquidar</span>
                                                 <% } else {%>
                                                 <h5 style="color:red"> No hay ninguna caja abierta. No se puede liquidar</h5>
@@ -202,7 +200,7 @@
                                             <h2><i class="fa fa-edit"></i>Cuenta no oficial 
                                                 <input type="hidden" name="id_cuenta_no_oficial" id="id_cuenta_no_oficial" >
                                                 <span class="btn btn-sm btn-primary" id="btnAjNoOficial"  data-id_cuenta='' data-toggle="modal" data-target="#mdlConcepto">Ajustar</span>
-                                                <% if(caja!=null && caja.getId_estado()==OptionsCfg.CAJA_ABIERTA) {%>
+                                                <% if(caja!=null && caja.getId_estado().equals(OptionsCfg.CAJA_ABIERTA)) {%>
                                                 <span class="btn btn-sm btn-primary" id="btnLiqNoOficial" data-id_cuenta='' data-toggle="modal" data-target="#mdlLiquidar" id="btnLiquidar">Liquidar</span></h2>                                                
                                                  <% } else {%>
                                                 <h5 style="color:red"> No hay ninguna caja abierta. No se puede liquidar</h5>

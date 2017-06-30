@@ -1,10 +1,10 @@
 /*
- * To change this template, choose Tools | Templates
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 package Reporte;
 
-import CajaDetalle.*;
 import bd.Caja;
 import bd.Caja_detalle;
 import bd.Cliente;
@@ -21,8 +21,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.joda.time.LocalDate;
-
 import transaccion.TCaja;
 import transaccion.TCaja_detalle;
 import transaccion.TCliente;
@@ -32,7 +32,6 @@ import transaccion.TUsuario;
 import utils.BaseException;
 import utils.JsonRespuesta;
 import utils.OptionsCfg;
-import utils.OptionsCfg.Option;
 import utils.Parser;
 import utils.TFecha;
 
@@ -40,9 +39,9 @@ import utils.TFecha;
  *
  * @author Diego
  */
-public class ReporteCajaDetalleList extends HttpServlet {
-    private HashMap<Integer,Option> mapFormaPago;
-    private HashMap<Integer,Option> mapMovimiento;
+public class ReporteCajaList extends HttpServlet {    
+    private HashMap<Integer,OptionsCfg.Option> mapFormaPago;
+    private HashMap<Integer,OptionsCfg.Option> mapMovimiento;
     private HashMap<Integer, OptionsCfg.Option> mapEstadosCaja;
     /**
      * Processes requests for both HTTP
@@ -65,15 +64,19 @@ public class ReporteCajaDetalleList extends HttpServlet {
           Integer id_estado   = Parser.parseInt(request.getParameter("id_estado"));
           Integer id_forma    = Parser.parseInt(request.getParameter("id_forma"));
           Integer id_usuario  = Parser.parseInt(request.getParameter("id_usuario"));
-          String strDesde = request.getParameter("fecha_desde");
-          String strHasta = request.getParameter("fecha_hasta");
           String  fecha_desde = TFecha.formatearFechaVistaBd(request.getParameter("fecha_desde"));
           String  fecha_hasta = TFecha.formatearFechaVistaBd(request.getParameter("fecha_hasta"));
+          HttpSession session = request.getSession();            
+          Integer id_usuario_actual = (Integer) session.getAttribute("id_usuario");
+          Integer id_tipo_usuario_actual = (Integer) session.getAttribute("id_tipo_usuario");
+          
+          //Si es un usuario distinto de Administrador, solo se muestran las cajas del usuario actual          
+          if(!id_tipo_usuario_actual.equals(OptionsCfg.USUARIO_ADMINISTRADOR)) id_usuario = id_usuario_actual;
           
           mapFormaPago  = OptionsCfg.getMap(OptionsCfg.getFormaPago());
           mapMovimiento = OptionsCfg.getMap(OptionsCfg.getTipoMovimiento());
           mapEstadosCaja = OptionsCfg.getMap(OptionsCfg.getEstadosCaja());
-          
+        
           TCaja tc =  new TCaja();          
           TCaja_detalle tcd = new TCaja_detalle();
           HashMap<String,String> mapFiltro = new HashMap<String,String>();
@@ -105,14 +108,25 @@ public class ReporteCajaDetalleList extends HttpServlet {
             if(listFiltro==null) throw new BaseException("ERROR","Ocurri&oacute; un error al listar los movimientos de caja");
             ArrayList<CajaDetalleDet> listaCajaDet = new ArrayList<CajaDetalleDet>();
             Float saldo = 0f;
+            Float saldo_efectivo = 0f;
+            Float saldo_cheque   = 0f;
+            Float saldo_transf   = 0f;
             for(Caja_detalle detalle:listFiltro){
                 if(detalle.getConcepto().startsWith("Apertura ")) continue;
                 if(detalle.getConcepto().startsWith("Diferencia ")) continue;
-                if(detalle.getConcepto().startsWith("Cierre ")) continue;
-                saldo += detalle.getId_tipo() == OptionsCfg.TIPO_INGRESO?detalle.getImporte():-1*detalle.getImporte();
+                float importe = detalle.getId_tipo() == OptionsCfg.TIPO_INGRESO?detalle.getImporte():-1*detalle.getImporte();
+                saldo += importe;
+                switch(detalle.getId_forma()){
+                    case OptionsCfg.FORMA_EFECTIVO: saldo_efectivo += importe;
+                    case OptionsCfg.FORMA_CHEQUE: saldo_cheque += importe;
+                    case OptionsCfg.FORMA_TRANSFERENCIA: saldo_transf += importe;
+                }
                 detalle.setSaldo(saldo);
                 listaCajaDet.add(new CajaDetalleDet(detalle));                
             }
+            cd.setEfectivo_cierre(saldo_efectivo);
+            cd.setCheque_cierre(saldo_cheque);
+            cd.setTransferencia_cierre(saldo_transf);
             //if(listaCajaDet.size()>0)   {
                 cd.detalle = listaCajaDet;
                 listaDet.add(cd);
@@ -129,7 +143,7 @@ public class ReporteCajaDetalleList extends HttpServlet {
             out.close();
         }
     }
-     private class CajaDet extends Caja{
+    private class CajaDet extends Caja{
         public String estado = "";
         public List detalle;
         public String usuario="";
@@ -147,7 +161,7 @@ public class ReporteCajaDetalleList extends HttpServlet {
         String nombre_cuenta     = "";
         public CajaDetalleDet(Caja_detalle detalle){
             super(detalle);
-            Option o = mapFormaPago.get(detalle.getId_forma());
+            OptionsCfg.Option o = mapFormaPago.get(detalle.getId_forma());
             forma_pago=o!=null?o.getDescripcion():detalle.getId_forma().toString();
             
             o = mapMovimiento.get(detalle.getId_tipo());
@@ -171,10 +185,8 @@ public class ReporteCajaDetalleList extends HttpServlet {
             }
         }
     }
-
     /**
-     * Handles the HTTP
-     * <code>GET</code> method.
+     * Handles the HTTP <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -188,8 +200,7 @@ public class ReporteCajaDetalleList extends HttpServlet {
     }
 
     /**
-     * Handles the HTTP
-     * <code>POST</code> method.
+     * Handles the HTTP <code>POST</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -211,4 +222,5 @@ public class ReporteCajaDetalleList extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
 }

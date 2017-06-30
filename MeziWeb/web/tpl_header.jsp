@@ -4,6 +4,7 @@
     String email = (String)    session.getAttribute("email");
     if(email==null) email = "";
     Integer id_caja = (Integer) session.getAttribute("id_caja");
+    Integer id_tipo_usuario = (Integer) session.getAttribute("id_tipo_usuario");
 %>
 <!-- start: Header -->
 	<header class="navbar">

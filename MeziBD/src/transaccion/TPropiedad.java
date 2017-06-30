@@ -18,6 +18,10 @@ public class TPropiedad extends TransaccionBase<Propiedad> {
 		String query = String.format("select * from propiedad where propiedad.id = %d ", id);
 		return super.getById(query);
 	}
+        public List<Propiedad> getById_propietario(Integer id_propietario){
+            String query = String.format("select * from propiedad where propiedad.id_propietario = %d ", id_propietario);
+            return super.getList(query);
+        }
         public static void main(String[] args){
             TPropiedad tp = new TPropiedad();
 //            Propiedad propiedad = tp.getById(2);

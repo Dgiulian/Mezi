@@ -114,7 +114,7 @@ public class PagoEdit extends HttpServlet {
         */
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        String  fecha     = TFecha.convertirFecha(request.getParameter("fecha"), TFecha.formatoVista, TFecha.formatoBD);        
+        String  strFecha     = TFecha.convertirFecha(request.getParameter("fecha"), TFecha.formatoVista, TFecha.formatoBD);        
         
         Integer tipo      = Parser.parseInt(request.getParameter("tipo"));
         Integer id_cuenta = Parser.parseInt(request.getParameter("id_cuenta"));
@@ -146,7 +146,7 @@ public class PagoEdit extends HttpServlet {
         List<Cuenta_detalle> lista ;
         TCaja tcaja = new TCaja();
         TCaja_detalle tcaja_detalle = new TCaja_detalle();
-        HashMap<String,String> filtroCuenta    = new HashMap<String,String>();
+       // HashMap<String,String> filtroCuenta    = new HashMap<String,String>();
         Float saldo = 0f;
         try{            
             
@@ -156,10 +156,10 @@ public class PagoEdit extends HttpServlet {
             Caja caja = tcaja.getById(id_caja);
             if(caja==null || caja.getId_estado()!=OptionsCfg.CAJA_ABIERTA) throw new BaseException("ERROR","No existe una caja abierta.");
             
-            filtroCuenta.put("id_cuenta", cuenta.getId().toString());
+//            filtroCuenta.put("id_cuenta", cuenta.getId().toString());
             p = new Pago();
             p.setId_cuenta(cuenta.getId());
-            p.setFecha(fecha);
+            p.setFecha(strFecha);
             p.setFecha_creacion(TFecha.ahora(TFecha.formatoBD_Hora));
             p.setEfectivo(liqEfeMnt);
             
@@ -201,60 +201,46 @@ public class PagoEdit extends HttpServlet {
                 Caja_detalle caja_detalle = tcaja_detalle.creaIngresoTransferencia(caja,cuenta,recibo,p.getTransf_mnt());                
                 tcaja_detalle.alta(caja_detalle);
             }
-            lista = tcd.setOrderBy("fecha").getListFiltro(filtroCuenta);
+            tcd.setOrderBy("fecha");
+            lista = tcd.getById_cuenta(cuenta.getId());
             
              if (lista == null) throw new BaseException("ERROR","Ocurri&oacute; un error al editar la cuenta");
             Contrato contrato = tcr.getById(cuenta.getId_contrato());
             Float punitorio_porc = contrato.getPunitorio_monto() / 100;
             String ult_liquidacion;
             if(cuenta.getFecha_liquidacion()==null || cuenta.getFecha_liquidacion().equals("")) {
-                //ult_liquidacion = contrato.getFecha_inicio();
                 ult_liquidacion = new LocalDate(contrato.getFecha_inicio()).minusDays(1).toString();
-//                System.out.println("Se toma la fecha de inicio del contrato");
             }
             else  ult_liquidacion  = cuenta.getFecha_liquidacion();
             /* Si es la primer liquidación, tomamos como ultima liquidacion, el inicio del contrato */
             
             LocalDate fecha_liquidacion = new LocalDate(ult_liquidacion);
-            LocalDate fecha_conslta;
-            if(fecha==null || fecha.equals("")) fecha_conslta = new LocalDate();
-            else fecha_conslta = new LocalDate(fecha);
+            LocalDate fecha_consulta;
+            if(strFecha==null || strFecha.equals("")) fecha_consulta = new LocalDate();
+            else fecha_consulta = new LocalDate(strFecha);
             
-            //System.out.println(ult_liquidacion);
-            
+            Integer punitorio_desde = contrato.getPunitorio_desde();
+            LocalDate today = new LocalDate();
             for(Cuenta_detalle cuenta_detalle:lista) { // Calculo los punitorios
-                LocalDate fecha_det = new LocalDate(cuenta_detalle.getFecha());
-                /* */
-                if ((ult_liquidacion!=null && fecha_det.isBefore(fecha_liquidacion)) || 
-                   (fecha_det.isEqual(fecha_liquidacion) && cuenta_detalle.getId_concepto() != OptionsCfg.CONCEPTO_SALDO)
-                   ) continue;
+                LocalDate fecha = new LocalDate(cuenta_detalle.getFecha());                
+                if (ult_liquidacion!=null && fecha.isBefore(fecha_liquidacion)) continue;
+                if(fecha.isEqual(fecha_liquidacion) && !cuenta_detalle.getId_concepto().equals(OptionsCfg.CONCEPTO_SALDO)) continue;
                 
-                
-                if  (fecha_det.isAfter(fecha_conslta)) continue; // No se considera nada posterior a la fecha de liquidacion
-                if(fecha_det.isAfter(new LocalDate())) continue;
-                if (cuenta.getId_tipo_cliente()==OptionsCfg.CLIENTE_TIPO_PROPIETARIO) {
+                if  (fecha.isAfter(fecha_consulta)) continue; // No se considera nada posterior a la fecha de liquidacion
+                if(fecha.isAfter(today)) continue;
+                if (cuenta.getId_tipo_cliente().equals(OptionsCfg.CLIENTE_TIPO_PROPIETARIO)) {
                     saldo += cuenta_detalle.getHaber() - cuenta_detalle.getDebe() ;
                 } else{
-                    
                     saldo += cuenta_detalle.getDebe() - cuenta_detalle.getHaber();
                 }
                 
-                if (cuenta.getId_tipo_cliente()==OptionsCfg.CLIENTE_TIPO_PROPIETARIO) continue;
-                
-                if (cuenta_detalle.getId_concepto()==OptionsCfg.CONCEPTO_ALQUILER|| cuenta_detalle.getId_concepto()==OptionsCfg.CONCEPTO_DOCUMENTO){
-                    int days = Days.daysBetween(fecha_det, new LocalDate()).getDays() - 1;
-                    if (days >=contrato.getPunitorio_desde()){
-                        float monto_punitorio = days * punitorio_porc * cuenta_detalle.getDebe() ;
-                        saldo += monto_punitorio;
-                        Cuenta_detalle punitorio = new Cuenta_detalle();
-                        punitorio.setFecha(cuenta_detalle.getFecha());
-                        punitorio.setConcepto(String.format("Punitorio mes %d (%d dias)",cuenta_detalle.getId_referencia(),days));
-                        punitorio.setId_concepto(OptionsCfg.CONCEPTO_PUNITORIO);
-                        punitorio.setDebe(monto_punitorio);
-                        listaPunitorio.add(punitorio);
-                        System.out.println(String.format("%s;%s;%.2f;%.2f;%.2f",punitorio.getFecha(),punitorio.getConcepto(),punitorio.getHaber(),punitorio.getDebe(),saldo));
-                
-                    }
+                if (cuenta.getId_tipo_cliente().equals(OptionsCfg.CLIENTE_TIPO_PROPIETARIO)) continue;
+                int days = Days.daysBetween(fecha, today).getDays() - 1;
+                if (days <punitorio_desde) continue;
+                Cuenta_detalle punitorio = tcd.calcularPunitorio(cuenta_detalle,1,punitorio_porc);
+                if(punitorio!=null) {
+                    listaDetalle.add(punitorio);
+                    saldo += punitorio.getDebe();
                 }
             }
             
@@ -263,13 +249,13 @@ public class PagoEdit extends HttpServlet {
             //Guardo el pago en la cuenta
             cd = new Cuenta_detalle();
             cd.setId_cuenta(cuenta.getId());
-            cd.setFecha(fecha);
+            cd.setFecha(strFecha);
             cd.setFecha_creacion(TFecha.ahora(TFecha.formatoBD));
             cd.setConcepto(String.format("Pago Recibo Nº %d Fecha: %s",recibo.getNumero(),request.getParameter("fecha")));
             cd.setId_concepto(OptionsCfg.CONCEPTO_PAGO);
             
             cd.setId_referencia(recibo.getId_pago());
-            if (cuenta.getId_tipo_cliente()==OptionsCfg.CLIENTE_TIPO_PROPIETARIO) {
+            if (cuenta.getId_tipo_cliente().equals(OptionsCfg.CLIENTE_TIPO_PROPIETARIO)) {
                 cd.setDebe(total);
             }
             else {
@@ -290,38 +276,40 @@ public class PagoEdit extends HttpServlet {
                 else det_saldo.setHaber(Math.abs(saldo));
                 listaPunitorio.add(det_saldo);
             }
-            cuenta.setFecha_liquidacion(fecha);
+            cuenta.setFecha_liquidacion(strFecha);
             tc.actualizar(cuenta);
             for(Cuenta_detalle det_pago:listaPunitorio){
                 det_pago.setId_cuenta(id_cuenta);
                 det_pago.setFecha_creacion(TFecha.ahora());
                 int id = tcd.alta(det_pago);
             }
-
-            lista = tcd.setOrderBy("fecha,id_concepto").getListFiltro(filtroCuenta);
-            Float saldo_recibo = 0f;
             
-            for(Cuenta_detalle cuenta_detalle:lista) { // Calculo los punitorios
+            // Una vez guardados los punitorios, recorro nuevamente para crear el detall del recibo            
+            tcd.setOrderBy("fecha,id_concepto");
+            lista = tcd.getById_cuenta(cuenta.getId());
+            
+            Float saldo_recibo = 0f;
+            for(Cuenta_detalle cuenta_detalle:lista) { // Guardo el detalle del recibo
                 LocalDate fecha_det = new LocalDate(cuenta_detalle.getFecha());
                 if (ult_liquidacion!=null && fecha_det.isBefore(fecha_liquidacion) ) continue;
-                if  (fecha_det.isAfter(fecha_conslta)) continue;
-                  Recibo_detalle rd = new Recibo_detalle();
-                    rd.setId_recibo(id_recibo);
-                    rd.setConcepto(cuenta_detalle.getConcepto());
-                    rd.setFecha(cuenta_detalle.getFecha());
-                    rd.setDebe(cuenta_detalle.getDebe());
-                    rd.setHaber(cuenta_detalle.getHaber());
-                    
-                     if (cuenta.getId_tipo_cliente()==OptionsCfg.CLIENTE_TIPO_PROPIETARIO) {
-                        saldo_recibo += cuenta_detalle.getHaber() - cuenta_detalle.getDebe() ;
-                    } else{
-                        saldo_recibo += cuenta_detalle.getDebe() - cuenta_detalle.getHaber();
-                    }
-                    if(cuenta_detalle.getId_concepto()==OptionsCfg.CONCEPTO_PAGO) saldo_recibo = 0f;                    
-                    rd.setSaldo(saldo_recibo);
-                    
-                    rd.setId_concepto(cuenta_detalle.getId_concepto());
-                    trd.alta(rd);
+                if  (fecha_det.isAfter(fecha_consulta)) continue;
+
+                if (cuenta.getId_tipo_cliente().equals(OptionsCfg.CLIENTE_TIPO_PROPIETARIO)) {
+                    saldo_recibo += cuenta_detalle.getHaber() - cuenta_detalle.getDebe() ;
+                } else{
+                    saldo_recibo += cuenta_detalle.getDebe() - cuenta_detalle.getHaber();
+                }
+                if(cuenta_detalle.getId_concepto().equals(OptionsCfg.CONCEPTO_PAGO)) saldo_recibo = 0f;
+                
+                Recibo_detalle rd = new Recibo_detalle();
+                rd.setId_recibo(id_recibo);
+                rd.setConcepto(cuenta_detalle.getConcepto());
+                rd.setFecha(cuenta_detalle.getFecha());
+                rd.setDebe(cuenta_detalle.getDebe());
+                rd.setHaber(cuenta_detalle.getHaber());
+                rd.setId_concepto(cuenta_detalle.getId_concepto());
+                rd.setSaldo(saldo_recibo);
+                trd.alta(rd);
             }
             if(id_pago!=0){
                 jr.setResult("OK");

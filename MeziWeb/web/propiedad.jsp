@@ -103,13 +103,19 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-1">
+                                                <div clas="form-group">
+                                                    <label for="pagination">P&aacute;gina </label>
+                                                    <select class="form-control" id="pagination" name="pagination"></select>
+                                                </div>
+                                            </div>  
+                                        <div class="col-lg-1">
                                             <div clas="form-group">
-                                                <label for="numResults">Mostrar: </label>
-                                           <select id="numResults" name="numResults" CLASS="form-control" >
-                                            <option value="25">25</option>
-                                            <option value="50">50</option>
-                                            <option value="100">100</option>                                                            
-                                        </select>
+                                                <label for="numResults">Mostrar </label>
+                                                <select id="numResults" name="numResults" CLASS="form-control" >
+                                                 <option value="25">25</option>
+                                                 <option value="50">50</option>
+                                                 <option value="100">100</option>                                                            
+                                             </select>
                                             </div>
                                         </div>
                                       </div><!--row-->
@@ -221,17 +227,11 @@
            $('#numResults').change(filtrar);
            $('#btnFiltrarCalle').click(filtrar);
            $('#btnBuscarCliente').click(function(){
-               $('#mdlCliente').modal('show');
+                $('#mdlCliente').modal('show');
            });
-           $('ul.pagination li').click(gotoPage);
+           $('#pagination').change(gotoPage);
         });
-        function gotoPage(){            
-            var pagNro = parseInt($(this).find('a').text());
-            $('ul.pagination li').removeClass('active');
-            $(this).addClass('active');
-            $('#pagNro').val(pagNro);
-            filtrar();
-        }
+       
         function filtrar(){
            var data = {}
            data.id_tipo_inmueble = $('#id_tipo_inmueble').val();
@@ -241,7 +241,7 @@
            data.calle = $('#calle').val();           
            
            data.id = $('#id').val();
-           data.pagNro = parseInt($('#pagNro').val());
+           data.pagNro = parseInt($('#pagination').val());
            data.numResults = parseInt($('#numResults').val());
            loadData(data);
         }
@@ -260,36 +260,26 @@
                success: function(result) {
                    if(result.Result === "OK") {                       
                        $tabla.find('tbody').html(createTable(result.Records));
-                       $('ul.pagination').html(createPagination(result.TotalRecordCount,data.pagNro,data.numResults));
-                       $('ul.pagination li').click(gotoPage);
-                       $('.btn-del').click(borrar);  
-//                       $tabla.DataTable({
-//                                responsive: true,
-//                                retrieve: true,
-//                                paging: false,
-//                                ordering: true,
-//                                searching: false,
-//                                lengthChange:false,
-//                                bInfo: false,
-//                                language: {
-//                                    url:'bower_components/datatables-plugins/i18n/Spanish.json',
-//                                }
-//                        });
+                       $('#pagination').html(createPagination(result.TotalRecordCount,data.pagNro,data.numResults));                       
+                       $('.btn-del').click(borrar);
                    }
                }
            });
     }
-   function createPagination(totalRecordCount,pagNro,numResults){
-    console.log("Paginando");
+   function gotoPage(){
+        var pagNro = parseInt($(this).val());
+        filtrar();
+    }
+    function createPagination(totalRecordCount,pagNro,numResults){
         var html="";
         var numPages = Math.ceil(totalRecordCount / numResults);
         //if(numPages<=1) return html;
         for(var i=1;i<=numPages;i++){
-            var active=(i===pagNro)?'class="active"':'';
-            html += '<li '+ active +'><a href="#">'+ i +'</a></li>';
+            var active=(i===pagNro)?' selected "':'';
+            html += '<option '+ active +' value="' + i + ' "><a href="#">'+ i +'</a></option>';
         }        
-    return html;
-   }
+        return html;    
+   }   
    function createTable(data){
         var html = "";
         for(var i = 0;i< data.length;i++){

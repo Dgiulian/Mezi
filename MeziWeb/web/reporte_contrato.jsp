@@ -1,8 +1,15 @@
+<%@page import="utils.TFecha"%>
+<%@page import="transaccion.TUsuario"%>
+<%@page import="bd.Usuario"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <%@include file="tpl_head.jsp" %>
-
+<%
+  //  Integer id_tipo_usuario = (Integer) session.getAttribute("id_tipo_usuario");
+    Integer id_usuario = (Integer) session.getAttribute("id_usuario");
+    
+%>
 </head>
 
 <body>
@@ -24,33 +31,48 @@
 				<div class="col-lg-12">
                                     <div class="box">
                                         <div class="box-header">
-                                            <H3>Listado de cajas <button class="btn btn-primary" id="btnAbrir"><span class="fa fa-file" ></span> Abrir</button></H3>
+                                            <H3>Reporte contratos </H3>
                                         </div>
                                     <div  class="box-content">
-
-                                            <table class="table table-bordered table-condensed table-striped" id="tblCaja">
-<!--                                                <colgroup>
-                                                    <col style="width:10%"></col>
-                                                    <col style="width:10%"></col>
-                                                    <col style="width:10%"></col>
-                                                    <col style="width:10%"></col>
-                                                </colgroup>-->
-                                                <thead>
-                                                    <tr>
-                                                        <th>Fecha</th>
-                                                        <th>Estado</th>
-                                                        <th>Efectivo anterior</th>
-                                                        <th>Efectivo cierre</th>
-                                                        <th></th>                                                        
-                                                    </tr>
-                                                </thead>
-                                                <tbody class=""></tbody>
-                                            </table>
-                                        </div> <!-- tab-content-->
-					</div>
-				</div><!--/col-->
+                                        <table class="table table-bordered table-condensed table-striped" id="tblContrato">
+                                            <colgroup>
+                                                <col style="width:7%"></col>
+                                                <col style="width:7%"></col>
+                                                <col style="width:10%"></col>
+                                                <col style=""></col>
+                                                <col style="width:10%"></col>
+                                                <col style="width:10%"></col>
+                                                <col style="width:10%"></col>
+                                                <col style="width:7%"></col>
+                                            </colgroup>
+                                            <thead>
+                                                <tr>
+                                                    <th>Fecha Alta</th>
+                                                    <th>Inquilino</th>
+                                                    <th>Propietario</th>
+                                                    <th>Domicilio</th>
+                                                    <th>Estado</th>
+                                                    <th>Fin</th>
+                                                    <th>Saldo</th>
+                                                    <th>Ult. Liq.</th>
+                                                    <th>Vendedor</th>
+                                                    <th>Agente Ret</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class=""></tbody>
+                                        </table>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                               <div class="form-actions">
+                                                  <a  href="<%= PathCfg.REPORTE%>"class="btn btn-default">Volver</a>
+                                              </div>
+                                           </div>
+                                        </div>
+                                    </div> <!-- tab-content-->
+                                </div>
+                              </div><!--/col-->
 			</div><!--/row-->
-					
+			 
 			</div>
 			<!-- end: Content -->
 				
@@ -90,7 +112,6 @@
 	<script src="assets/js/bootstrap.min.js"></script>
 	<script src="assets/js/handlebars.runtime-v4.0.5.js"></script>
         
-        <script src="assets/templates/aperturaCaja.js"></script>
         
 	<!-- page scripts -->
 	<script src="assets/js/jquery-ui-1.10.3.custom.min.js"></script>
@@ -111,20 +132,18 @@
 	 <script src="assets/js/bootbox.min.js"></script>	
         <script src="assets/js/common-functions.js"></script>
         <script language="">
-        $(document).ready(function(){
-           
-//           $('#nombre_search').change(filtrar_mdl_caja);
-//           $('#apellido_search').change(filtrar_mdl_caja);
-//           $('#dni_search').change(filtrar_mdl_caja);
-           $('#btnAbrir').click(abrirCaja);
-           filtrar_mdl_caja();
+        $(document).ready(function(){           
+           $('#fecha_desde').change(filtrar_mdl_contrato);
+           $('#fecha_hasta').change(filtrar_mdl_contrato);
+           $('#id_estado').change(filtrar_mdl_contrato);
+           $('#id_usuario').change(filtrar_mdl_contrato); 
+           filtrar_mdl_contrato();
         });
         
-        function loadDataCaja(data){
-            var $tabla = $('#tblCaja');
-            //$tabla.DataTable().destroy();
+        function loadDataContrato(data){
+            var $tabla = $('#tblContrato');
             $.ajax({
-               url: '<%= PathCfg.CAJA_LIST %>',
+               url: '<%= PathCfg.REPORTE_CONTRATO_LIST %>',
                data: data,
                method:"GET",
                dataType: "json",
@@ -134,101 +153,49 @@
                },
                success: function(result) {                    
                    if(result.Result === "OK") {
-                       $tabla.find('tbody').html(createTable(result.Records));
-                        $('.btn-del').click(borrar);
+                       $tabla.find('tbody').html(createTable(result.Records));                       
                    }else bootbox.alert(result.Message);
                }
            });
     }
-   function createTable(data){
+    function createTable(data){
         var html = "";
-        if(data.length==0) html ="<tr><td colspan='5' style='text-align:center'>A&uacute;n no se ha creado ninguna caja</td></tr>";
         for(var i = 0;i< data.length;i++){
            html +="<tr class=''>";
-           d = data[i];
-                      
-           html += wrapTag('td',convertirFecha(d.fecha.fecha),'');
-           html += wrapTag('td',d.estado,'');
-           html += wrapTag('td',d.efectivo_anterior,'');
-           html += wrapTag('td',d.efectivo_cierre,'');
-           var htmlEdit ="";
-           if(d.id_estado === 1){
-                htmlEdit  = "<a href='<%= PathCfg.CAJA_EDIT%>?id="+ d.id +"' class='btn btn-xs btn-circle  btn-warning'><span class='fa fa-edit fw'></span></a> ";
-            } else htmlEdit  = "<a href='<%= PathCfg.CAJA_EDIT%>?id="+ d.id +"' class='btn btn-xs btn-circle  btn-primary'><span class='fa fa-search fw'></span></a> ";
-//            var htmlDel = "<span href='' data-nombre='" + d.nombre+ "' data-apellido='"+d.apellido+"' data-index='"+ d.id + "' class='btn btn-xs btn-danger btn-circle btn-del'><span class='fa fa-trash-o'></span></span>";
-//            html +='<td style="width:75px"  >' + htmlEdit + htmlDel + '</td>';
-            html +=wrapTag('td',htmlEdit,'');
+           var d = data[i];
+           html += wrapTag('td','','');
+           html += wrapTag('td',d.inquilino,'');
+           html += wrapTag('td',d.propietario,'');
+           html += wrapTag('td',d.direccion,'');
+           html += wrapTag('td',d.estado_contrato,'');
+           html += wrapTag('td',convertirFecha(d.fecha_fin),'');
+           html += wrapTag('td',d.saldo,'');           
+           html += wrapTag('td',convertirFecha(d.ult_liq),'');           
+           html += wrapTag('td',d.vendedor,'');
+           html += wrapTag('td',d.agente_retencion?"Si":"No",'');
+           
+           //html += wrapTag('td',d.numero,'');
+           //html += wrapTag('td',d.tipo_contrato,'');
+           
+           
            html +="</tr>";
        }      
        return html;
     }
-   function borrar(){   
-        var id = $(this).data('index');
-        var nombre =  $(this).data('nombre');
-        var apellido  =  $(this).data('apellido');
-        var message = "Est&aacute; seguro que desea eliminar el cliente <b>" +     apellido + ", " + nombre + "</b>?";
-        var $tr = $(this).parent().parent();
-        deleteData('<%= PathCfg.CAJA_DEL %>',{id:id},function(result) {     
-                if(result.Result === "OK") {
-                    $tr.remove();
-                } else if (result.Message) bootbox.alert(result.Message);
-        }, message);
+    function getDatosFiltro(){
+        var data = {};
+        data.fecha_desde = $('#fecha_desde').val();
+        data.fecha_hasta = $('#fecha_hasta').val();
+        data.id_estado   = $('#id_estado').val();
+        data.id_usuario  = $('#id_usuario').val();
+        return data;
     }
-    function filtrar_mdl_caja(){            
-        var nombre_search = $('#nombre_search').val();
-        var apellido_search = $('#apellido_search').val();
-        var dni_search = $('#dni_search').val();
-
-        loadDataCaja({
-            nombre: nombre_search,           
-            apellido: apellido_search,
-            dni: dni_search,
-        });
+    function filtrar_mdl_contrato(){            
+        var data = getDatosFiltro();
+        loadDataContrato(data);
 
      }
-   function abrirCaja(){
-    var template = Handlebars.templates['aperturaCaja'];
-    bootbox.dialog({
-        title: "Apertura de caja",
-        message: template({fecha:new moment().format("YYYY-MM-DD")}),
-        buttons: {
-            success: {
-                label: "Guardar",
-                className: "btn-success",
-                callback: function () {
-                    var data = recuperarDatosCaja();
-                    $.ajax({
-                        url: '<%=PathCfg.CAJA_EDIT%>',
-                        method: "POST",
-                        dataType: "json",
-                        data: data,
-                        success: function(result){
-                            console.log(result);
-                            if(result.Result ==="OK"){
-                                window.location = "<%=PathCfg.CAJA_EDIT%>" + "?id=" + result.Record.id;
-                            } else {
-                                bootbox.alert(result.Message);
-                            }
-                                
-                        },
-                    });
-                }
-            },
-            cancel: {
-                label: "Cancelar",
-                callback: function () {}
-            }
-        }
-    });
- }
-function recuperarDatosCaja(){
-    var data={};
-    data.fecha = $('#fecha_caja').val();
-    data.efectivo_anterior = parsearInt($('#efectivo_anterior').val());
-    data.cheque_anterior = parsearInt($('#cheque_anterior').val());
-    data.transferencia_anterior = parsearInt($('#transferencia_anterior').val());
-    return data;
-}
+   
     </script>
 </body>
 </html>

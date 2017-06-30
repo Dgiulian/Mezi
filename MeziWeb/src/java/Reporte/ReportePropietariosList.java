@@ -2,9 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Propiedad;
+package Reporte;
 
 import bd.Barrio;
+import bd.Contrato;
+import bd.Inquilino;
 import com.google.gson.Gson;
 import bd.Propiedad;
 import bd.Propietario;
@@ -19,6 +21,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import transaccion.TBarrio;
+import transaccion.TContrato;
+import transaccion.TInquilino;
 import transaccion.TPropiedad;
 import transaccion.TPropietario;
 import utils.JsonRespuesta;
@@ -30,7 +34,7 @@ import utils.Parser;
  *
  * @author Diego
  */
-public class PropiedadList extends HttpServlet {
+public class ReportePropietariosList extends HttpServlet {
     private Map<Integer,Barrio> mapBarrios;
     private Map<Integer,Propietario> mapPropietarios;
     private Map<Integer,Option> mapEstados;
@@ -59,46 +63,73 @@ public class PropiedadList extends HttpServlet {
         Integer id_propietario = Parser.parseInt(request.getParameter("id_propietario"));
         String calle  = request.getParameter("calle");
         String numero = request.getParameter("numero");
-        
+      
+        Integer carpeta = Parser.parseInt(request.getParameter("carpeta"));
+        String nombre = request.getParameter("nombre");
+        String apellido = request.getParameter("apellido");
+        String dni = request.getParameter("dni");
         Integer page = 0;
+        JsonRespuesta jr = new JsonRespuesta();           
         
+        List<Propiedad> lista ;
+        TPropiedad tp = new TPropiedad();
+        HashMap<String,String> filtroPropiedad = new HashMap<String,String> ();
+        HashMap<String,String> filtroPropietario = new HashMap<String,String> ();
         try {
-            JsonRespuesta jr = new JsonRespuesta();           
+               
+            if(nombre!=null && !nombre.equals("")){
+                filtroPropietario.put("nombre",nombre);
+            }
+            if(apellido!=null && !apellido.equals("")){
+                filtroPropietario.put("apellido",apellido);
+            }
+            if(dni!=null && !dni.equals("")){
+                filtroPropietario.put("dni",dni);
+            }
+            if (carpeta!=0){
+                filtroPropietario.put("carpeta",carpeta.toString());
+            }            
+            List<Propietario> lstPropietarios = new TPropietario().getListFiltro(filtroPropietario);            
+            System.out.println(lstPropietarios);
             mapBarrios = new TBarrio().getMap();
-            mapPropietarios = new TPropietario().getMap();
             mapEstados = OptionsCfg.getMap( OptionsCfg.getEstadosPropiedad());
-            List<Propiedad> lista ;
+            mapPropietarios = new TPropietario().getMap(lstPropietarios);
             
-            TPropiedad tp = new TPropiedad();
+            tp.setOrderBy(" id_propietario ");
             if(numResults>0) tp.setNumResults(numResults);
             
-            HashMap<String,String> mapFiltro = new HashMap<String,String> ();
+            
             if(id!=0){
-                mapFiltro.put("id",id.toString());
+                filtroPropiedad.put("id",id.toString());
             }
             if(id_tipo_inmueble!=0){
-                mapFiltro.put("id_tipo_inmueble",id_tipo_inmueble.toString());
+                filtroPropiedad.put("id_tipo_inmueble",id_tipo_inmueble.toString());
             }
             if(id_estado!=0){
-                mapFiltro.put("id_estado",id_estado.toString());
+                filtroPropiedad.put("id_estado",id_estado.toString());
             }
             if(id_operacion!=0){
-                mapFiltro.put("id_operacion",id_operacion.toString());
+                filtroPropiedad.put("id_operacion",id_operacion.toString());
             }
             if(id_propietario!=0){
-                mapFiltro.put("id_propietario",id_propietario.toString());
+                filtroPropiedad.put("id_propietario",id_propietario.toString());
             }
-            if(calle!=null && !"".equals(calle)) mapFiltro.put("calle",calle);
-            if(numero!=null && !"".equals(numero)) mapFiltro.put("numero",numero);
+            if(calle!=null && !"".equals(calle)) filtroPropiedad.put("calle",calle);
+            if(numero!=null && !"".equals(numero)) filtroPropiedad.put("numero",numero);
             
-            lista =  tp.getListFiltro(mapFiltro,pagNro);
-//            lista = tp.getList();
             ArrayList<PropiedadDet> listaDet = new ArrayList();
-            for(Propiedad p:lista){
-                listaDet.add(new PropiedadDet(p));
+            //filtroPropiedad.put("id","9");
+            for(Propietario p:lstPropietarios){
+                filtroPropiedad.put("id_propietario", p.getId().toString());
+                lista =  tp.getListFiltro(filtroPropiedad,pagNro);
+            
+//            lista = tp.getList();            
+                for(Propiedad propiedad:lista){
+                    listaDet.add(new PropiedadDet(propiedad));
+                }
             }
-            if (lista != null) {
-                jr.setTotalRecordCount(tp.getListFiltroCount(mapFiltro));
+            if (listaDet.size() > 0) { //tp.getListFiltroCount(filtroPropiedad);
+                jr.setTotalRecordCount(listaDet.size());
                 jr.setRecordCount(listaDet.size());
                 jr.setRecords(listaDet);
             } else {
@@ -115,7 +146,6 @@ public class PropiedadList extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP
      * <code>GET</code> method.
@@ -156,19 +186,28 @@ public class PropiedadList extends HttpServlet {
         return "Short description";
     }// </editor-fold>
     
-    private class PropiedadDet extends Propiedad {
-        String barrio         = "";
-        String tipo_inmueble  = "";
-        String propietario    = "";
-        String estado         = "";
-        String operacion      = "";
+   private class PropiedadDet extends Propiedad {
+        String barrio        = "";
+        String tipo_inmueble = "";
+        Integer carpeta      = 0;
+        String propietario   = "";
+        String estado        = "";
+        String operacion     = "";
+        Inquilino inquilino;
+        Contrato  contrato;
+        String estado_contrato = "";
         PropiedadDet(Propiedad p){
             super(p);
             Barrio b = mapBarrios.get(p.getId_barrio());
             Propietario prop = mapPropietarios.get(p.getId_propietario());
             Option o = mapEstados.get(p.getId_estado());
             barrio = (b!=null)? b.getNombre():p.getId_barrio().toString();
-            propietario = (prop!=null)? prop.getNombre() + ", " + prop.getApellido():p.getId_propietario().toString();
+            if(prop!=null) {
+                propietario = prop.getNombre() + ", " + prop.getApellido();
+                carpeta     = prop.getCarpeta();
+            } else {
+                propietario = p.getId_propietario().toString();
+            }
             estado = (o!=null)? o.getDescripcion():p.getId_estado().toString();
            
             switch(p.getId_operacion()){
@@ -180,6 +219,14 @@ public class PropiedadList extends HttpServlet {
                 tipo_inmueble = arrTipo_propiedad[p.getId_tipo_inmueble()];
             } catch(Exception ex){
                 tipo_inmueble = p.getId_tipo_inmueble().toString();
+            }
+            if(p.getId_estado().equals(OptionsCfg.PROPIEDAD_ALQUILADA)){
+                contrato = new TContrato().getById_propiedad(p.getId());
+                if(contrato != null){
+                    HashMap<Integer, Option> mapEstadosContrato = OptionsCfg.getMap(OptionsCfg.getEstadosContrato());
+                    estado_contrato = mapEstadosContrato.get(contrato.getId_estado()).getDescripcion();
+                    inquilino = new TInquilino().getById(contrato.getId_inquilino());
+                }
             }
         }
     }

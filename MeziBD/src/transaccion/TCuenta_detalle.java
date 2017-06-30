@@ -7,9 +7,12 @@ import bd.Contrato_valor;
 import bd.Cuenta;
 import bd.Cuenta_detalle;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 import java.util.List;
+import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import utils.OptionsCfg;
 import utils.TFecha;
@@ -33,6 +36,7 @@ public class TCuenta_detalle extends TransaccionBase<Cuenta_detalle> {
 	}
         public List<Cuenta_detalle> getById_cuenta(Integer id_cuenta){
             String query = String.format("select * from cuenta_detalle where cuenta_detalle.id_cuenta = %d",id_cuenta);
+            query += this.getOrderBy();
             return super.getList(query);
         }
         
@@ -345,23 +349,103 @@ private static Contrato getContrato(){
             "   and cuenta_detalle.fecha >= '%s' ",cuenta.getId(),OptionsCfg.CONCEPTO_PAGO,fecha);
         return this.getList(query).isEmpty();
     }
+      public Cuenta_detalle calcularPunitorio(Cuenta_detalle cd,Integer punitorio_desde,Float porc){
+          Cuenta_detalle punitorio = null;
+          if(cd==null) return null;
+          LocalDate fecha = new LocalDate(cd.getFecha());
+          LocalDate today = new LocalDate();
+          if (!cd.getId_concepto().equals(OptionsCfg.CONCEPTO_ALQUILER) &&
+              !cd.getId_concepto().equals(OptionsCfg.CONCEPTO_DOCUMENTO)) return null;
+          
+          int days = Days.daysBetween(fecha, today).getDays() - 1;
+          if (days >=punitorio_desde) {
+            float monto_punitorio = (float)Math.floor((double)days * porc * cd.getDebe()) ;
+            punitorio = new Cuenta_detalle();
+            punitorio.setFecha(cd.getFecha());
+            punitorio.setConcepto(String.format("Punitorio %s (%d dias)",OptionsCfg.MESES[fecha.getMonthOfYear() - 1],days));
+            punitorio.setId_concepto(OptionsCfg.CONCEPTO_PUNITORIO);
+            punitorio.setDebe(monto_punitorio);
+            }
+          return punitorio;
+      }
+      public List<Cuenta_detalle> calcularPunitorios(Cuenta cuenta, Contrato contrato, LocalDate fecha_desde, LocalDate fecha_hasta){
+        // No se considera punitorios para los propietarios
+        if (cuenta.getId_tipo_cliente().equals(OptionsCfg.CLIENTE_TIPO_PROPIETARIO)) return new ArrayList<Cuenta_detalle>();
+        
+        Integer punitorio_desde = contrato.getPunitorio_desde();
+        Float punitorio_porc    = contrato.getPunitorio_monto() / 100;
+        LocalDate fecha_inicio  = new LocalDate(contrato.getFecha_inicio());
+        
+        List<Cuenta_detalle> listaDetalle = new ArrayList<Cuenta_detalle>();
+         
+        List<Cuenta_detalle> lista = this.getByRangoFecha(cuenta,fecha_desde,fecha_hasta);
+
+        LocalDate today = new LocalDate();
+        LocalDate fecha_liquidacion = new LocalDate(cuenta.getFecha_liquidacion());
+
+        for(Cuenta_detalle cd:lista) {
+              LocalDate fecha = new LocalDate(cd.getFecha());              
+              /* fecha.isEqual(fecha_inicio) && */
+              listaDetalle.add(cd);
+              if(  fecha.isEqual(fecha_inicio) && fecha.isBefore(fecha_liquidacion)) continue;
+              if(fecha.isAfter(today)) continue; // No se consideran punitorios de fecha posterior a hoy
+              int days = Days.daysBetween(fecha, today).getDays() - 1;
+              if (days <punitorio_desde) continue;
+              Cuenta_detalle punitorio = this.calcularPunitorio(cd,1,punitorio_porc);
+              if(punitorio!=null) listaDetalle.add(punitorio);
+          }
+          return listaDetalle;
+        }
+      
+      public List<Cuenta_detalle> getByRangoFecha(Cuenta cuenta,LocalDate fecha_desde, LocalDate fecha_hasta){
+          String query = String.format("select * from cuenta_detalle where cuenta_detalle.id_cuenta = %d and cuenta_detalle.fecha >= '%s' and cuenta_detalle.fecha <= '%s' order by fecha,id_concepto ",cuenta.getId(),fecha_desde, fecha_hasta);
+          //System.out.println(query);
+          return this.getList(query);
+      }
+     
+      public void ordenarLista(ArrayList<Cuenta_detalle> lista){
+        Collections.sort(lista, new Comparator<Cuenta_detalle>(){
+            @Override
+            public int compare(Cuenta_detalle o1, Cuenta_detalle o2){
+                if(o1.getFecha().equals(o2.getFecha()))
+                    return o1.getId_concepto().compareTo(o2.getId_concepto());;
+                return o1.getFecha().compareTo(o2.getFecha());
+            }
+        });
+     
+     } 
 public static void main(String[] args){
     
     HashMap<String,String> mapFiltro = new HashMap<String,String>();
+    TCuenta tc = new TCuenta();
     TCuenta_detalle     tcd = new TCuenta_detalle();
-    mapFiltro.put("id_contrato","");
+    Cuenta cuenta = tc.getById(21);
+    Contrato contrato = new TContrato().getById(cuenta.getId_contrato());
+    
+    
+    tcd.setOrderBy(" fecha,id_concepto ");
+    cuenta.setFecha_liquidacion(contrato.getFecha_inicio());
+    
+    //List<Cuenta_detalle> lstDetalle = tcd.getById_cuenta(cuenta.getId());
+    
+    List<Cuenta_detalle> punitorios = tcd.calcularPunitorios(cuenta, contrato, new LocalDate("2017-01-01"), new LocalDate());
+    
+    for(Cuenta_detalle p:punitorios){
+        System.out.print(p.getFecha());
+        System.out.print(" ");
+        System.out.print(p.getConcepto());
+        System.out.print(" ");
+        System.out.print(p.getDebe());
+        System.out.print(" ");
+        System.out.print(p.getHaber());
+        System.out.println("");
+    }
     //List<Cuenta_detalle> listaDetalle = tcd.getListFiltro(mapFiltro);
-    boolean puede = tcd.puedeAjustar(new TCuenta().getById(9), "2017-06-14");
-    System.out.println(puede);
-    
-    
-    
+            //  boolean puede = tcd.puedeAjustar(new TCuenta().getById(9), "2017-06-14");
+            //System.out.println(puede);
 //            Cuenta cuenta = new TCuenta().getById(27);
 //            System.out.print("Fecha Liquidacion: ");
 //            System.out.println(cuenta.getFecha_liquidacion());
-    
-    
-    
             //            Contrato                      contrato = getContrato();
             //            ArrayList<Contrato_valor>     lstValor = getValores();
             //            ArrayList<Contrato_documento> lstDocum = getDocumentos();
@@ -373,17 +457,17 @@ public static void main(String[] args){
             //
             //            lstDetalle.addAll(tcd.crearDetallePropietario(contrato));
             //
-            //            for(Cuenta_detalle d:lstDetalle){
-            //                System.out.print(d.getFecha());
-            //                System.out.print(" ");
-            //                System.out.print(d.getConcepto());
-            //                System.out.print(" ");
-            //                System.out.print(d.getDebe());
-            //                System.out.print(" ");
-            //                System.out.print(d.getHaber());
-            //                System.out.println("");
-            //
-            //            }
+          /*  for(Cuenta_detalle d:lstDetalle){
+                System.out.print(d.getFecha());
+                System.out.print(" ");
+                System.out.print(d.getConcepto());
+                System.out.print(" ");
+                System.out.print(d.getDebe());
+                System.out.print(" ");
+                System.out.print(d.getHaber());
+                System.out.println("");
+
+            } */
 }        
 
 

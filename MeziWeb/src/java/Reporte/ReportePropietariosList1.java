@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Propiedad;
+package Reporte;
 
 import bd.Barrio;
 import com.google.gson.Gson;
@@ -30,7 +30,7 @@ import utils.Parser;
  *
  * @author Diego
  */
-public class PropiedadList extends HttpServlet {
+public class ReportePropietariosList1 extends HttpServlet {
     private Map<Integer,Barrio> mapBarrios;
     private Map<Integer,Propietario> mapPropietarios;
     private Map<Integer,Option> mapEstados;
@@ -58,47 +58,39 @@ public class PropiedadList extends HttpServlet {
         Integer id_operacion = Parser.parseInt(request.getParameter("id_operacion"));
         Integer id_propietario = Parser.parseInt(request.getParameter("id_propietario"));
         String calle  = request.getParameter("calle");
-        String numero = request.getParameter("numero");
+        String numero = request.getParameter("numero");        
+        String codigo = request.getParameter("codigo");
+        Integer carpeta = Parser.parseInt(request.getParameter("carpeta"));
+        String nombre = request.getParameter("nombre");
+        String apellido = request.getParameter("apellido");
+        String dni = request.getParameter("dni");
         
         Integer page = 0;
-        
+        JsonRespuesta jr = new JsonRespuesta();
+        TPropietario tpropietario = new TPropietario();
+        TPropiedad   tpropiedad   = new TPropiedad();
         try {
-            JsonRespuesta jr = new JsonRespuesta();           
-            mapBarrios = new TBarrio().getMap();
-            mapPropietarios = new TPropietario().getMap();
+                        
             mapEstados = OptionsCfg.getMap( OptionsCfg.getEstadosPropiedad());
-            List<Propiedad> lista ;
+            List<Propietario> lista ;
             
-            TPropiedad tp = new TPropiedad();
-            if(numResults>0) tp.setNumResults(numResults);
+            if(numResults>0) tpropietario.setNumResults(numResults);
             
             HashMap<String,String> mapFiltro = new HashMap<String,String> ();
             if(id!=0){
                 mapFiltro.put("id",id.toString());
-            }
-            if(id_tipo_inmueble!=0){
-                mapFiltro.put("id_tipo_inmueble",id_tipo_inmueble.toString());
-            }
-            if(id_estado!=0){
-                mapFiltro.put("id_estado",id_estado.toString());
-            }
-            if(id_operacion!=0){
-                mapFiltro.put("id_operacion",id_operacion.toString());
-            }
-            if(id_propietario!=0){
-                mapFiltro.put("id_propietario",id_propietario.toString());
-            }
-            if(calle!=null && !"".equals(calle)) mapFiltro.put("calle",calle);
-            if(numero!=null && !"".equals(numero)) mapFiltro.put("numero",numero);
+            }           
             
-            lista =  tp.getListFiltro(mapFiltro,pagNro);
-//            lista = tp.getList();
-            ArrayList<PropiedadDet> listaDet = new ArrayList();
-            for(Propiedad p:lista){
-                listaDet.add(new PropiedadDet(p));
+            lista =  tpropietario.getListFiltro(mapFiltro,pagNro);
+
+            ArrayList<PropietarioDet> listaDet = new ArrayList();
+
+            for(Propietario p:lista){
+                listaDet.add(new PropietarioDet(p));
+                tpropiedad.getById_propietario(p.getId());
             }
             if (lista != null) {
-                jr.setTotalRecordCount(tp.getListFiltroCount(mapFiltro));
+                jr.setTotalRecordCount(tpropietario.getListFiltroCount(mapFiltro));
                 jr.setRecordCount(listaDet.size());
                 jr.setRecords(listaDet);
             } else {
@@ -156,31 +148,14 @@ public class PropiedadList extends HttpServlet {
         return "Short description";
     }// </editor-fold>
     
-    private class PropiedadDet extends Propiedad {
+    private class PropietarioDet extends Propietario {
         String barrio         = "";
         String tipo_inmueble  = "";
         String propietario    = "";
         String estado         = "";
         String operacion      = "";
-        PropiedadDet(Propiedad p){
-            super(p);
-            Barrio b = mapBarrios.get(p.getId_barrio());
-            Propietario prop = mapPropietarios.get(p.getId_propietario());
-            Option o = mapEstados.get(p.getId_estado());
-            barrio = (b!=null)? b.getNombre():p.getId_barrio().toString();
-            propietario = (prop!=null)? prop.getNombre() + ", " + prop.getApellido():p.getId_propietario().toString();
-            estado = (o!=null)? o.getDescripcion():p.getId_estado().toString();
-           
-            switch(p.getId_operacion()){
-                case 1: operacion = "Alquiler";break;
-                case 2: operacion = "Venta";break;
-                default: operacion = p.getId_operacion().toString();
-            }
-            try{
-                tipo_inmueble = arrTipo_propiedad[p.getId_tipo_inmueble()];
-            } catch(Exception ex){
-                tipo_inmueble = p.getId_tipo_inmueble().toString();
-            }
+        PropietarioDet(Propietario p){
+            super(p);           
         }
     }
 }

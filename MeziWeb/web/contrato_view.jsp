@@ -23,6 +23,8 @@
     Contrato contrato = (Contrato) request.getAttribute("contrato");    
     TPropiedad tp = new TPropiedad();
     Propiedad propiedad = (Propiedad) request.getAttribute("propiedad");
+    Propietario propietario = (Propietario) request.getAttribute("propietario");
+    Cliente cliente = (Cliente) request.getAttribute("inquilino");
     boolean con_propiedad = true;
     boolean con_cliente = true;
     boolean con_vendedor = true;
@@ -31,11 +33,11 @@
         propiedad = new Propiedad();
         con_propiedad = false;
     }
-    Propietario propietario = (Propietario) request.getAttribute("propietario");
+    
     if (propietario==null){
         propietario = new Propietario();        
     }
-    Cliente cliente = (Cliente) request.getAttribute("inquilino");
+    
     if (cliente==null){
         cliente = new Cliente();
         con_cliente = false;
@@ -77,8 +79,7 @@
 <body>
     <!-- start: Header -->
     <%@include file="tpl_header.jsp"%>
-    <%=vendedor.getId()%>
-		<div class="container">
+    		<div class="container">
 		<div class="row">
 
 			<!-- start: Main Menu -->
@@ -118,32 +119,23 @@
                                                                           </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-lg-4 ">
+                                                                <div class="col-lg-5 ">
                                                                     <div class="controls">
                                                                         <label class="control-label" for="nombre">Nombre</label>
-                                                                          <div class="input-group ">
+                                                                          <div class="input-group  col-lg-12">
                                                                             <input type="text" id="nombre" name="nombre" class="form-control" value="<%=cliente.getNombre()%>" readonly>
                                                                           </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-lg-4">
+                                                                <div class="col-lg-5">
                                                                     <div class="controls">
                                                                         <label class="control-label" for="apellido">Apellido</label>
-                                                                          <div class="input-group ">
+                                                                          <div class="input-group  col-lg-12">
                                                                             <input type="text" id="apellido" name="apellido" class="form-control" value="<%=cliente.getApellido()%>" readonly>
                                                                           </div>
                                                                     </div>
                                                                 </div>
-                                                            <%if (!con_cliente) {%>
-                                                            <div class="col-lg-2 ">
-                                                                <div class="controls">
-                                                                    <label class="control-label" for="id_inquilino">&nbsp;</label>
-                                                                      <div class="input-group ">
-                                                                        <span class="btn btn-primary" data-toggle="modal" data-target="#mdlCliente">Seleccionar</span>
-                                                                      </div>
-                                                                </div>
-                                                            </div>
-                                                            <%}%>
+                                                           
                                                            
                                                         </div><!-- row -->
                                                    </div>
@@ -167,6 +159,16 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                            <%if (!con_cliente) {%>
+                                                            <div class="col-lg-2 ">
+                                                                <div class="controls">
+                                                                    <label class="control-label" for="id_inquilino">&nbsp;</label>
+                                                                      <div class="input-group ">
+                                                                        <span class="btn btn-primary" data-toggle="modal" data-target="#mdlCliente">Seleccionar</span>
+                                                                      </div>
+                                                                </div>
+                                                            </div>
+                                                            <%}%>         
                                                         </div>
                                                     </div>
                                                 </fieldset>

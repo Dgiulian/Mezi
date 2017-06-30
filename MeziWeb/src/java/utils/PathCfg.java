@@ -135,4 +135,25 @@ public class PathCfg {
     public static final String CUENTA_INTERNA_DETALLE_LIST = CUENTA_INTERNA_DETALLE + "List";
     public static final String CUENTA_INTERNA_DETALLE_EDIT = CUENTA_INTERNA_DETALLE + "Edit";
     public static final String CUENTA_INTERNA_DETALLE_DEL  = CUENTA_INTERNA_DETALLE + "Del";
+    
+    public static final String REPORTE            = "Reporte";
+    public static final String REPORTE_CAJA       = "ReporteCaja";
+    public static final String REPORTE_CAJA_LIST  = REPORTE_CAJA + "List";
+    
+    public static final String REPORTE_CAJA_DETALLE = "ReporteCajaDetalle";
+    public static final String REPORTE_CAJA_DETALLE_LIST = REPORTE_CAJA_DETALLE + "List";
+    
+    public static final String REPORTE_CONTRATO               = "ReporteContrato";
+    public static final String REPORTE_CONTRATO_LIST          = REPORTE_CONTRATO + "List" ;
+    
+    public static final String REPORTE_COMISION_VENDEDOR      = "ReporteComisionVendedor";
+    public static final String REPORTE_COMISION_VENDEDOR_LIST = REPORTE_COMISION_VENDEDOR + "List";
+    
+    public static final String REPORTE_COMISION_ADMINISTRACION      = "ReporteComisionAdministracion";
+    public static final String REPORTE_COMISION_ADMINISTRACION_LIST = REPORTE_COMISION_ADMINISTRACION + "List";
+    
+    public static final String REPORTE_PUNITORIOS              = "ReportePunitorios";
+    public static final String REPORTE_PROPIETARIOS            = "ReportePropietarios";
+    public static final String REPORTE_PROPIETARIOS_LIST       = REPORTE_PROPIETARIOS + "List";
+    
 }

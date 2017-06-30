@@ -72,8 +72,8 @@ public class ContratoList extends HttpServlet {
             HashMap<String,String> mapFiltro = new HashMap<String,String> ();                        
             if(id_cliente!=0) {
                 
-                if(id_tipo==OptionsCfg.CLIENTE_TIPO_PROPIETARIO) mapFiltro.put("id_propietario", id_cliente.toString());
-                else if (id_tipo==OptionsCfg.CLIENTE_TIPO_INQUILINO) mapFiltro.put("id_inquilino", id_cliente.toString());
+                if(id_tipo.equals(OptionsCfg.CLIENTE_TIPO_PROPIETARIO)) mapFiltro.put("id_propietario", id_cliente.toString());
+                else if (id_tipo.equals(OptionsCfg.CLIENTE_TIPO_INQUILINO)) mapFiltro.put("id_inquilino", id_cliente.toString());
             }
             
             if(id_propiedad!=0) mapFiltro.put("id_propiedad",id_propiedad.toString());

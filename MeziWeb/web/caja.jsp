@@ -145,7 +145,7 @@
         if(data.length==0) html ="<tr><td colspan='5' style='text-align:center'>A&uacute;n no se ha creado ninguna caja</td></tr>";
         for(var i = 0;i< data.length;i++){
            html +="<tr class=''>";
-           d = data[i];
+           var d = data[i];
                       
            html += wrapTag('td',convertirFecha(d.fecha.fecha),'');
            html += wrapTag('td',d.estado,'');

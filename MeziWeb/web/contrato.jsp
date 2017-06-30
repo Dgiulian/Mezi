@@ -203,7 +203,7 @@
         var html = "";
         for(var i = 0;i< data.length;i++){
            html +="<tr class=''>";
-           d = data[i];
+           var d = data[i];
                       
            html += wrapTag('td',d.numero,'');
            html += wrapTag('td',d.tipo_contrato,'');

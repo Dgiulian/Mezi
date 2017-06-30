@@ -37,7 +37,7 @@
                                     <div class="box">
                                         <div class="box-header">
                                             <H3>Caja diaria 
-                                            <% if(caja.getId_estado()==OptionsCfg.CAJA_ABIERTA) { %>
+                                            <% if(caja.getId_estado().equals(OptionsCfg.CAJA_ABIERTA)) { %>
                                                 <button class="btn btn-primary" id="btnAgregar">Agregar</button>
                                                 <button class="btn btn-warning" id="btnCerrar">Cerrar</button>
                                             <% }%>

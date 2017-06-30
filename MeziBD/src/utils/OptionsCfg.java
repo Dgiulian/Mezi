@@ -71,6 +71,9 @@ public class OptionsCfg {
     public static final int RECIBO_PAGO  = 1;
     public static final int RECIBO_ANULA = 2;
     
+    public static final int USUARIO_ADMINISTRADOR  = 1;
+    public static final int USUARIO_VENDEDOR = 2;
+    public static final int USUARIO_OPERADOR = 3;
     
     public static final String RECIBO_IMAGE = "fondo_recibo";
     public static final String CUENTA_IMAGE = "fondo_cuenta";

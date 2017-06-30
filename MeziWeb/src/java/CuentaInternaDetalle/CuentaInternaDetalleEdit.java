@@ -107,11 +107,16 @@ public class CuentaInternaDetalleEdit extends HttpServlet {
             cuenta_interna.setId_cuenta(id_cuenta);
             cuenta_interna.setFecha(fecha);
             cuenta_interna.setConcepto(concepto);
-            if (id_tipo==OptionsCfg.TIPO_INGRESO){
-                cuenta_interna.setHaber(monto);
-            } else if(id_tipo==OptionsCfg.TIPO_EGRESO){
-                cuenta_interna.setDebe(monto);
-            } else throw new BaseException("ERROR","Seleccione si el movimiento es de Ingreso o Egreso");
+            switch (id_tipo) {
+                case OptionsCfg.TIPO_INGRESO:
+                    cuenta_interna.setHaber(monto);
+                    break;
+                case OptionsCfg.TIPO_EGRESO:
+                    cuenta_interna.setDebe(monto);
+                    break;
+                default:
+                    throw new BaseException("ERROR","Seleccione si el movimiento es de Ingreso o Egreso");
+            }
             int id = ti.alta(cuenta_interna);
             if (id==0)throw new BaseException("ERROR","Ocurri&oacute; un error al guardar el movimiento");
             cuenta_interna.setId(id);

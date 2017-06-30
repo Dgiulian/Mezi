@@ -43,6 +43,13 @@
         <url-pattern>/CuentaInternaEdit</url-pattern>
         <url-pattern>/Recibo</url-pattern>
         <url-pattern>/ReciboAnular</url-pattern>
+        <url-pattern>/ReporteCaja</url-pattern>
+        <url-pattern>/ReporteCajaDetalle</url-pattern>
+        <url-pattern>/ReporteContrato</url-pattern>
+        <url-pattern>/ReportePropietarios</url-pattern>
+        <url-pattern>/ReporteDetalleCaja</url-pattern>
+        <url-pattern>/ReporteCajaDetalleList</url-pattern>
+        <url-pattern>/ReporteComisionVendedor</url-pattern>
     </filter-mapping>
     <servlet>
         <servlet-name>ClientePath</servlet-name>
@@ -368,6 +375,58 @@
         <servlet-name>ContratoEstado</servlet-name>
         <servlet-class>Contrato.ContratoEstado</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ReporteCaja</servlet-name>
+        <servlet-class>Reporte.ReporteCaja</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReporteCajaDetalle</servlet-name>
+        <servlet-class>Reporte.ReporteCajaDetalle</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReporteCajaDetalleList</servlet-name>
+        <servlet-class>Reporte.ReporteCajaDetalleList</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReporteServlet</servlet-name>
+        <servlet-class>Reporte.ReporteServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReporteContrato</servlet-name>
+        <servlet-class>Reporte.ReporteContrato</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReporteContratoList</servlet-name>
+        <servlet-class>Reporte.ReporteContratoList</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReportePropietarios</servlet-name>
+        <servlet-class>Reporte.ReportePropietarios</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReporteComisionVendedor</servlet-name>
+        <servlet-class>Reporte.ReporteComisionVendedor</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReporteComisionVendedorList</servlet-name>
+        <servlet-class>Reporte.ReporteComisionVendedorList</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReporteComisionAdministracion</servlet-name>
+        <servlet-class>Reporte.ReporteComisionAdministracion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReportePunitorios</servlet-name>
+        <servlet-class>Reporte.ReportePunitorios</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReporteCajaList</servlet-name>
+        <servlet-class>Reporte.ReporteCajaList</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReportePropietariosList</servlet-name>
+        <servlet-class>Reporte.ReportePropietariosList</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ClientePath</servlet-name>
         <url-pattern>/Cliente</url-pattern>
@@ -687,6 +746,58 @@
     <servlet-mapping>
         <servlet-name>ContratoEstado</servlet-name>
         <url-pattern>/ContratoEstado</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReporteServlet</servlet-name>
+        <url-pattern>/Reporte</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReporteCaja</servlet-name>
+        <url-pattern>/ReporteCaja</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReporteCajaDetalle</servlet-name>
+        <url-pattern>/ReporteCajaDetalle</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReporteCajaDetalleList</servlet-name>
+        <url-pattern>/ReporteCajaDetalleList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReporteContrato</servlet-name>
+        <url-pattern>/ReporteContrato</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReporteContratoList</servlet-name>
+        <url-pattern>/ReporteContratoList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReportePropietarios</servlet-name>
+        <url-pattern>/ReportePropietarios</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReporteComisionVendedor</servlet-name>
+        <url-pattern>/ReporteComisionVendedor</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReporteComisionAdministracion</servlet-name>
+        <url-pattern>/ReporteComisionAdministracion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReportePunitorios</servlet-name>
+        <url-pattern>/ReportePunitorios</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReporteCajaList</servlet-name>
+        <url-pattern>/ReporteCajaList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReportePropietariosList</servlet-name>
+        <url-pattern>/ReportePropietariosList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReporteComisionVendedorList</servlet-name>
+        <url-pattern>/ReporteComisionVendedorList</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

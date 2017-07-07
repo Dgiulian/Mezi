@@ -79,7 +79,7 @@
     String txtBoton;
     switch(contrato.getId_estado()){
         case OptionsCfg.CONTRATO_ESTADO_INICIAL: txtBoton = "Activar"; break;
-        case OptionsCfg.CONTRATO_ESTADO_ACTIVO:  txtBoton = "Finalizar"; break;
+        case OptionsCfg.CONTRATO_ESTADO_ACTIVO:  txtBoton = "Entrega llaves"; break;
         case OptionsCfg.CONTRATO_ESTADO_ENTREGA: txtBoton = "Finalizar"; break;
         default: txtBoton = "Guardar";
     }

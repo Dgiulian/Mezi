@@ -139,11 +139,10 @@ public class ContratoEstado extends HttpServlet {
                 tcontrato.activar(contrato);
                 break;
                 }
-                case (OptionsCfg.CONTRATO_ESTADO_ACTIVO):{                    
+                case (OptionsCfg.CONTRATO_ESTADO_ACTIVO):{
                     tcontrato.cerrar(contrato); // Pasamos la propiedad a disponible
-                    
                     //Si el saldo de las cuentas es 0. Finalizamos el contrato
-                    if(saldo_oficial ==0 && saldo_no_oficial==0) tcontrato.finalizar(contrato);
+                    //if(saldo_oficial ==0 && saldo_no_oficial==0) tcontrato.finalizar(contrato);
                     break; 
                 }
                 case (OptionsCfg.CONTRATO_ESTADO_ENTREGA):{

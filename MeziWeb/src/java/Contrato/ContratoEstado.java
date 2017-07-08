@@ -15,13 +15,14 @@ import bd.Propiedad;
 import bd.Propietario;
 import bd.Vendedor;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.joda.time.LocalDate;
+import transaccion.TAuditoria;
 
 import transaccion.TCliente;
 import transaccion.TContrato;
@@ -30,16 +31,14 @@ import transaccion.TContrato_gasto;
 import transaccion.TContrato_valor;
 import transaccion.TCuenta;
 import transaccion.TCuenta_detalle;
-import transaccion.TInquilino;
-import transaccion.TParametro;
 import transaccion.TPropiedad;
 import transaccion.TPropietario;
 import transaccion.TVendedor;
+import utils.Auditar;
 import utils.BaseException;
 import utils.OptionsCfg;
 import utils.Parser;
 import utils.PathCfg;
-import utils.TFecha;
 
 /**
  *
@@ -134,13 +133,14 @@ public class ContratoEstado extends HttpServlet {
        try{
            Contrato contrato = tcontrato.getById(id_contrato);
            if(contrato==null) throw new BaseException("ERROR","No se encontr&oacute; el contrato");
+           boolean todoOk = false;
            switch( contrato.getId_estado()){
                case (OptionsCfg.CONTRATO_ESTADO_INICIAL):{
-                tcontrato.activar(contrato);
+                todoOk = tcontrato.activar(contrato);
                 break;
                 }
                 case (OptionsCfg.CONTRATO_ESTADO_ACTIVO):{
-                    tcontrato.cerrar(contrato); // Pasamos la propiedad a disponible
+                    todoOk = tcontrato.cerrar(contrato); // Pasamos la propiedad a disponible
                     //Si el saldo de las cuentas es 0. Finalizamos el contrato
                     //if(saldo_oficial ==0 && saldo_no_oficial==0) tcontrato.finalizar(contrato);
                     break; 
@@ -148,13 +148,23 @@ public class ContratoEstado extends HttpServlet {
                 case (OptionsCfg.CONTRATO_ESTADO_ENTREGA):{
                     if(saldo_oficial !=0)    throw new BaseException("ERROR",String.format("El saldo de la cuenta oficial es %.2f. No se puede finalizar el contrato",saldo_oficial));
                     if(saldo_no_oficial !=0) throw new BaseException("ERROR",String.format("El saldo de la cuenta no oficial es %.2f. No se puede finalizar el contrato",saldo_no_oficial));
-                    tcontrato.finalizar(contrato);
+                    todoOk = tcontrato.finalizar(contrato);
                     break;
                 }
                 default:{
-                   throw new BaseException("ERROR","El contrato est&aacute; en estado finalizado");           
+                   throw new BaseException("ERROR","El contrato est&aacute; en estado finalizado");
                 }
             }
+           if(todoOk){
+            Integer id_usuario = 0;
+            Integer id_tipo_usuario = 0;
+            HttpSession session = request.getSession();
+            if(session != null ){
+                id_usuario = (Integer) session.getAttribute("id_usuario");
+                id_tipo_usuario = (Integer) session.getAttribute("id_tipo_usuario");
+                TAuditoria.guardar(id_usuario,id_tipo_usuario,OptionsCfg.MODULO_CONTRATO,OptionsCfg.ACCION_MODIFICAR,contrato.getId(),tcontrato.auditar(contrato));
+            }
+           }
                       
            response.sendRedirect(PathCfg.CONTRATO);
        } catch(BaseException ex){

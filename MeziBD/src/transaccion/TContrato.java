@@ -197,6 +197,8 @@ public class TContrato extends TransaccionBase<Contrato> {
              }
             }
             contrato.setId_estado(OptionsCfg.CONTRATO_ESTADO_ACTIVO);
+            contrato.setFecha_creacion(TFecha.ahora(TFecha.formatoBD));
+            contrato.setFecha_cambio_estado(TFecha.ahora(TFecha.formatoBD));
             tcontrato.actualizar(contrato);
             return true;
         }
@@ -212,6 +214,7 @@ public class TContrato extends TransaccionBase<Contrato> {
             propiedad.setId_estado(OptionsCfg.PROPIEDAD_DISPONIBLE);                
             
             contrato.setId_estado(OptionsCfg.CONTRATO_ESTADO_ENTREGA);
+            contrato.setFecha_cambio_estado(TFecha.ahora(TFecha.formatoBD));            
             tcontrato.actualizar(contrato);
             tpropiedad.actualizar(propiedad);
             return false;
@@ -222,6 +225,7 @@ public class TContrato extends TransaccionBase<Contrato> {
         public boolean finalizar(Contrato contrato) throws BaseException{
             TContrato tcontrato = new TContrato();            
             contrato.setId_estado(OptionsCfg.CONTRATO_ESTADO_FIN);
+            contrato.setFecha_cambio_estado(TFecha.ahora(TFecha.formatoBD));
             tcontrato.actualizar(contrato);
             return false;
         }

@@ -22,8 +22,7 @@ public class ContratoBase {
 	public Integer comision_menusal_inquilino = 0;
 	public Float gastos_escribania_propietario = 0f;
 	public Float gastos_sellado_propietario = 0f;
-        public Integer agente_retencion = 0;
-
+	public Integer agente_retencion = 0;
 	public Float comision_monto_propietario = 0f;
 	public String comision_desde_propietario = "";
 	public Integer comision_cuotas_propietario = 0;
@@ -48,6 +47,8 @@ public class ContratoBase {
 	public Float llave_monto = 0f;
 	public String llave_desde = "";
 	public Integer llave_cuotas = 0;
+	public String fecha_creacion = "";
+	public String fecha_cambio_estado = "";
 
 	public ContratoBase() {
 	}
@@ -82,6 +83,7 @@ public class ContratoBase {
 				.getGastos_escribania_propietario();
 		this.gastos_sellado_propietario = contratobase
 				.getGastos_sellado_propietario();
+		this.agente_retencion = contratobase.getAgente_retencion();
 		this.comision_monto_propietario = contratobase
 				.getComision_monto_propietario();
 		this.comision_desde_propietario = contratobase
@@ -110,6 +112,8 @@ public class ContratoBase {
 		this.llave_monto = contratobase.getLlave_monto();
 		this.llave_desde = contratobase.getLlave_desde();
 		this.llave_cuotas = contratobase.getLlave_cuotas();
+		this.fecha_creacion = contratobase.getFecha_creacion();
+		this.fecha_cambio_estado = contratobase.getFecha_cambio_estado();
 	}
 
 	public Integer getId() {
@@ -306,6 +310,15 @@ public class ContratoBase {
 	public ContratoBase setGastos_sellado_propietario(
 			Float gastos_sellado_propietario) {
 		this.gastos_sellado_propietario = gastos_sellado_propietario;
+		return this;
+	}
+
+	public Integer getAgente_retencion() {
+		return this.agente_retencion;
+	}
+
+	public ContratoBase setAgente_retencion(Integer agente_retencion) {
+		this.agente_retencion = agente_retencion;
 		return this;
 	}
 
@@ -528,14 +541,25 @@ public class ContratoBase {
 		this.llave_cuotas = llave_cuotas;
 		return this;
 	}
-        
-        public Integer getAgente_retencion() {
-            return agente_retencion;
-        }
 
-        public void setAgente_retencion(Integer agente_retencion) {
-            this.agente_retencion = agente_retencion;
-        }
+	public String getFecha_creacion() {
+		return this.fecha_creacion;
+	}
+
+	public ContratoBase setFecha_creacion(String fecha_creacion) {
+		this.fecha_creacion = fecha_creacion;
+		return this;
+	}
+
+	public String getFecha_cambio_estado() {
+		return this.fecha_cambio_estado;
+	}
+
+	public ContratoBase setFecha_cambio_estado(String fecha_cambio_estado) {
+		this.fecha_cambio_estado = fecha_cambio_estado;
+		return this;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this)

@@ -20,10 +20,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import test.ContratoTest;
 import test.Contrato_documentoTest;
 import test.Contrato_gastoTest;
 import test.Contrato_valorTest;
+import transaccion.TAuditoria;
 import transaccion.TCliente;
 import transaccion.TContrato;
 import transaccion.TContrato_documento;
@@ -126,7 +128,7 @@ public class ContratoEdit extends HttpServlet {
         Vendedor vendedor = new TVendedor().getById(id_vendedor);
         if (vendedor!=null)
             request.setAttribute("vendedor",vendedor);
-
+        
         request.getRequestDispatcher("contrato_edit.jsp").forward(request, response);
     }
 
@@ -374,7 +376,16 @@ public class ContratoEdit extends HttpServlet {
                for(Contrato_valor valor:lstValor)     tvalor.alta(valor);
                for(Contrato_documento docum:lstDocum) tdocum.alta(docum);
                for(Contrato_gasto gasto:lstGastoInq)  tgasto.alta(gasto);
-               for(Contrato_gasto gasto:lstGastoProp) tgasto.alta(gasto);                              
+               for(Contrato_gasto gasto:lstGastoProp) tgasto.alta(gasto);
+                   
+            Integer id_usuario = 0;
+            Integer id_tipo_usuario = 0;
+            HttpSession session = request.getSession();
+            if(session != null ){
+                id_usuario = (Integer) session.getAttribute("id_usuario");
+                id_tipo_usuario = (Integer) session.getAttribute("id_tipo_usuario");
+                TAuditoria.guardar(id_usuario,id_tipo_usuario,OptionsCfg.MODULO_CONTRATO,OptionsCfg.ACCION_ALTA,contrato.getId(),tcontrato.auditar(contrato));
+            }
            }
            response.sendRedirect(PathCfg.CONTRATO);
        } catch(BaseException ex){

@@ -33,7 +33,64 @@
                                         <div class="box-header">
                                             <H3>Reporte contratos </H3>
                                         </div>
+                                    
+                                                    
                                     <div  class="box-content">
+                                    
+                                    
+                                    <div class="form-group col-lg-2">
+                                        <label class="control-label" for="alta_desde">Alta desde</label>
+                                        <div class="controls">
+                                              <div class="input-group date date-picker">
+                                                  <input type="text" id="alta_desde" name="alta_desde" class="form-control date-input " value="">
+                                                    <span class="input-group-addon "><span class="fa fa-calendar"></span></span>  
+                                              </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        <label class="control-label" for="alta_hasta">Alta  hasta</label>
+                                        <div class="controls">
+                                                <div class="input-group date date-picker">
+                                                    <input type="text" id="alta_hasta" name="alta_hasta" class="form-control  date-input  " value="">
+                                                    <span class="input-group-addon"><span class="fa fa-calendar"></span></span>  
+                                                    </span>  
+                                              </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <div class="form-group row  ">
+                                            <label class="control-label" for="id_estado">Estado</label>
+                                            <div class="controls">
+                                                  <div class="input-group col-lg-12">
+                                                    <select type="text" id="id_estado" name="id_estado" class="form-control">
+                                                        <option value="0" selected>Todos</option>
+                                                        <% for(OptionsCfg.Option o: OptionsCfg.getEstadosContrato()) { %>
+                                                            <option value="<%=o.getId()%>"><%=o.getDescripcion()%> </option>
+                                                        <% } %>
+                                                    </select>
+                                                  </div>
+                                            </div>
+                                        </div>
+                                    </div>    
+                                    <div class="form-group col-lg-2">
+                                        <label class="control-label" for="vencimiento_desde">Vencimiento desde</label>
+                                        <div class="controls">
+                                              <div class="input-group date date-picker">
+                                                  <input type="text" id="vencimiento_desde" name="vencimiento_desde" class="form-control date-input " value="">
+                                                    <span class="input-group-addon "><span class="fa fa-calendar"></span></span>  
+                                              </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        <label class="control-label" for="vencimiento_hasta">Vencimiento hasta</label>
+                                        <div class="controls">
+                                                <div class="input-group date date-picker">
+                                                    <input type="text" id="vencimiento_hasta" name="vencimiento_hasta" class="form-control  date-input  " value="">
+                                                    <span class="input-group-addon"><span class="fa fa-calendar"></span></span>  
+                                                    </span>  
+                                              </div>
+                                        </div>
+                                    </div>
                                         <table class="table table-bordered table-condensed table-striped" id="tblContrato">
                                             <colgroup>
                                                 <col style="width:7%"></col>
@@ -133,8 +190,10 @@
         <script src="assets/js/common-functions.js"></script>
         <script language="">
         $(document).ready(function(){           
-           $('#fecha_desde').change(filtrar_mdl_contrato);
-           $('#fecha_hasta').change(filtrar_mdl_contrato);
+           $('#vencimiento_desde').change(filtrar_mdl_contrato);
+           $('#vencimiento_hasta').change(filtrar_mdl_contrato);
+           $('#alta_desde').change(filtrar_mdl_contrato);
+           $('#alta_hasta').change(filtrar_mdl_contrato);
            $('#id_estado').change(filtrar_mdl_contrato);
            $('#id_usuario').change(filtrar_mdl_contrato); 
            filtrar_mdl_contrato();
@@ -163,7 +222,7 @@
         for(var i = 0;i< data.length;i++){
            html +="<tr class=''>";
            var d = data[i];
-           html += wrapTag('td','','');
+           html += wrapTag('td',convertirFecha(d.vencimiento_creacion),'');
            html += wrapTag('td',d.inquilino,'');
            html += wrapTag('td',d.propietario,'');
            html += wrapTag('td',d.direccion,'');
@@ -184,8 +243,11 @@
     }
     function getDatosFiltro(){
         var data = {};
-        data.fecha_desde = $('#fecha_desde').val();
-        data.fecha_hasta = $('#fecha_hasta').val();
+        data.vencimiento_desde = $('#vencimiento_desde').val();
+        data.vencimiento_hasta = $('#vencimiento_hasta').val();
+        data.alta_desde = $('#alta_desde').val();
+        data.alta_hasta = $('#alta_hasta').val();
+        
         data.id_estado   = $('#id_estado').val();
         data.id_usuario  = $('#id_usuario').val();
         return data;

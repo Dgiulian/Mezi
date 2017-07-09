@@ -24,7 +24,8 @@
              str += "</" + tag+">";
              return str;
          }
-function convertirFecha(fecha) { 
+function convertirFecha(fecha) {
+    if(!fecha) return "";
     return moment(fecha,'YYYY-MM-DD').format("DD/MM/YYYY");
 }
 function convertirFechayHora(fecha){

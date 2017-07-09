@@ -33,6 +33,7 @@ import utils.JsonRespuesta;
 import utils.OptionsCfg;
 import utils.OptionsCfg.Option;
 import utils.Parser;
+import utils.TFecha;
 
 /**
  *
@@ -64,8 +65,16 @@ public class ReporteContratoList extends HttpServlet {
         Integer id_cliente = Parser.parseInt(request.getParameter("id_cliente"));
         Integer id_propiedad = Parser.parseInt(request.getParameter("id_propiedad"));
         Integer id_tipo = Parser.parseInt(request.getParameter("id_tipo"));
-        Integer page    = Parser.parseInt(pagNro);
-        
+        Integer id_estado = Parser.parseInt(request.getParameter("id_estado"));
+        String strAlta_desde = request.getParameter("alta_desde");
+        String strAlta_hasta = request.getParameter("alta_hasta");
+        String strVencimiento_desde = request.getParameter("vencimiento_desde");
+        String strVencimiento_hasta = request.getParameter("vencimiento_hasta");
+        LocalDate alta_desde = null;
+        LocalDate alta_hasta = null;
+        LocalDate vencimiento_desde = null;
+        LocalDate vencimiento_hasta = null;
+        Integer page    = Parser.parseInt(pagNro);        
         try {
             JsonRespuesta jr = new JsonRespuesta();           
            
@@ -85,14 +94,27 @@ public class ReporteContratoList extends HttpServlet {
             }
             
             if(id_propiedad!=0) mapFiltro.put("id_propiedad",id_propiedad.toString());
+            if(id_estado!=0) mapFiltro.put("id_estado",id_estado.toString());
             
             lista =  tp.getListFiltro(mapFiltro);
             //lista = tp.getList();
             
+            if(strAlta_desde!=null && !("").equals(strAlta_desde)) alta_desde = new LocalDate(TFecha.formatearFechaVistaBd(strAlta_desde));
+            if(strAlta_hasta!=null && !("").equals(strAlta_hasta)) alta_hasta = new LocalDate(TFecha.formatearFechaVistaBd(strAlta_hasta));
+            if(strVencimiento_desde!=null && !("").equals(strVencimiento_desde)) vencimiento_desde = new LocalDate(TFecha.formatearFechaVistaBd(strVencimiento_desde));
+            if(strVencimiento_hasta!=null && !("").equals(strVencimiento_hasta)) vencimiento_hasta = new LocalDate(TFecha.formatearFechaVistaBd(strVencimiento_hasta));
             
-            if (lista != null) {
+            if (lista != null) {                
                 List<Contrato> listaDet = new ArrayList<Contrato>();
                 for (Contrato c:lista){
+                    LocalDate fecha_creacion = new LocalDate(TFecha.formatearFecha(c.getFecha_creacion(),TFecha.formatoBD_Hora,TFecha.formatoBD));
+                    LocalDate fecha_fin = new LocalDate(c.getFecha_fin());
+                    
+                    if(alta_desde!=null && fecha_creacion.isBefore(alta_desde)) continue;
+                    if(alta_hasta!=null && fecha_creacion.isAfter(alta_hasta)) continue;
+                    if(vencimiento_desde!=null && fecha_fin.isBefore(vencimiento_desde)) continue;
+                    if(vencimiento_hasta!=null && fecha_fin.isAfter(vencimiento_hasta)) continue;
+                    
                     listaDet.add(new ContratoDet(c));
                 }
                 jr.setTotalRecordCount(listaDet.size());

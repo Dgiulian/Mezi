@@ -42,6 +42,7 @@
         <url-pattern>/CuentaInterna</url-pattern>
         <url-pattern>/CuentaInternaEdit</url-pattern>
         <url-pattern>/Recibo</url-pattern>
+        <url-pattern>/Reporte</url-pattern>
         <url-pattern>/ReciboAnular</url-pattern>
         <url-pattern>/ReporteCaja</url-pattern>
         <url-pattern>/ReporteCajaDetalle</url-pattern>

@@ -353,7 +353,7 @@
                                                     </div>
                                                     <div class="col-lg-6 ">
                                                         <fieldset>
-                                                            <legend>Documentos</legend>
+                                                            <legend>Valores Adicionales</legend>
                                                         <table class="table table-bordered table-condensed" id="tblDocumento">
                                                              <colgroup>
                                                                 <col style="width:25%">

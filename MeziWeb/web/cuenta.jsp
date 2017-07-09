@@ -197,7 +197,7 @@
                                             </table>
                                         </div>
                                         <div class="col-lg-6">
-                                            <h2><i class="fa fa-edit"></i>Cuenta no oficial 
+                                            <h2><i class="fa fa-edit"></i>Valores Adicionales
                                                 <input type="hidden" name="id_cuenta_no_oficial" id="id_cuenta_no_oficial" >
                                                 <span class="btn btn-sm btn-primary" id="btnAjNoOficial"  data-id_cuenta='' data-toggle="modal" data-target="#mdlConcepto">Ajustar</span>
                                                 <% if(caja!=null && caja.getId_estado().equals(OptionsCfg.CAJA_ABIERTA)) {%>

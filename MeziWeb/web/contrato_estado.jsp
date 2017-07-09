@@ -382,7 +382,7 @@
                                                     </div>
                                                     <div class="col-lg-6 ">
                                                         <fieldset>
-                                                            <legend>Documentos</legend>
+                                                            <legend>Valores Adicionales</legend>
                                                         <table class="table table-bordered table-condensed" id="tblDocumento">
                                                              <colgroup>
                                                                 <col style="width:25%">
@@ -911,7 +911,7 @@
                                                 </div>
                                                             
                                             <div class="col-lg-6">
-                                                <h2><i class="fa fa-edit"></i>Cuenta no oficial </h2>
+                                                <h2><i class="fa fa-edit"></i>Valores Adicionales </h2>
                                                     <input type="hidden" name="id_cuenta_no_oficial" id="id_cuenta_no_oficial" >
 
                                                 <table class="table table-bordered table-condensed table-striped" id="tblCuentaNoOficial">
@@ -969,7 +969,7 @@
                                                           </div>
                                                     </div>
                                                     <div class="controls col-lg-3">
-                                                        <label class="control-label" for="id_inquilino">Saldo No Oficial</label>
+                                                        <label class="control-label" for="id_inquilino">Saldo Valores AdicionalesNo Oficial</label>
                                                           <div class="input-group ">
                                                               <input type="text" class="form-control"  name="saldo_no_oficial" value="<%=saldo_no_oficial%>">                                                                
                                                           </div>

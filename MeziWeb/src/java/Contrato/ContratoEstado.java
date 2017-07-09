@@ -147,7 +147,7 @@ public class ContratoEstado extends HttpServlet {
                 }
                 case (OptionsCfg.CONTRATO_ESTADO_ENTREGA):{
                     if(saldo_oficial !=0)    throw new BaseException("ERROR",String.format("El saldo de la cuenta oficial es %.2f. No se puede finalizar el contrato",saldo_oficial));
-                    if(saldo_no_oficial !=0) throw new BaseException("ERROR",String.format("El saldo de la cuenta no oficial es %.2f. No se puede finalizar el contrato",saldo_no_oficial));
+                    if(saldo_no_oficial !=0) throw new BaseException("ERROR",String.format("El saldo de la cuenta de valores adicionales es %.2f. No se puede finalizar el contrato",saldo_no_oficial));
                     todoOk = tcontrato.finalizar(contrato);
                     break;
                 }

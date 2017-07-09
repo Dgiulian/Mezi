@@ -184,6 +184,7 @@ public class CajaDetalleEdit extends HttpServlet {
             recibo.setFecha(caja.getFecha().getFecha());
             recibo.setNumero(0);
             recibo.setId_tipo_cliente(OptionsCfg.CLIENTE_TIPO_INTERNA);
+            recibo.setId_tipo_recibo(OptionsCfg.CLIENTE_TIPO_INTERNA);
             recibo.setFecha_creacion(TFecha.ahora(TFecha.formatoBD_Hora));
             recibo.setId_cliente(0);       
             recibo.setNumero(tr.getNumero());

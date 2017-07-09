@@ -7,6 +7,8 @@ import bd.Contrato_gasto;
 import bd.Contrato_valor;
 import bd.Cuenta;
 import bd.Cuenta_detalle;
+import bd.Cuenta_interna;
+import bd.Cuenta_interna_detalle;
 import bd.Propiedad;
 import bd.Vendedor;
 import java.sql.ResultSet;
@@ -105,32 +107,36 @@ public class TContrato extends TransaccionBase<Contrato> {
         }
         
         public boolean activar(Contrato contrato) throws BaseException{
-           TContrato        tcontrato       = new TContrato();
-           TContrato_valor     tvalor       = new TContrato_valor();
-           TContrato_documento tdocu        = new TContrato_documento();
-           TContrato_gasto     tgasto       = new TContrato_gasto();
-           TPropiedad          tpropiedad   = new TPropiedad();
-           Integer id_contrato              = contrato.getId();
-           List<Contrato_valor>      lstValor      = tvalor.getById_contrato(id_contrato);
-           List<Contrato_documento>  lstDocum      = tdocu.getById_contrato(id_contrato);
-           List<Contrato_gasto>      lstGastos     = tgasto.getById_contrato(id_contrato);
-           ArrayList<Contrato_gasto> lstGastoInq   = new ArrayList<Contrato_gasto>();
-           ArrayList<Contrato_gasto> lstGastoProp  = new ArrayList<Contrato_gasto>();
-           if(lstGastos!=null){
-               for(Contrato_gasto gasto:lstGastos){
-                   Integer gasto_aplica = gasto.getId_aplica();
-                   if (gasto_aplica.equals(OptionsCfg.CLIENTE_TIPO_INQUILINO)) 
-                        lstGastoInq.add(gasto);
-                   else if(gasto_aplica.equals(OptionsCfg.CLIENTE_TIPO_PROPIETARIO)) lstGastoProp.add(gasto);
-               }
-           }
-           Propiedad propiedad = tpropiedad.getById(contrato.getId_propiedad());
-           Cliente cliente = new TCliente().getById(contrato.getId_inquilino());
-           Vendedor vendedor = new TVendedor().getById(contrato.getId_vendedor());
-           if(propiedad==null) throw new BaseException("ERROR","Seleccione la propiedad");
-           if(cliente==null) throw new BaseException("ERROR","Seleccione el inquilino");
-           if(vendedor ==null) throw new BaseException("ERROR","Seleccione el vendedor");
-                                     
+            TContrato        tcontrato       = new TContrato();
+            TContrato_valor     tvalor       = new TContrato_valor();
+            TContrato_documento tdocu        = new TContrato_documento();
+            TContrato_gasto     tgasto       = new TContrato_gasto();
+            TPropiedad          tpropiedad   = new TPropiedad();
+            Integer id_contrato              = contrato.getId();
+            TCuenta_interna tcuenta_interna  = new TCuenta_interna();
+            List<Contrato_valor>      lstValor      = tvalor.getById_contrato(id_contrato);
+            List<Contrato_documento>  lstDocum      = tdocu.getById_contrato(id_contrato);
+            List<Contrato_gasto>      lstGastos     = tgasto.getById_contrato(id_contrato);
+            ArrayList<Contrato_gasto> lstGastoInq   = new ArrayList<Contrato_gasto>();
+            ArrayList<Contrato_gasto> lstGastoProp  = new ArrayList<Contrato_gasto>();
+            if(lstGastos!=null){
+                for(Contrato_gasto gasto:lstGastos){
+                    Integer gasto_aplica = gasto.getId_aplica();
+                    if (gasto_aplica.equals(OptionsCfg.CLIENTE_TIPO_INQUILINO)) 
+                         lstGastoInq.add(gasto);
+                    else if(gasto_aplica.equals(OptionsCfg.CLIENTE_TIPO_PROPIETARIO)) lstGastoProp.add(gasto);
+                }
+            }
+            Propiedad propiedad = tpropiedad.getById(contrato.getId_propiedad());
+            Cliente cliente = new TCliente().getById(contrato.getId_inquilino());
+            Vendedor vendedor = new TVendedor().getById(contrato.getId_vendedor());
+           
+            if(propiedad==null) throw new BaseException("ERROR","Seleccione la propiedad");
+            if(cliente==null) throw new BaseException("ERROR","Seleccione el inquilino");
+            if(vendedor ==null) throw new BaseException("ERROR","Seleccione el vendedor");
+            Cuenta_interna  cuenta_vendedor = tcuenta_interna.getById(vendedor.getId_cuenta());
+            if(cuenta_vendedor==null) throw new BaseException("ERROR","El vendedor no tiene una cuenta interna asignada");
+           
             Cuenta cc_inquilino_o = new Cuenta();
             cc_inquilino_o.setId_cliente(contrato.getId_inquilino());               
             cc_inquilino_o.setId_contrato(id_contrato);
@@ -197,6 +203,15 @@ public class TContrato extends TransaccionBase<Contrato> {
                  tcd.alta(cd);
              }
             }
+            //Creamos la comision al vendedor en su cuenta interna
+            Cuenta_interna_detalle cuenta_interna_detalle = new Cuenta_interna_detalle();
+            cuenta_interna_detalle.setId_cuenta(cuenta_vendedor.getId());
+            cuenta_interna_detalle.setFecha(TFecha.ahora(TFecha.formatoBD));
+            cuenta_interna_detalle.setHaber(contrato.getComision_vendedor());
+            cuenta_interna_detalle.setConcepto(String.format("Comision contrato %d",contrato.getNumero()));
+            tcuenta_interna.alta(cuenta_interna_detalle);
+            
+            
             contrato.setId_estado(OptionsCfg.CONTRATO_ESTADO_ACTIVO);            
             contrato.setFecha_cambio_estado(TFecha.ahora(TFecha.formatoBD_Hora));
             tcontrato.actualizar(contrato);

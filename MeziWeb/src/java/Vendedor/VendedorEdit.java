@@ -116,6 +116,7 @@ public class VendedorEdit extends HttpServlet {
                 /* Creamos la cuenta interna del vendedor  */
                 Cuenta_interna ci = new Cuenta_interna();
                 ci.setId_estado(1);
+                ci.setId_tipo(OptionsCfg.CUENTA_VENDEDOR);
                 ci.setNombre(vendedor.getApellido() + ", " + vendedor.getNombre());
                 Integer id_cuenta = new TCuenta_interna().alta(ci);
                 vendedor.setId_cuenta(id_cuenta);

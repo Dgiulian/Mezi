@@ -46,6 +46,7 @@ List<Localidad> lstLoc = new TLocalidad().getList();
 Cliente cliente = new TCliente().getById(p.getId_propietario());
 if(cliente==null) cliente = new Cliente();
 String apenom = cliente.getId()==0?"":cliente.getApellido() + ", " + cliente.getNombre();
+String[] tipo_inmueble = {"Seleccione el tipo de imbueble","Casa","Departamento","Terreno","Local Comercial"};
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -108,10 +109,11 @@ String apenom = cliente.getId()==0?"":cliente.getApellido() + ", " + cliente.get
                                                             <div class="controls">
                                                                   <div class="input-group col-lg-12">
                                                                     <select type="text" id="id_tipo_inmueble" name="id_tipo_inmueble" class="form-control">
-                                                                        <option value="1"> Casa</option>
-                                                                        <option value="2" selected> Departamento</option>
-                                                                        <option value="3"> Terreno</option>                                                                            
-                                                                        <option value="4"> Local comercial</option>                                                                            
+                                                                        <% for (int i =0;i<tipo_inmueble.length;i++) { 
+                                                                        String selected = p.getId_tipo_inmueble().equals(i)?"Selected":"";
+                                                                        %>                                                                        
+                                                                            <option value="<%=i%>" <%=selected%>> <%=tipo_inmueble[i]%></option>
+                                                                        <% }%>                                                                        
                                                                     </select>
                                                                   </div>
                                                             </div>

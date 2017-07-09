@@ -1019,7 +1019,7 @@ function completarCliente(data){
 function completarPropiedad(data){
     $('#id_propiedad').val(data.id);
     $('#calle').val(data.calle);
-    $('#numero').val(data.numero);
+    $('#prop_numero').val(data.numero);
     $('#piso').val(data.piso);
     $('#dpto').val(data.dpto);
     $('#barrio').val(data.barrio);

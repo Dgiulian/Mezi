@@ -52,9 +52,6 @@
 <script>
     $(document).ready(function(){
        $('#btnFiltrarCalle').click(filtrarPropiedad);
-//       $('#btnBuscarCliente').click(function(){
-//            $('#mdlPropietario').modal('show');
-//       });
        $('#mdlPropietario').on('hide.bs.modal',filtrarPropiedad);
        $('#mdlPropiedad').on('show.bs.modal',function(){
         //   loadDataPropiedad({});
@@ -64,12 +61,11 @@
         var data = {};
         data.id_propietario = $('#id_propietario').val();
         data.calle = $('#calle_search').val();
-        console.log(data);
+//        console.log(data);
         loadDataPropiedad(data);
     }
     function loadDataPropiedad(data){
             var $tabla = $('#tblPropiedad');
-            //$tabla.DataTable().destroy();
             $.ajax({
                url: '<%= PathCfg.PROPIEDAD_LIST %>',
                data: data,
@@ -85,10 +81,10 @@
                        $tabla.find('tbody').html(createTablePropiedad(result.Records));
                        $('.btnSelPropiedad').click(function(){
                            var id = $(this).data('index');
-                           var nombre = $(this).data('nombre');
-                           var apellido = $(this).data('apellido');
-                           buscarPropiedad({id:id});
+//                           var nombre = $(this).data('nombre');
+//                           var apellido = $(this).data('apellido');
 //                           completarPropiedad({'id':id,'nombre':nombre,'apellido':apellido});
+                            buscarPropiedad({id:id});
                            $('#mdlPropiedad').modal('hide');
                        });
                    }
@@ -100,14 +96,15 @@
     var html = "";
     for(var i = 0;i< data.length;i++){
        html +="<tr class=''>";
-       d = data[i];
-
+       var d = data[i];
        html += wrapTag('td',d.tipo_inmueble,'');
-       var direccion = d.calle+ " " + d.numero + " " + d.piso + d.dpto;
+       var direccion = d.calle+ " " + d.numero;
+       if (d.piso) direccion += " " + d.piso + d.dpto;
+       
        html += wrapTag('td',direccion,'');
        html += wrapTag('td',d.barrio,'');
 
-        var htmlSel = "<span href='' data-index='"+ d.id + "' data-nombre='"+ d.nombre + "' data-apellido='"+ d.apellido + "'  class='btn btn-xs btn-primary btn-circle btnSelPropiedad'><span class='fa fa-plus'></span></span>";
+        var htmlSel = "<span href='' data-index='"+ d.id + "' class='btn btn-xs btn-primary btn-circle btnSelPropiedad'><span class='fa fa-plus'></span></span>";
         html +='<td style="width:75px"  >' + htmlSel + '</td>';
 //            html +=wrapTag('td',htmlEdit + htmlDel,'');
        html +="</tr>";

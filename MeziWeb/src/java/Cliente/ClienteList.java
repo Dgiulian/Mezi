@@ -94,7 +94,7 @@ public class ClienteList extends HttpServlet {
               
               case OptionsCfg.CLIENTE_TIPO_PROPIETARIO: {
                     List<Propietario> lstPropietarios = tp.getListFiltro(mapFiltro,pagNro);
-                    
+                    tp.setOrderBy(" apellido, nombre");
                     totalRecordCount = tp.getListFiltroCount(mapFiltro);
                      for(Propietario c:lstPropietarios){
                         lista.add(new ClienteDet(c));
@@ -103,6 +103,7 @@ public class ClienteList extends HttpServlet {
               case  OptionsCfg.CLIENTE_TIPO_INQUILINO: { 
                     List<Inquilino> lstInquilinos = ti.getListFiltro(mapFiltro,pagNro);
                     if(numResults>0) ti.setNumResults(numResults);
+                    ti.setOrderBy(" apellido, nombre");
                     totalRecordCount = ti.getListFiltroCount(mapFiltro);
                     for(Inquilino c:lstInquilinos){
                         lista.add(new ClienteDet(c));
@@ -110,7 +111,7 @@ public class ClienteList extends HttpServlet {
                     break;
               }
              default: {
-                
+                tc.setOrderBy(" apellido, nombre");
                 List<Cliente> lstClientes = tc.getListFiltro(mapFiltro,pagNro);                
                 totalRecordCount = tc.getListFiltroCount(mapFiltro);
                  for(Cliente c:lstClientes){

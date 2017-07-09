@@ -34,7 +34,6 @@ import transaccion.TCuenta_detalle;
 import transaccion.TPropiedad;
 import transaccion.TPropietario;
 import transaccion.TVendedor;
-import utils.Auditar;
 import utils.BaseException;
 import utils.OptionsCfg;
 import utils.Parser;

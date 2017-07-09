@@ -888,7 +888,8 @@
                                                             <tbody>
                                                                 <% Float saldo_oficial = 0f;
                                                                     for(Cuenta_detalle cd: cuenta_detalle_oficial) { 
-                                                                        saldo_oficial += cd.getHaber() - cd.getDebe();
+                                                                        if (cd.getId_concepto().equals(OptionsCfg.CONCEPTO_PAGO)) { saldo_oficial = 0f;}
+                                                                        else saldo_oficial += cd.getHaber() - cd.getDebe();
                                                                 %>
                                                                 <tr>
                                                                     <td><%=TFecha.formatearFechaBdVista(cd.getFecha())%></td>
@@ -933,7 +934,8 @@
                                                     </thead>    
                                                      <tbody>
                                                         <% for(Cuenta_detalle cd: cuenta_detalle_no_oficial) { 
-                                                                saldo_no_oficial += cd.getHaber() - cd.getDebe();
+                                                            if (cd.getId_concepto().equals(OptionsCfg.CONCEPTO_PAGO)) { saldo_no_oficial = 0f;}
+                                                            else saldo_no_oficial += cd.getHaber() - cd.getDebe();
                                                         %>
                                                         <tr>
                                                             <td><%=TFecha.formatearFechaBdVista(cd.getFecha())%></td>
@@ -969,7 +971,7 @@
                                                           </div>
                                                     </div>
                                                     <div class="controls col-lg-3">
-                                                        <label class="control-label" for="id_inquilino">Saldo Valores AdicionalesNo Oficial</label>
+                                                        <label class="control-label" for="id_inquilino">Saldo Valores Adicionales</label>
                                                           <div class="input-group ">
                                                               <input type="text" class="form-control"  name="saldo_no_oficial" value="<%=saldo_no_oficial%>">                                                                
                                                           </div>

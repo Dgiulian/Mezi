@@ -94,18 +94,20 @@ public class CuentaDetList extends HttpServlet {
             else fecha_consulta = new LocalDate(fecha_hasta);
 
             LocalDate today = new LocalDate();
-
+            LocalDate fecha_cambio_estado = new LocalDate(TFecha.formatearFecha(contrato.getFecha_cambio_estado(), TFecha.formatoBD_Hora, TFecha.formatoBD));
             Integer punitorio_desde = contrato.getPunitorio_desde();
             ArrayList<Cuenta_detalle> listaDetalle = new ArrayList();
             
             //List<Cuenta_detalle> lista = tcd.getById_cuenta(cuenta.getId());
             List<Cuenta_detalle> lista = tcd.getByRangoFecha(cuenta,fecha_desde,fecha_consulta);
             if (lista == null) throw new BaseException("ERROR","No se encontr&oaacute; la cuenta");
-            for(Cuenta_detalle cd:lista) {                    
+            for(Cuenta_detalle cd:lista) {
                 LocalDate fecha = new LocalDate(cd.getFecha());
                 if (strFecha_desde!=null && (fecha.isBefore(fecha_desde) ) ) continue;
 
                 if  (fecha.isAfter(fecha_consulta)) continue;
+                if(contrato.getId_estado().equals(OptionsCfg.CONTRATO_ESTADO_ENTREGA) && fecha.isAfter(fecha_cambio_estado)) continue;
+                
                 listaDetalle.add(cd);
                 if(fecha.isBefore(fecha_liquidacion)) continue;
                 if(fecha.isAfter(today)) continue; // No se consideran punitorios de fecha posterior a hoy

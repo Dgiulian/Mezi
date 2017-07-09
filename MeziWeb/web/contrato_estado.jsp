@@ -73,7 +73,7 @@
     if(lstContrato_gasto==null) lstContrato_gasto = new ArrayList<Contrato_gasto>();
     if(lstVendedores==null) lstVendedores = new ArrayList<Vendedor>();
     if( cuenta_detalle_oficial ==null) cuenta_detalle_oficial = new ArrayList<Cuenta_detalle>();
-    if( cuenta_detalle_no_oficial ==null) cuenta_detalle_oficial = new ArrayList<Cuenta_detalle>();
+    if( cuenta_detalle_no_oficial == null) cuenta_detalle_no_oficial = new ArrayList<Cuenta_detalle>();
     
     DecimalFormat df = new DecimalFormat("#.#####");
     String txtBoton;
@@ -86,6 +86,7 @@
     String contrato_estado = "";
     HashMap<Integer,OptionsCfg.Option> mapEstados = OptionsCfg.getMap(OptionsCfg.getEstadosContrato());
     contrato_estado = mapEstados.get(contrato.getId_estado()).getDescripcion();
+    Float saldo_no_oficial = 0f;
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -931,19 +932,18 @@
                                                         </tr>
                                                     </thead>    
                                                      <tbody>
-                                                                <% Float saldo_no_oficial = 0f;
-                                                                    for(Cuenta_detalle cd: cuenta_detalle_no_oficial) { 
-                                                                        saldo_no_oficial += cd.getHaber() - cd.getDebe();
-                                                                %>
-                                                                <tr>
-                                                                    <td><%=TFecha.formatearFechaBdVista(cd.getFecha())%></td>
-                                                                    <td><%=cd.getConcepto()%></td>
-                                                                    <td><%=cd.getDebe()%></td>
-                                                                    <td><%=cd.getHaber()%></td>
-                                                                    <td><%= saldo_no_oficial %></td>
-                                                                </tr>
-                                                                <% } %>
-                                                            </tbody>
+                                                        <% for(Cuenta_detalle cd: cuenta_detalle_no_oficial) { 
+                                                                saldo_no_oficial += cd.getHaber() - cd.getDebe();
+                                                        %>
+                                                        <tr>
+                                                            <td><%=TFecha.formatearFechaBdVista(cd.getFecha())%></td>
+                                                            <td><%=cd.getConcepto()%></td>
+                                                            <td><%=cd.getDebe()%></td>
+                                                            <td><%=cd.getHaber()%></td>
+                                                            <td><%= saldo_no_oficial %></td>
+                                                        </tr>
+                                                        <% } %>
+                                                    </tbody>
                                             <!-- <tfoot>
                                                     <th><td colspan="4"></td></th>
                                               </tfoot> -->

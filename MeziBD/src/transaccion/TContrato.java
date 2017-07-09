@@ -73,7 +73,8 @@ public class TContrato extends TransaccionBase<Contrato> {
            TCuenta_detalle     tcuenta_detalle = new TCuenta_detalle();
            
            if (contrato==null) throw new BaseException("ERROR","No existe el contrato");
-          
+           if(!contrato.getId_estado().equals(OptionsCfg.CONTRATO_ESTADO_INICIAL)) throw new BaseException("ERROR","Solo se puede eliminar un contrato en estado inicial");
+           
            boolean baja = tcontrato.baja(contrato);
            if ( !baja)throw new BaseException("ERROR","Ocurrio un error al eliminar el registro");
             Propiedad propiedad = tpropiedad.getById(contrato.getId_propiedad());
@@ -196,9 +197,8 @@ public class TContrato extends TransaccionBase<Contrato> {
                  tcd.alta(cd);
              }
             }
-            contrato.setId_estado(OptionsCfg.CONTRATO_ESTADO_ACTIVO);
-            contrato.setFecha_creacion(TFecha.ahora(TFecha.formatoBD));
-            contrato.setFecha_cambio_estado(TFecha.ahora(TFecha.formatoBD));
+            contrato.setId_estado(OptionsCfg.CONTRATO_ESTADO_ACTIVO);            
+            contrato.setFecha_cambio_estado(TFecha.ahora(TFecha.formatoBD_Hora));
             tcontrato.actualizar(contrato);
             return true;
         }
@@ -214,7 +214,7 @@ public class TContrato extends TransaccionBase<Contrato> {
             propiedad.setId_estado(OptionsCfg.PROPIEDAD_DISPONIBLE);                
             
             contrato.setId_estado(OptionsCfg.CONTRATO_ESTADO_ENTREGA);
-            contrato.setFecha_cambio_estado(TFecha.ahora(TFecha.formatoBD));            
+            contrato.setFecha_cambio_estado(TFecha.ahora(TFecha.formatoBD_Hora));
             tcontrato.actualizar(contrato);
             tpropiedad.actualizar(propiedad);
             return false;
@@ -225,7 +225,7 @@ public class TContrato extends TransaccionBase<Contrato> {
         public boolean finalizar(Contrato contrato) throws BaseException{
             TContrato tcontrato = new TContrato();            
             contrato.setId_estado(OptionsCfg.CONTRATO_ESTADO_FIN);
-            contrato.setFecha_cambio_estado(TFecha.ahora(TFecha.formatoBD));
+            contrato.setFecha_cambio_estado(TFecha.ahora(TFecha.formatoBD_Hora));
             tcontrato.actualizar(contrato);
             return false;
         }

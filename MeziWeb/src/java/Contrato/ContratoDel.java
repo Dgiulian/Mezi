@@ -96,10 +96,11 @@ public class ContratoDel extends HttpServlet {
            if (contrato==null) throw new BaseException("ERROR","No existe el contrato");
            
            boolean todoOk = new TContrato().eliminar(contrato);
+           if(!todoOk)throw new BaseException("ERROR","Ocurri&oacute; un error al eliminar el contrato");
            
            jr.setResult("OK");
            jr.setMessage("Contrato eliminado correctamente");
-                       
+           
            HttpSession session = request.getSession();
            Integer id_usuario = (Integer) session.getAttribute("id_usuario");
            Integer id_tipo_usuario = (Integer) session.getAttribute("id_tipo_usuario");

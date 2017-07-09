@@ -23,7 +23,7 @@
                     <label class="col-md-4 control-label" for="nombre">Tipo</label>
                     <div class="col-md-8">
                         <select id="id_tipo" name="id_tipo"  class="form-control input-md" >
-                            <option value="1">Vendedor</option>
+                            <option value="1" disabled>Vendedor</option>
                             <option value="2">Otros</option>
                         </select>
                     </div>

@@ -96,7 +96,7 @@ public class ContratoEdit extends HttpServlet {
             } else {
                 contrato = new Contrato();
                 contrato.setComision_mensual_propietario(10f);
-                contrato.setPunitorio_monto(0.017f);
+                contrato.setPunitorio_monto(0.17f);
                 contrato.setPunitorio_desde(10);
                 contrato.setComision_mensual_propietario(10f);
                 contrato.setNumero(tc.siguienteNumero());

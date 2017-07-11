@@ -22,16 +22,18 @@
                         <li><a href="<%=PathCfg.CONTRATO%>"><i class="fa fa-file-text"></i><span class="hidden-sm text"> Carpetas</span></a></li>
                         <li><a href="<%=PathCfg.CUENTA%>?id_tipo_cliente=<%=OptionsCfg.CLIENTE_TIPO_INQUILINO%>"><i class="fa fa-dollar"></i><span class="hidden-sm text"> Cuenta Inquilino</span></a></li>
                         <li><a href="<%=PathCfg.CUENTA%>?id_tipo_cliente=<%=OptionsCfg.CLIENTE_TIPO_PROPIETARIO%>"><i class="fa fa-dollar"></i><span class="hidden-sm text"> Cuenta Propietario</span></a></li>
-                        <% if(id_tipo_usuario<=2) {%>
+                        <% if(id_tipo_usuario<=OptionsCfg.USUARIO_VENDEDOR) {%>
                             <li><a href="<%=PathCfg.CAJA%>"><i class="fa fa-inbox"></i><span class="hidden-sm text"> Cajas diarias</span></a></li>
                             <li><a href="<%=PathCfg.CUENTA_INTERNA%>"><i class="fa fa-dollar"></i><span class="hidden-sm text"> Cuentas Internas</span></a></li>
                             <li><a href="<%=PathCfg.RECIBO%>"><i class="fa fa-list-alt"></i><span class="hidden-sm text"> Recibos</span></a></li>
                         <% }%>
                         <li><a href="<%=PathCfg.LOCALIDAD%>"><i class="fa fa-flag"></i><span class="hidden-sm text"> Localidades</span></a></li>
                         <li><a href="<%=PathCfg.BARRIO%>"><i class="fa fa-building-o"></i><span class="hidden-sm text"> Barrios</span></a></li>
-                        <li><a href="<%=PathCfg.VENDEDOR%>"><i class="fa fa-male"></i><span class="hidden-sm text"> Vendedores</span></a></li>
-                        <li><a href="<%=PathCfg.USUARIO%>"><i class="fa fa-users"></i><span class="hidden-sm text"> Usuarios</span></a></li>                     
-                        <li><a href="<%=PathCfg.REPORTE%>"><i class="fa fa-bar-chart-o"></i><span class="hidden-sm text"> Reportes</span></a></li>                     
+                        <li><a href="<%=PathCfg.VENDEDOR%>"><i class="fa fa-male"></i><span class="hidden-sm text"> Vendedores</span></a></li>                                                
+                        <li><a href="<%=PathCfg.REPORTE%>"><i class="fa fa-bar-chart-o"></i><span class="hidden-sm text"> Reportes</span></a></li>
+                        <% if(id_tipo_usuario.equals(OptionsCfg.USUARIO_ADMINISTRADOR)) {%>
+                        <li><a href="<%=PathCfg.USUARIO%>"><i class="fa fa-users"></i><span class="hidden-sm text"> Usuarios</span></a></li>
+                        <% } %>
                 </ul>
         </div>
             <a href="#" id="main-menu-min" class="full visible-md visible-lg"><i class="fa fa-angle-double-left"></i></a>

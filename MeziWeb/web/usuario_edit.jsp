@@ -59,8 +59,8 @@
                                                     <label for="nombre">Email</label>
                                                     <% String disabled = !nuevo?"disabled":"";%>
                                                     <input class="form-control" name="usu_mail" id="usu_mail"  <%= disabled%> value="<%= usuario.getUsu_mail() %>">
-                                                </div>
-                                                <%  if(nuevo) {%>
+                                                </div>                                                
+                                                <%  if(nuevo || id_tipo_usuario.equals(OptionsCfg.USUARIO_ADMINISTRADOR)) {%>
                                                     <div class="form-group">
                                                         <label for="nombre">Password</label>
                                                         <input class="form-control" name="usu_password" id="usu_password" type="password" value="">

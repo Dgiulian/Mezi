@@ -73,8 +73,6 @@ public class Login extends HttpServlet {
                 if(!activo) {
                     RequestDispatcher requestDispatcher = request.getRequestDispatcher("message.jsp");
                     request.setAttribute("titulo","Error de Login - Usuario no activo");
-//                    request.setAttribute("mensaje","A&uacute;n no has activado tu usuario. <br> Revisa tu correo, all&iacute; encontraras un mail con la informaci&oacute;n necesaria para realizar la activaci&oacute;n<br>" 
-//                                                 + "Haz click <a href='MailActivacion?email=" + email + "'>aqui</a> para reenviar el mail de activaci&oacute;n ");
                     requestDispatcher.forward(request,response);     
                     return;
                 }else {

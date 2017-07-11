@@ -73,7 +73,7 @@ public class UsuarioEdit extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       Usuario usuario = null;
+        Usuario usuario = null;
         if(request.getParameter("id")!=null) {
             try{
                 Integer id = Integer.parseInt(request.getParameter("id"));

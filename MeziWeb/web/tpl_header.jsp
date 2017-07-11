@@ -4,7 +4,7 @@
     String email = (String)    session.getAttribute("email");
     if(email==null) email = "";
     Integer id_caja = (Integer) session.getAttribute("id_caja");
-    Integer id_tipo_usuario = (Integer) session.getAttribute("id_tipo_usuario");
+    
 %>
 <!-- start: Header -->
 	<header class="navbar">
@@ -45,8 +45,8 @@
 							</div>
 						</a>
 						<ul class="dropdown-menu">
-<!--							<li><a href="index.html#"><i class="fa fa-user"></i> Perfil</a></li>
-							<li><a href="index.html#"><i class="fa fa-cog"></i> Configuraci&oacute;n</a></li>							-->
+<!--							<li><a href="index.html#"><i class="fa fa-user"></i> Perfil</a></li>		-->
+							<li><a href="<%=PathCfg.CAMBIAR_PASSWORD%>"><i class="fa fa-cog"></i> Cambiar Password</a></li>					
 							<li><a href="<%=PathCfg.LOGOUT%>"><i class="fa fa-sign-out"></i> Logout</a></li>
 						</ul>
 					</li>

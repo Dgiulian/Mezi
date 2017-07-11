@@ -1,6 +1,9 @@
 <%@page import="utils.OptionsCfg"%>
 <%@page import="utils.PathCfg"%>
-
+<%
+    Integer id_tipo_usuario = (Integer) session.getAttribute("id_tipo_usuario");
+    if(id_tipo_usuario ==null) id_tipo_usuario = 15;
+%>
 <!-- start: Main Menu -->
 <div id="sidebar-left" class="col-lg-2 col-sm-1 ">
 

@@ -70,6 +70,7 @@ public class PathCfg {
     public static final String USUARIO_LIST = USUARIO + "List";
     public static final String USUARIO_EDIT = USUARIO + "Edit";
     public static final String USUARIO_DEL = USUARIO + "Del";
+    public static final String CAMBIAR_PASSWORD = "CambiarPassword";
     
     public static final String VENDEDOR      = "Vendedor"; 
     public static final String VENDEDOR_LIST = VENDEDOR + "List";

@@ -428,6 +428,10 @@
         <servlet-name>ReportePropietariosList</servlet-name>
         <servlet-class>Reporte.ReportePropietariosList</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CambiarPassword</servlet-name>
+        <servlet-class>Usuario.CambiarPassword</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ClientePath</servlet-name>
         <url-pattern>/Cliente</url-pattern>
@@ -799,6 +803,10 @@
     <servlet-mapping>
         <servlet-name>ReporteComisionVendedorList</servlet-name>
         <url-pattern>/ReporteComisionVendedorList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CambiarPassword</servlet-name>
+        <url-pattern>/CambiarPassword</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

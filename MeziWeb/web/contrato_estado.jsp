@@ -64,9 +64,9 @@
         vendedor = new Vendedor();
         con_vendedor = false;
     }
-    List<Contrato_valor> lstValor = (List<Contrato_valor>) request.getAttribute("lstValor");
-    List<Contrato_documento> lstDocum= (List<Contrato_documento>) request.getAttribute("lstDocum");
-    List<Contrato_gasto> lstContrato_gasto = (List<Contrato_gasto>) request.getAttribute("lstGasto");
+    List<Contrato_valor> lstValor = (List<Contrato_valor>) request.getAttribute("contrato_valor");
+    List<Contrato_documento> lstDocum= (List<Contrato_documento>) request.getAttribute("contrato_documento");
+    List<Contrato_gasto> lstContrato_gasto = (List<Contrato_gasto>) request.getAttribute("contrato_gasto");
     
     if(lstValor==null) lstValor = new ArrayList<Contrato_valor>();
     if(lstDocum==null) lstDocum = new ArrayList<Contrato_documento>();

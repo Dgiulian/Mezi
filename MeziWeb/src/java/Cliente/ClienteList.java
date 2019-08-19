@@ -129,8 +129,11 @@ public class ClienteList extends HttpServlet {
                 jr.setTotalRecordCount(0);
                 jr.setRecordCount(0);
             }            
-
-        } finally {
+            
+        } catch (Error e) {
+            System.out.println("Ha ocurrido un error" + e.getMessage());
+        }finally {
+            
             out.print(new Gson().toJson(jr));
             out.close();
         }

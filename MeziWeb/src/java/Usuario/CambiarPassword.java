@@ -90,7 +90,7 @@ public class CambiarPassword extends HttpServlet {
             tu.actualizar(usuario);            
             Integer id_tipo_usuario_actual = (Integer) session.getAttribute("id_tipo_usuario");
             TAuditoria.guardar(id,id_tipo_usuario_actual,OptionsCfg.MODULO_USUARIO,OptionsCfg.ACCION_MODIFICAR,usuario.getId(),tu.auditar(usuario));
-            response.sendRedirect(PathCfg.USUARIO);
+            response.sendRedirect(request.getContextPath());
         
         } catch(BaseException ex) {
             request.setAttribute("titulo", ex.getResult());

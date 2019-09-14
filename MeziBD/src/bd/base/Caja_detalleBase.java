@@ -7,8 +7,7 @@ public class Caja_detalleBase {
 	public Integer id_tipo = 0;
 	public Integer id_cuenta = 0;
 	public Integer id_tipo_cuenta = 0;
-
-    
+        public Integer id_concepto = 0;
 	public String concepto = "";
 	public Float importe = 0f;
 	public Float saldo = 0f;
@@ -106,6 +105,12 @@ public class Caja_detalleBase {
         public void setId_tipo_cuenta(Integer id_tipo_cuenta) {
             this.id_tipo_cuenta = id_tipo_cuenta;
         }
+        public Integer getId_concepto() {
+            return id_concepto;
+        }
 
+        public void setId_concepto(Integer id_concepto) {
+            this.id_concepto = id_concepto;
+        }
 
 }

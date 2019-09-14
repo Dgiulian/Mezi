@@ -27,7 +27,8 @@ public class TRecibo extends TransaccionBase<Recibo> {
             int numero = 0;
             conexion.conectarse();
             try {
-                CallableStatement cs = conexion.getConexion().prepareCall("{call getNumero()}");
+                CallableStatement cs = conexion.getConexion().prepareCall("{? = call getNumero()}");
+                cs.registerOutParameter(1, java.sql.Types.INTEGER);
                 ResultSet rs = cs.executeQuery();
                 while(rs.next()){
                     numero = rs.getInt(1);

@@ -122,14 +122,15 @@ public class UsuarioEdit extends HttpServlet {
                 id = 0;
             }
             usuario = tu.getById(id);
+            String passwordHash = "";
             if (usuario ==null) {
                 usuario = new Usuario();
                 nuevo = true;
                 usuario.setUsu_fcreacion(TFecha.ahora(TFecha.formatoBD + " " + TFecha.formatoHora));
                 usuario.setUsu_mail(email);
-                String passwordHash = "";
-                if(password==null || password2==null) throw new BaseException("ERROR","Debe ingresar el password");
-                if(!password.equals(password2)) throw new BaseException("ERROR","El password no coincide con la confirmaci&oacute;n");
+                
+                if (password == null || password2 == null) throw new BaseException("ERROR","Debe ingresar el password");
+                if (!password.equals(password2)) throw new BaseException("ERROR","El password no coincide con la confirmaci&oacute;n");
                 try {
                     passwordHash = utils.PasswordHash.createHash(password);
                 } catch (NoSuchAlgorithmException ex) {
@@ -138,6 +139,19 @@ public class UsuarioEdit extends HttpServlet {
                     Logger.getLogger(UsuarioEdit.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 usuario.setUsu_password(passwordHash);
+            } else {
+                if(password != null) {
+                    if(!password.equals(password2)) throw new BaseException("ERROR","El password no coincide con la confirmaci&oacute;n");
+                    try {
+                        passwordHash = utils.PasswordHash.createHash(password);
+                    } catch (NoSuchAlgorithmException ex) {
+                        Logger.getLogger(UsuarioEdit.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (InvalidKeySpecException ex) {
+                        Logger.getLogger(UsuarioEdit.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    usuario.setUsu_password(passwordHash);
+                }
+                
             }
             
             id_tipo_usuario = Parser.parseInt(idTipo);

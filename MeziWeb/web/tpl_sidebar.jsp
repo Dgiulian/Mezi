@@ -18,12 +18,14 @@
                                 <li><a class="submenu" href="<%=PathCfg.INQUILINO%>"><i class="fa fa-users"></i><span class="hidden-sm text"> Propietarios</span></a></li>
                             </ul>
                         </li>-->
+                        <!-- PERFIL OPERADOR -->
                         <li><a href="<%=PathCfg.PROPIEDAD%>"><i class="fa fa-home"></i><span class="hidden-sm text"> Propiedades</span></a></li>
                         <li><a href="<%=PathCfg.CONTRATO%>"><i class="fa fa-file-text"></i><span class="hidden-sm text"> Carpetas</span></a></li>
                         <li><a href="<%=PathCfg.CUENTA%>?id_tipo_cliente=<%=OptionsCfg.CLIENTE_TIPO_INQUILINO%>"><i class="fa fa-dollar"></i><span class="hidden-sm text"> Cuenta Inquilino</span></a></li>
                         <li><a href="<%=PathCfg.CUENTA%>?id_tipo_cliente=<%=OptionsCfg.CLIENTE_TIPO_PROPIETARIO%>"><i class="fa fa-dollar"></i><span class="hidden-sm text"> Cuenta Propietario</span></a></li>
+                        <li><a href="<%=PathCfg.CAJA%>"><i class="fa fa-inbox"></i><span class="hidden-sm text"> Cajas diarias</span></a></li>
+                        
                         <% if(id_tipo_usuario<=OptionsCfg.USUARIO_VENDEDOR) {%>
-                            <li><a href="<%=PathCfg.CAJA%>"><i class="fa fa-inbox"></i><span class="hidden-sm text"> Cajas diarias</span></a></li>
                             <li><a href="<%=PathCfg.CUENTA_INTERNA%>"><i class="fa fa-dollar"></i><span class="hidden-sm text"> Cuentas Internas</span></a></li>
                             <li><a href="<%=PathCfg.RECIBO%>"><i class="fa fa-list-alt"></i><span class="hidden-sm text"> Recibos</span></a></li>
                         <% }%>

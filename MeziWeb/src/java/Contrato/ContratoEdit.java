@@ -279,6 +279,9 @@ public class ContratoEdit extends HttpServlet {
            contrato.setComision_monto_propietario(comision_monto_propietario);
            
            contrato.setLlave_monto(llave_monto);
+           if("".equals(llave_desde) || llave_desde == null ){
+               llave_desde = fecha_inicio;
+           }
            contrato.setLlave_desde(llave_desde);
            contrato.setLlave_cuotas(llave_cuotas);
            
@@ -388,6 +391,8 @@ public class ContratoEdit extends HttpServlet {
                 id_tipo_usuario = (Integer) session.getAttribute("id_tipo_usuario");
                 TAuditoria.guardar(id_usuario,id_tipo_usuario,OptionsCfg.MODULO_CONTRATO,OptionsCfg.ACCION_ALTA,contrato.getId(),tcontrato.auditar(contrato));
             }
+           } else {
+               throw new BaseException("ERROR", "Ocurrió un error al crear el contrato");
            }
            response.sendRedirect(PathCfg.CONTRATO);
        } catch(BaseException ex){

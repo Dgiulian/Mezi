@@ -401,7 +401,7 @@
                                                     <div class="col-lg-12 nopadding">
                                                         <div class="form-group row">
                                                              <div class="col-lg-6 col-sm-6 ">
-                                                                    <label class="control-label" for="punitorio_monto">Punitorio</label>
+                                                                    <label class="control-label" for="punitorio_monto">Punitorio &#37;</label>
                                                                     <div class="controls">
                                                                         <div class="input-group">
                                                                           <input type="text" id="punitorio_monto" name="punitorio_monto" class="form-control  numeric" value="<%=contrato.getPunitorio_monto()%>">
@@ -883,7 +883,7 @@
                                              <div class="row">
                                                 <div class="col-lg-12">
                                                    <div class="form-actions">
-                                                      <button type="submit" class="btn btn-primary" id="btnSubmit">Guardar</button>
+                                                      <button type="button" class="btn btn-primary" id="btnSubmit">Guardar</button>
                                                       <a  href="<%= PathCfg.CONTRATO%>"class="btn btn-default">Cancelar</a>
                                                   </div>
                                                </div>
@@ -979,14 +979,12 @@
 
 <script>
     $(document).ready(function() {
+       
   	$('#rootwizard').bootstrapWizard({
             onNext: mover,
             onPrevious:mover
         });
-//        $('.btn-sel').click(function(){
-//            var index = $(this).data('index');
-//            buscarPropiedad({id:index});
-//        });
+
         $('#btnValor').click(function(){
             $('#target').val('Valor')
             $('#mdlValor').modal('show');

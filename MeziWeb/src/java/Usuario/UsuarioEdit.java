@@ -140,7 +140,7 @@ public class UsuarioEdit extends HttpServlet {
                 }
                 usuario.setUsu_password(passwordHash);
             } else {
-                if(password != null) {
+                if(password != null && !"".equals(password)) {
                     if(!password.equals(password2)) throw new BaseException("ERROR","El password no coincide con la confirmaci&oacute;n");
                     try {
                         passwordHash = utils.PasswordHash.createHash(password);

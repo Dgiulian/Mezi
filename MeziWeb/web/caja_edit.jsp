@@ -47,7 +47,7 @@
                                         <div class="row">
                                           <fieldset disabled>
                                               <input type="hidden" id="id_caja" name="id_caja" value="<%= caja.getId()%>">
-                                              <div class="col-lg-2">
+                                              <div class="col-sm-6 col-lg-2">
                                                 <div clas="form-group">
                                                     <label for="nombre_search">Estado</label>
                                                     <div class="input-group">                                                                                            
@@ -55,7 +55,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-2">
+                                            <div class="col-sm-6 col-lg-2">
                                                 <div clas="form-group">
                                                     <label for="nombre_search">Fecha</label>
                                                     <div class="input-group">                                                                                            
@@ -63,7 +63,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-2">
+                                            <div class="col-sm-6 col-lg-2">
                                                 <div clas="form-group">
                                                     <label for="efectivo_anterior">Efectivo anterior</label>
                                                     <div class="input-group">                                                                                            
@@ -71,7 +71,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-2">
+                                            <div class="col-sm-6 col-lg-2">
                                                 <div clas="form-group">
                                                     <label for="efectivo_anterior">Cheque anterior</label>
                                                     <div class="input-group">                                                                                            
@@ -80,7 +80,7 @@
                                                 </div>
                                             </div>
                                             <%if(caja.getId_estado()!=OptionsCfg.CAJA_ABIERTA) {%>
-                                                <div class="col-lg-2">
+                                                <div class="col-sm-6 col-lg-2">
                                                  <div clas="form-group">
                                                         <label for="efectivo_cierre">Efectivo cierre</label>
                                                         <div class="input-group">                                                                                            
@@ -88,7 +88,7 @@
                                                         </div>
                                                  </div>
                                                 </div>
-                                                <div class="col-lg-2">
+                                                <div class="col-sm-6 col-lg-2">
                                                  <div clas="form-group">
                                                         <label for="cheque_cierre">Cheques cierre</label>
                                                         <div class="input-group">                                                                                            
@@ -269,19 +269,19 @@
                 <fieldset disabled>
                     <div class="form-group">
                       <label class="col-md-4 control-label" for="saldo_efectivo">Saldo Efectivo</label>
-                      <div class="col-md-8 input-group">
+                      <div class="col-xs-12 col-md-8 input-group">
                       <input id="saldo_efectivo" type="text" class="form-control input-md " value="{{saldo_efectivo}}">
                       </div>
                     </div>
                    <div class="form-group">
                       <label class="col-md-4 control-label" for="saldo_cheques">Saldo cheques</label>
-                      <div class="col-md-8 input-group">
+                      <div class="col-xs-12 col-md-8 input-group">
                       <input id="saldo_cheques" type="text" class="form-control input-md " value="{{saldo_cheques}}">
                       </div>
                    </div>
                     <div class="form-group">
                       <label class="col-md-4 control-label" for="saldo_transferencia">Saldo transferencia</label>
-                      <div class="col-md-8 input-group">
+                      <div class="col-xs-12 col-md-8 input-group">
                       <input id="saldo_transferencia" type="text" class="form-control input-md " value="{{saldo_transferencia}}">
                       </div>
                    </div>
@@ -289,25 +289,25 @@
                 <fieldset enabled>
                    <div class="form-group">
                       <label class="col-md-4 control-label" for="efectivo_cierre">Efectivo cierre</label>
-                      <div class="col-md-8 input-group">
+                      <div class="col-xs-12 col-md-8 input-group">
                       <input id="efectivo_cierre" type="text" class="form-control input-md " value="">
                       </div>
                    </div>
                    <div class="form-group">
                       <label class="col-md-4 control-label" for="cheque_cierre">Cheques cierre</label>
-                      <div class="col-md-8 input-group">
+                      <div class="col-xs12 col-md-8 input-group">
                       <input id="cheque_cierre" type="text" class="form-control input-md " value="">
                       </div>
                    </div>
                     <div class="form-group">
                       <label class="col-md-4 control-label" for="cheque_cierre">Transferencia cierre</label>
-                      <div class="col-md-8 input-group">
+                      <div class="col-xs-12 col-md-8 input-group">
                       <input id="transferencia_cierre" type="text" class="form-control input-md " value="">
                       </div>
                    </div>
                    <div class="form-group">
                       <label class="col-md-4 control-label" for="motivo_diferencia">Motivo diferencia</label>
-                      <div class="col-md-8 input-group">
+                      <div class="col-xs-12 col-md-8 input-group">
                       <input id="motivo_diferencia" type="text" class="form-control input-md " value="">
                    </div>
                 </fieldset>

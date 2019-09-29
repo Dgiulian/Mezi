@@ -9,43 +9,39 @@
                         <h4 class="modal-title" id="mdlTitle">Buscar cliente</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="col-lg-3">
+                    <div class="col-md-6 col-lg-3">
                         <div clas="form-group row">
                             <label class="control-label" for="nombre_search">Nombre</label>
                             <div class="control-group">                                                                                            
                                 <input type="text" class="form-control" name="nombre_search" id="nombre_search" size="20" value="">
-                                <!--<span class="input-group-addon" id="btnBuscar" ><span class="fa fa-search fa-fw"></span></span>-->
                             </div>
                         </div>
                        
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-md-6 col-lg-3">
                      <div clas="form-group row">
-                            <label for="apellido_search">Apellido</label>
-                            <div class="input-group">                                                                                            
+                            <label class="control-label" for="apellido_search">Apellido</label>
+                            <div class="control-group">                                                                                            
                                 <input type="text" class="form-control" name="apellido_search" id="apellido_search" size="20" value="">
-                                <!--<span class="input-group-addon" id="btnBuscar" ><span class="fa fa-search fa-fw"></span></span>-->
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-md-6 col-lg-3">
                         <div clas="form-group row">
-                            <label for="dni_search">Dni</label>
+                            <label class="control-label" for="dni_search">Dni</label>
                             <div class="controls">                                                      
-                                <div class="input-group">                                                                                            
+                                <div class="control-group">                                                                                            
                                     <input type="text" class="form-control" name="dni_search" id="dni_search" size="20" value="">
-                                    <!--<span class="input-group-addon" id="btnBuscar" ><span class="fa fa-search fa-fw"></span></span>-->
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-md-6 col-lg-3">
                         <div clas="form-group row">
-                            <label for="dni_search">Carpeta</label>
+                            <label class="control-label" for="dni_search">Carpeta</label>
                             <div class="controls">                                                      
-                                <div class="input-group">                                                                                            
+                                <div class="control-group">                                                                                            
                                     <input type="text" class="form-control" name="carpeta_search" id="carpeta_search" size="20" value="">
-                                    <!--<span class="input-group-addon" id="btnBuscar" ><span class="fa fa-search fa-fw"></span></span>-->
                                 </div>
                             </div>
                         </div>

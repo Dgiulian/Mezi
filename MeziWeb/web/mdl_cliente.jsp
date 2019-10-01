@@ -55,7 +55,13 @@
                                 <th></th>
                             </tr>
                         </thead>
-                        <tbody></tbody>
+                        <tbody>
+                            <tr>
+                                <td colspan="4">
+                                    <center>Indique un criterio de b&uacute;squeda v&aacute;lido</center>
+                                </td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
                 <div class="modal-footer">
@@ -70,7 +76,7 @@
     $(document).ready(function(){
        $('#mdlCliente').on('show.bs.modal',function(){
            //cleanDataClienteSearch();
-           filtrar_mdl_cliente();
+           // filtrar_mdl_cliente();
            var $id_tipo_cliente=$('#id_tipo_cliente').val();
            var titulo = "Buscar cliente";
            if(parseInt($id_tipo_cliente)===<%=OptionsCfg.CLIENTE_TIPO_INQUILINO%>   ) titulo = "Buscar Inquilino" ;
@@ -158,8 +164,13 @@
                 }
     });
 }
+function createEmptyTableCliente(){
+    return "<tr><td colspan='4'><center>Indique un criterio de b&uacute;squeda v&aacute;lido</center></td></tr>"
+}
    function createTableCliente(data){
-   
+    if(data.length === 0 ) {
+        return createEmptyTableCliente()
+    }
     var html = "";
     for(var i = 0;i< data.length;i++){
        html +="<tr class=''>";

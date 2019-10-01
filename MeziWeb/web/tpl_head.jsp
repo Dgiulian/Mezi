@@ -33,7 +33,8 @@
 
     <style>
         legend{
-            margin-bottom:5px;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
 
         }
         .nopadding {

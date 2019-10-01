@@ -116,6 +116,12 @@
                                                                  <tr>
                                                                      <th>Domicilios</th>
                                                                  </tr>
+                                                                 <tr>
+                                                                     <th>Carpeta</th>
+                                                                     <th><%=(id_tipo_cliente.equals(OptionsCfg.CLIENTE_TIPO_PROPIETARIO))?"Inquilino":"Propietario" %></th>
+                                                                     <th>Direcci&oacute;n</th>
+                                                                     <th>Estado</th>
+                                                                 </tr>
                                                              </thead>
                                                              <tbody></tbody>
                                                          </table>
@@ -505,8 +511,7 @@
         
         });
    }
-   function completarCliente(data){
-       console.log(data);
+   function completarCliente(data){       
         $('#id_inquilino').val(data.id);
         $('#carpeta').val(data.carpeta);
         $('#nombre').val(data.nombre);
@@ -520,6 +525,8 @@
     }
     function listar_contrato(data){
         var $tabla = $('#tblContrato');
+        var id_tipo_cliente = $('#id_tipo_cliente').val();
+        
         $.ajax({
                url: '<%= PathCfg.CONTRATO_LIST %>',
                data: data,
@@ -531,7 +538,7 @@
                },
                success: function(result) {
                    if(result.Result === "OK") {
-                       $tabla.find('tbody').html(createTableContrato(result.Records));
+                       $tabla.find('tbody').html(createTableContrato(result.Records, id_tipo_cliente));
                        $('input[name="rdPropiedad"]').change(function(){
                            $('#id_contrato').val($(this).val());                          
                           filtrar_cuenta();
@@ -550,13 +557,14 @@
                }
            });
     }
-    function createTableContrato(data){
+    function createTableContrato(data, id_tipo_cliente){
         var html = "";
+        var tipo_cliente = parseInt(id_tipo_cliente)===<%=OptionsCfg.CLIENTE_TIPO_PROPIETARIO%>?'inquilino':'propietario';
         for(var i = 0;i< data.length;i++){
            html +="<tr class=''>";
            var d = data[i];
            html += wrapTag('td',"<a href='ContratoView?id=" + d.id + "'>" + d.numero + "</a>",'');
-           html += wrapTag('td',d.inquilino,'');
+           html += wrapTag('td',d[tipo_cliente],'');
            html += wrapTag('td',"<a href='PropiedadEdit?id=" + d.id_propiedad + "'>" + d.direccion + "</a>",'');
            html += wrapTag('td',d.estado_contrato,'');
            var htmlRadio = "";

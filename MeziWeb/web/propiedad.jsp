@@ -22,7 +22,7 @@
 							
 			<div class="row">
                             
-				<div class="col-lg-12">
+				<div class="col-sm-12">
                                     <div class="box">
                                         <div class="box-header">
                                             <H3>Listado de propiedades <a href="<%=PathCfg.PROPIEDAD_EDIT%>" class="btn btn-primary" ><span class="fa fa-file" ></span> Nuevo</a></H3>
@@ -30,7 +30,7 @@
                                     <div  class="box-content">
                                             
                                     <div class="row">
-                                        <div class="col-lg-2">
+                                        <div class="col-sm-2">
                                             <div clas="form-group">
                                                 <label for="id">C&oacute;digo</label>
                                                 <span class="input-group">                                                                                            
@@ -40,36 +40,31 @@
                                             </div>
                                         </div>
                                        
-                                        <div class="col-lg-2">
-                                            <div class="form-group row  ">
+                                        <div class="col-sm-2">
+                                            <div class="form-group">
                                                 <label class="control-label" for="id_tipo_inmueble">Tipo inmueble</label>
-                                                <div class="controls">
-                                                      <div class="input-group">
-                                                        <select type="text" id="id_tipo_inmueble" name="id_tipo_inmueble" class="form-control">
-                                                            <option value="0" selected> Todos</option>
-                                                            <option value="1"> Casa</option>
-                                                            <option value="2" > Departamento</option>
-                                                            <option value="3"> Terreno</option>                                                                            
-                                                        </select>
-                                                      </div>
-                                                </div>
+                                                
+                                                    <select type="text" id="id_tipo_inmueble" name="id_tipo_inmueble" class="form-control">
+                                                        <option value="0" selected> Todos</option>
+                                                        <option value="1"> Casa</option>
+                                                        <option value="2" > Departamento</option>
+                                                        <option value="3"> Terreno</option>                                                                            
+                                                    </select>
                                             </div>
                                         </div>
-                                        <div class="col-lg-2">
-                                            <div class="form-group row  ">
+                                        <div class="col-sm-2">
+                                            <div class="form-group">
                                                 <label class="control-label" for="id_estado">Estado</label>
                                                 <div class="controls">
-                                                      <div class="input-group  col-lg-12">
                                                         <select type="text" id="id_estado" name="id_estado" class="form-control">
                                                             <option value="0" selected>Todos</option>
                                                             <option value="1">Disponible </option>
                                                             <option value="2">Alquilada</option>
                                                         </select>
-                                                      </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-3">
+                                        <div class="col-sm-3">
                                             <div clas="form-group">
                                                 <label for="id">Propietario</label>
                                                 <span class="input-group">                                                                                            
@@ -79,38 +74,36 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <div class="col-lg-2">
-                                            <div class="form-group row  ">
+                                        <div class="col-sm-2">
+                                            <div class="form-group">
                                                 <label class="control-label" for="id_operacion">Operaci&oacute;n</label>
                                                 <div class="controls">
-                                                      <div class="input-group  col-lg-12">
                                                         <select id="id_operacion" name="id_operacion" class="form-control">
                                                             <option value="0" selected>Todos</option>
                                                             <option value="1">Alquiler</option>
                                                             <option value="2">Venta</option>                                                            
                                                         </select>
-                                                      </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-lg-4">
-                                            <div clas="form-group">
-                                                <label for="calle">Calle</label>
-                                                <span class="input-group">                                                                                            
+                                            <div class="form-group">
+                                                <label class="control-label" for="calle">Calle</label>
+                                                <div class="input-group">
                                                     <input type="text" class="form-control uppercase" name="calle" id="calle" size="20" value="">
                                                     <span class="input-group-addon" id="btnFiltrarCalle" ><span class="fa fa-search fa-fw"></span></span>
-                                                </span>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-lg-1">
                                                 <div clas="form-group">
-                                                    <label for="pagination">P&aacute;gina </label>
+                                                    <label  class="control-label" for="pagination">P&aacute;gina </label>
                                                     <select class="form-control" id="pagination" name="pagination"></select>
                                                 </div>
                                             </div>  
                                         <div class="col-lg-1">
                                             <div clas="form-group">
-                                                <label for="numResults">Mostrar </label>
+                                                <label  class="control-label" for="numResults">Mostrar </label>
                                                 <select id="numResults" name="numResults" CLASS="form-control" >
                                                  <option value="25">25</option>
                                                  <option value="50">50</option>

@@ -92,12 +92,12 @@ String[] tipo_inmueble = {"Seleccione el tipo de imbueble","Casa","Departamento"
                                         <% }%>
                                         <div  class="tab-content box-content">   
                                             <div class="tab-pane row active" id="tab1">
-                                                <div class="col-lg-4">
+                                                <div class="col-md-4">
                                                     <% if(!nuevo) {%>
                                                         <div class="form-group">
                                                             <label class="control-label" for="codigo">C&oacute;digo propiedad</label>
                                                             <div class="controls">
-                                                                  <div class="input-group col-lg-12">
+                                                                  <div class="form-group col-lg-12">
                                                                     <input type="text" name="codigo" id="codigo" class="form-control" value="<%=p.getId()%>" readonly>
                                                                   </div>
                                                             </div>
@@ -107,7 +107,7 @@ String[] tipo_inmueble = {"Seleccione el tipo de imbueble","Casa","Departamento"
                                                         <div class="form-group row  ">
                                                             <label class="control-label" for="id_tipo_inmueble">Tipo inmueble</label>
                                                             <div class="controls">
-                                                                  <div class="input-group col-lg-12">
+                                                                  <div class="form-group col-lg-12">
                                                                     <select type="text" id="id_tipo_inmueble" name="id_tipo_inmueble" class="form-control">
                                                                         <% for (int i =0;i<tipo_inmueble.length;i++) { 
                                                                         String selected = p.getId_tipo_inmueble().equals(i)?"Selected":"";
@@ -123,7 +123,7 @@ String[] tipo_inmueble = {"Seleccione el tipo de imbueble","Casa","Departamento"
                                                          <div class="form-group">
                                                             <label class="control-label" for="nomenclatura">Nomenclatura Catastral</label>
                                                             <div class="controls">
-                                                                  <div class="input-group col-lg-12">
+                                                                  <div class="form-group col-lg-12">
                                                                     <input type="text" name="nomenclatura" id="nomenclatura" class="form-control" value="<%=p.getNomenclatura()%>">
                                                                   </div>
                                                             </div>
@@ -149,121 +149,109 @@ String[] tipo_inmueble = {"Seleccione el tipo de imbueble","Casa","Departamento"
                                                      <div class="form-group">
                                                             <label class="control-label" for="precio">Precio referencia</label>
                                                             <div class="controls">
-                                                                  <div class="input-group col-lg-5">
+                                                                  <div class="form-group col-lg-5">
                                                                       <input type="text" name="precio" id="precio" class="form-control numeric" value="<%=p.getPrecio()%>" >
                                                                   </div>
                                                             </div>
                                                      </div>
                                                 </div> <!-- col-lg-4-->
                                                 
-                                                 <div class="col-lg-8">
-                                                     <div class="col-lg-12 col-md-12">
+                                                 <div class="col-md-8">
+                                                     <div class="col-md-12">
                                                         <div class="form-group row">
-                                                            <div class="col-lg-9 nopadding">
+                                                            <div class="col-md-9">
                                                                 <div class="controls">
                                                                     <label class="control-label" for="calle">Calle</label>
-                                                                      <div class="input-group col-lg-12 ">
+                                                                      <div class="form-group ">
                                                                         <input type="text" id="calle" name="calle" class="form-control" value="<%=p.getCalle()%>">
                                                                       </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-lg-2 nopadding">
+                                                            <div class="col-md-2">
                                                                 <div class="controls">
                                                                     <label class="control-label" for="numero">N&uacute;mero</label>
-                                                                      <div class="input-group ">
+                                                                      <div class="form-group ">
                                                                         <input type="text" id="numero" name="numero" class="form-control" value="<%= p.getNumero()%>">
                                                                       </div>
                                                                 </div>
                                                             </div>
                                                         </div><!-- row -->
                                                      </div> <!-- col-lg-12 -->
-                                                     <div class="col-lg-12 col-md-12">
-                                                        <div class="form-group row">
-                                                                <div class="col-lg-2 nopadding">
-                                                                    <div class="controls">
-                                                                        <label class="control-label" for="piso">Piso</label>
-                                                                          <div class="input-group col-lg-12 ">
-                                                                            <input type="text" id="piso" name="piso" class="form-control" value="<%=p.getPiso()%>">
-                                                                          </div>
-                                                                    </div>
+                                                     <div class="row">
+                                                        <div class="col-sm-2">
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label class="control-label" for="piso">Piso</label>
+                                                                      <div class="form-group">
+                                                                        <input type="text" id="piso" name="piso" class="form-control" value="<%=p.getPiso()%>">
+                                                                      </div>
                                                                 </div>
-                                                                <div class="col-lg-2 ">
-                                                                    <div class="controls">
-                                                                        <label class="control-label" for="dpto">Departamento</label>
-                                                                          <div class="input-group ">
-                                                                            <input type="text" id="dpto" name="dpto" class="form-control" value="<%=p.getDpto()%>">
-                                                                          </div>
-                                                                    </div>
-                                                                </div>
-                                                        </div><!-- row -->
-                                                     </div> <!-- col-lg-12 -->
-                                                    
-                                                     <div class="form-group">
-                                                            <label class="control-label" for="id_localidad">Localidad</label>
+                                                            </div>
+                                                        </div><!-- col-sm-2 -->
+                                                        <div class="col-sm-2 ">
                                                             <div class="controls">
-                                                                  <div class="input-group col-lg-12">
-                                                                    <select type="text" name="id_localidad" id="id_localidad" class="form-control" >
-                                                                        <option value="0"></option>
-                                                                        <% for(Localidad l:lstLoc) {
-                                                                            String selLocalidad =  (int) l.getId()== p.getId_localidad()?"selected":"";
-                                                                        %>
-                                                                        <option value="<%=l.getId()%>" <%=selLocalidad%>><%=l.getDescripcion()%></option>
-                                                                        <% } %>
-                                                                    </select>
+                                                                <label class="control-label" for="dpto">Departamento</label>
+                                                                  <div class="form-group">
+                                                                    <input type="text" id="dpto" name="dpto" class="form-control" value="<%=p.getDpto()%>">
                                                                   </div>
                                                             </div>
-                                                     </div>
-                                                      <div class="form-group">
-                                                            <label class="control-label" for="id_barrio">Barrio</label>
-                                                            <div class="controls">
-                                                                  <div class="input-group col-lg-12">
-                                                                    <select type="text" name="id_barrio" id="id_barrio" class="form-control" >
-                                                                        <option value="0"></option>
-                                                                        <% for(Barrio b:lstBarrios ) {
-                                                                            String selBarrio = b.getId()==p.getId_barrio()?"Selected":"";
-                                                                        %>                                                                        
-                                                                        <option value="<%=b.getId()%>" <%=selBarrio%>> <%= b.getNombre()%></option>
-                                                                        <% } %>
-                                                                        
-                                                                    </select>
-                                                                  </div>
+                                                        </div>
+                                                    </div><!-- row -->
+                                                    <div class="row">
+                                                        <div class=" col-md-6 ">
+                                                            <div class="form-group">
+                                                               <label class="control-label" for="id_localidad">Localidad</label>
+                                                               <div class="controls">
+                                                                     <div class="form-group">
+                                                                       <select type="text" name="id_localidad" id="id_localidad" class="form-control" >
+                                                                           <option value="0"></option>
+                                                                           <% for(Localidad l:lstLoc) {
+                                                                               String selLocalidad =  (int) l.getId()== p.getId_localidad()?"selected":"";
+                                                                           %>
+                                                                           <option value="<%=l.getId()%>" <%=selLocalidad%>><%=l.getDescripcion()%></option>
+                                                                           <% } %>
+                                                                       </select>
+                                                                     </div>
+                                                               </div>
                                                             </div>
-                                                     </div>
+                                                         </div>
+                                                        <div class=" col-md-6 ">
+                                                            <div class="form-group">
+                                                                  <label class="control-label" for="id_barrio">Barrio</label>
+                                                                  <div class="controls">
+                                                                      <div class="form-group">
+                                                                          <select type="text" name="id_barrio" id="id_barrio" class="form-control" >
+                                                                              <option value="0"></option>
+                                                                              <% for(Barrio b:lstBarrios ) {
+                                                                                  String selBarrio = b.getId()==p.getId_barrio()?"Selected":"";
+                                                                              %>                                                                        
+                                                                              <option value="<%=b.getId()%>" <%=selBarrio%>> <%= b.getNombre()%></option>
+                                                                              <% } %>
+
+                                                                          </select>
+                                                                      </div>
+                                                                  </div>
+                                                           </div>
+                                                          </div>
+                                                    </div><!-- row -->
                                                         <input type="hidden" id="longitud" name="longitud" class="form-control" value="<%=p.getLongitud()%>" >
                                                         <input type="hidden" id="latitud" name="latitud" class="form-control" value="<%=p.getLatitud()%>" >
-<!--                                                     <div class="col-lg-12 col-md-12">
-                                                        <div class="form-group row">
-                                                                <div class="col-lg-6 ">
-                                                                    <div class="controls">
-                                                                        <label class="control-label" for="longitud">Latitud</label>
-                                                                          <div class="input-group col-lg-12 ">
-                                                                            <input type="text" id="longitud" name="longitud" class="form-control" value="<%=p.getLongitud()%>" readonly>
-                                                                          </div>
-                                                                    </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+
+                                                        <div class="form-group">
+                                                                <label class="control-label" for="cliente">Propietario</label>
+                                                                <div class="controls">
+                                                                      <div class="form-group">
+                                                                          <input type="text" name="propietario" id="propietario" class="form-control" value="<%=apenom%>" readonly >
+                                                                          <input type="hidden" name="id_propietario" id="id_propietario" class="form-control" value="<%=cliente.getId()%>" >
+                                                                      </div>
+                                                                          <span class="btn btn-primary" data-toggle="modal" data-target="#mdlCliente">Buscar</span>
                                                                 </div>
-                                                                <div class="col-lg-6 ">
-                                                                    <div class="controls">
-                                                                        <label class="control-label" for="latitud">Longitud</label>
-                                                                          <div class="input-group ">
-                                                                            <input type="text" id="latitud" name="latitud" class="form-control" value="<%=p.getLatitud()%>" readonly>
-                                                                          </div>
-                                                                    </div>
-                                                                </div>
-                                                        </div> row 
-                                                     </div>  col-lg-12 -->
-                                                <div class="col-lg-12 nopadding">
-                                                    <div class="form-group">
-                                                            <label class="control-label" for="cliente">Propietario</label>
-                                                            <div class="controls">
-                                                                  <div class="input-group col-lg-12">
-                                                                      <input type="text" name="propietario" id="propietario" class="form-control" value="<%=apenom%>" readonly >
-                                                                      <span class="btn btn-primary" data-toggle="modal" data-target="#mdlCliente">Buscar</span>
-                                                                      <input type="hidden" name="id_propietario" id="id_propietario" class="form-control" value="<%=cliente.getId()%>" >
-                                                                  </div>
-                                                            </div>
-                                                     </div>
-                                                </div> 
+                                                         </div>
+                                                    </div>
                                                 </div>
+                                                </div> 
                                                                                                                      
                                             </div> <!-- tab1 -->
                                             <div class="tab-pane row" id="tabUbi">                                                

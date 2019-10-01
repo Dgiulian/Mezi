@@ -555,7 +555,9 @@
         for(var i = 0;i< data.length;i++){
            html +="<tr class=''>";
            var d = data[i];
-           html += wrapTag('td',d.direccion,'');
+           html += wrapTag('td',"<a href='ContratoView?id=" + d.id + "'>" + d.numero + "</a>",'');
+           html += wrapTag('td',d.inquilino,'');
+           html += wrapTag('td',"<a href='PropiedadEdit?id=" + d.id_propiedad + "'>" + d.direccion + "</a>",'');
            html += wrapTag('td',d.estado_contrato,'');
            var htmlRadio = "";
            if(d.id_estado!== 1){

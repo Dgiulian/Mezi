@@ -64,7 +64,7 @@ public class ReciboPrint extends HttpServlet {
             filePath += File.separator + fileName;
             boolean generado = false;
             ReciboPdf reciboPdf;
-            switch(recibo.getId_tipo_recibo()){
+            switch(recibo.getId_tipo_cliente()){
                 case OptionsCfg.CLIENTE_TIPO_INQUILINO:
                     reciboPdf = new ReciboInquilinoPdf(recibo);
                     generado = reciboPdf.createPdf(filePath);

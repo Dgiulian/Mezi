@@ -69,7 +69,7 @@ public class CajaDetalleCierre extends HttpServlet {
           CierreCaja cierre = new CierreCaja();
           for(Caja_detalle detalle:listFiltro){
               cierre.sumar(detalle.getId_forma(),detalle.getImporte());
-              saldo += detalle.getId_tipo() == OptionsCfg.TIPO_INGRESO?detalle.getImporte():-1*detalle.getImporte();
+              saldo += detalle.getId_tipo() == OptionsCfg.TIPO_INGRESO? detalle.getImporte():-1*detalle.getImporte();
               detalle.setSaldo(saldo);
 
           }

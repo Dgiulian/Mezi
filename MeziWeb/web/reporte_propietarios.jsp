@@ -29,19 +29,19 @@
                                     <div  class="box-content">
                                     
                                         <div class="row">
-                                            <div class="col-lg-1">
+                                            <div class="col-sm-1">
                                                 <div clas="form-group">
                                                     <label for="carpeta_search">Carpeta</label>
                                                     <input type="text" class="form-control" name="carpeta_search" id="carpeta_search" size="20" value="">                                                    
                                                 </div>
                                             </div>
-                                            <div class="col-lg-3">
+                                            <div class="col-sm-2">
                                                 <div clas="form-group">
                                                     <label for="nombre_search">Nombre</label>
                                                     <input type="text" class="form-control" name="nombre_search" id="nombre_search" size="20" value="">                                                    
                                                 </div>
                                             </div>
-                                            <div class="col-lg-3">
+                                            <div class="col-sm-2">
                                              <div clas="form-group">
                                                     <label for="apellido_search">Apellido</label>
 <!--                                                    <div class="input-group">                                                                                            -->
@@ -49,32 +49,60 @@
                                                     <!--</div>-->
                                                 </div>
                                             </div>
-                                            <div class="col-lg-2">
+                                            <div class="col-sm-2">
                                                 <div clas="form-group">
                                                     <label for="dni_search">Dni</label>
                                                         <input type="text" class="form-control" name="dni_search" id="dni_search" size="20" value="">
                                                 </div>
                                             </div>
-                                        <div class="col-lg-1">
-                                            <div clas="form-group">
-                                            <label for="pagination">P&aacute;gina </label>
-                                            <select class="form-control" id="pagination" name="pagination"></select>
-                                            </div>
-                                        </div>  
-                                        <div class="col-lg-1">
-                                            <div clas="form-group">
-                                                <label for="numResults">Mostrar </label>
-                                                <select id="numResults" name="numResults" CLASS="form-control" >
-                                                 <option value="25">25</option>
-                                                 <option value="50">50</option>
-                                                 <option value="100">100</option>                                                            
-                                             </select>
+                                        <div class="col-sm-2">
+                                            <div class="form-group">
+                                                <label class="control-label" for="id_estado">Estado</label>
+                                                <div class="controls">
+                                                    <select type="text" id="id_estado" name="id_estado" class="form-control">
+                                                        <option value="0" selected>Todos</option>
+                                                        <option value="1">Disponible </option>
+                                                        <option value="2">Alquilada</option>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
-                                      
-                                  
-                                     </div>
-                                      
+                                        <div class="col-sm-2">
+                                            <div class="form-group">
+                                                <label class="control-label" for="id_estado">Estado Contrato</label>
+                                                <div class="controls">
+                                                    <select type="text" id="id_estado_contrato" name="id_estado_contrato" class="form-control">
+                                                        <option value="0" selected>Todos</option>
+                                                        <option value="1">Inicio</option>
+                                                        <option value="2">Activo </option>
+                                                        <option value="3">Entrega llave</option>
+                                                        <option value="4">Fin</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!--row 1 -->
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="col-sm-3 col-md-1">
+                                                <div clas="form-group">
+                                                <label for="pagination">P&aacute;gina </label>
+                                                <select class="form-control" id="pagination" name="pagination"></select>
+                                                </div>
+                                            </div>  
+                                            <div class="col-sm-3 col-md-1">
+                                                <div clas="form-group">
+                                                    <label for="numResults">Mostrar </label>
+                                                    <select id="numResults" name="numResults" CLASS="form-control" >
+                                                     <option value="25">25</option>
+                                                     <option value="50">50</option>
+                                                     <option value="100">100</option>                                                            
+                                                 </select>
+                                                </div>
+                                            </div>
+                                        </div><!-- col 12 -->
+                                    </div><!-- row -->
+                                       
                                         <table class="table table-bordered table-condensed table-striped" id="tblCliente">
                                             <thead>
                                                 <tr>
@@ -175,12 +203,12 @@
            $('#dni_search').change(filtrar_mdl_cliente);
            $('#pagination').change(gotoPage);
            $('#numResults').change(filtrar_mdl_cliente);
-           filtrar_mdl_cliente();
+           $('#id_estado').change(filtrar_mdl_cliente);
+           $('#id_estado_contrato').change(filtrar_mdl_cliente);
+//           filtrar_mdl_cliente();
         });
         
         function loadData(data){
-            console.log(data);
-        
             var $tabla = $('#tblCliente');
             //$tabla.DataTable().destroy();
             $.ajax({
@@ -194,15 +222,22 @@
                },
                success: function(result) {
                    if(result.Result === "OK") {
-                       $tabla.find('tbody').html(createTable(result.Records));
+                       var records = result.Records || []
+                       $tabla.find('tbody').html(createTable(records));
                        $('#pagination').html(createPagination(result.TotalRecordCount,data.pagNro,data.numResults));
                    }
                }
            });
     }
-  
+  function createEmptyTable(msg){
+    var cant_cols = $('#tblCliente').find('thead th').length;
+    return "<tr><td colspan='"+ cant_cols +"'><center>" + msg + "</center></td></tr>"            
+  }
    function createTable(data){
         var html = "";
+        if (data.length === 0 ){
+            html = createEmptyTable("No se encontraron propietarios con esas caracteristicas")
+        }
         for(var i = 0;i< data.length;i++){
            html +="<tr class=''>";
            var d = data[i];
@@ -234,6 +269,8 @@
         data.nombre = $('#nombre_search').val();
         data.apellido = $('#apellido_search').val();
         data.dni = $('#dni_search').val();
+        data.id_estado = parseInt($('#id_estado').val());
+        data.id_estado_contrato = parseInt($('#id_estado_contrato').val());
         data.pagNro = parseInt($('#pagination').val());
         data.numResults = parseInt($('#numResults').val());
         

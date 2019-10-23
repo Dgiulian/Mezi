@@ -59,6 +59,7 @@ public class ReportePropietariosList extends HttpServlet {
         Integer id = Parser.parseInt(request.getParameter("id"));
         Integer id_tipo_inmueble = Parser.parseInt(request.getParameter("id_tipo_inmueble"));
         Integer id_estado = Parser.parseInt(request.getParameter("id_estado"));
+        Integer id_estado_contrato = Parser.parseInt(request.getParameter("id_estado_contrato"));
         Integer id_operacion = Parser.parseInt(request.getParameter("id_operacion"));
         Integer id_propietario = Parser.parseInt(request.getParameter("id_propietario"));
         String calle  = request.getParameter("calle");
@@ -90,14 +91,13 @@ public class ReportePropietariosList extends HttpServlet {
                 filtroPropietario.put("carpeta",carpeta.toString());
             }            
             List<Propietario> lstPropietarios = new TPropietario().getListFiltro(filtroPropietario);            
-            System.out.println(lstPropietarios);
+            //System.out.println(lstPropietarios);
             mapBarrios = new TBarrio().getMap();
             mapEstados = OptionsCfg.getMap( OptionsCfg.getEstadosPropiedad());
             mapPropietarios = new TPropietario().getMap(lstPropietarios);
             
             tp.setOrderBy(" id_propietario ");
             if(numResults>0) tp.setNumResults(numResults);
-            
             
             if(id!=0){
                 filtroPropiedad.put("id",id.toString());
@@ -114,21 +114,29 @@ public class ReportePropietariosList extends HttpServlet {
             if(id_propietario!=0){
                 filtroPropiedad.put("id_propietario",id_propietario.toString());
             }
+           
             if(calle!=null && !"".equals(calle)) filtroPropiedad.put("calle",calle);
             if(numero!=null && !"".equals(numero)) filtroPropiedad.put("numero",numero);
             
             ArrayList<PropiedadDet> listaDet = new ArrayList();
-            //filtroPropiedad.put("id","9");
             for(Propietario p:lstPropietarios){
                 filtroPropiedad.put("id_propietario", p.getId().toString());
                 lista =  tp.getListFiltro(filtroPropiedad,pagNro);
             
 //            lista = tp.getList();            
                 for(Propiedad propiedad:lista){
-                    listaDet.add(new PropiedadDet(propiedad));
+                    PropiedadDet det = new PropiedadDet(propiedad);
+                    if(id_estado_contrato != 0) {
+                        if (det.contrato != null && det.contrato.id_estado.equals(id_estado_contrato)) {
+                            listaDet.add(det);
+                        }
+                    } else {
+                        listaDet.add(det);
+                    }
                 }
             }
-            if (listaDet.size() > 0) { //tp.getListFiltroCount(filtroPropiedad);
+            
+            if (listaDet.size() > 0) {
                 jr.setTotalRecordCount(listaDet.size());
                 jr.setRecordCount(listaDet.size());
                 jr.setRecords(listaDet);

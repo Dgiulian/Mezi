@@ -159,17 +159,12 @@ public abstract class TransaccionBase<E> {
         String tabla = this.getTabla();        
         String limit = this.getLimit(pagNro,this.getNumResults());        
         String query = "select * from " + tabla  + " " + where + " " + order + " " + limit;        
-        System.out.println(query);
         return this.getList(query);
     }
     public Integer getListFiltroCount(Map<String,String> filtro){        
         String where = this.getWhere(filtro);
         String tabla = this.getTabla();                
         String query = "select count(*) from " + tabla  + " " + where;
-        System.out.println(query);
-        
-        
-        
         return this.getInteger(query);
     }
     protected String getByDateRangeQuery(String fecha_desde,String hora_desde,String fecha_hasta, String hora_hasta){
@@ -180,7 +175,6 @@ public abstract class TransaccionBase<E> {
         if (hora_desde == null) hora_desde = "00:00:00";
         if (hora_hasta == null) hora_hasta = "24:59:59";
         String query = this.getByDateRangeQuery(fecha_desde, hora_desde, fecha_hasta, hora_hasta);
-        System.out.println(query);
         return this.getList(query);
     }
     /*

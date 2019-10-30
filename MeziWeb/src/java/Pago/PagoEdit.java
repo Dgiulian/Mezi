@@ -249,17 +249,16 @@ public class PagoEdit extends HttpServlet {
                     saldo += cuenta_detalle.getDebe() - cuenta_detalle.getHaber();
                 }
 
-                if (cuenta.getId_tipo_cliente().equals(OptionsCfg.CLIENTE_TIPO_PROPIETARIO)) {
-                    continue;
-                }
-                int days = Days.daysBetween(fecha, today).getDays() - 1;
-                if (days < punitorio_desde) {
-                    continue;
-                }
-                Cuenta_detalle punitorio = tcd.calcularPunitorio(cuenta_detalle, 1, punitorio_porc);
-                if (punitorio != null) {
-                    listaDetalle.add(punitorio);
-                    saldo += punitorio.getDebe();
+                if (cuenta.getId_tipo_cliente().equals(OptionsCfg.CLIENTE_TIPO_INQUILINO)) {
+                    int days = Days.daysBetween(fecha, today).getDays() - 1;
+                    if (days < punitorio_desde) {
+                        continue;
+                    }
+                    Cuenta_detalle punitorio = tcd.calcularPunitorio(cuenta_detalle, 1, punitorio_porc);
+                    if (punitorio != null) {
+                        listaPunitorio.add(punitorio);
+                        saldo += punitorio.getDebe();
+                    }
                 }
             }
 

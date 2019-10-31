@@ -349,11 +349,10 @@ private static Contrato getContrato(){
             "   and cuenta_detalle.fecha >= '%s' ",cuenta.getId(),OptionsCfg.CONCEPTO_PAGO,fecha);
         return this.getList(query).isEmpty();
     }
-      public Cuenta_detalle calcularPunitorio(Cuenta_detalle cd,Integer punitorio_desde,Float porc){
+      public Cuenta_detalle calcularPunitorio(Cuenta_detalle cd,Integer punitorio_desde,Float porc, LocalDate today){
           Cuenta_detalle punitorio = null;
           if(cd==null) return null;
-          LocalDate fecha = new LocalDate(cd.getFecha());
-          LocalDate today = new LocalDate();
+          LocalDate fecha = new LocalDate(cd.getFecha());          
           if (!cd.getId_concepto().equals(OptionsCfg.CONCEPTO_ALQUILER) &&
               !cd.getId_concepto().equals(OptionsCfg.CONCEPTO_DOCUMENTO)) return null;
           
@@ -391,15 +390,15 @@ private static Contrato getContrato(){
               if(fecha.isAfter(today)) continue; // No se consideran punitorios de fecha posterior a hoy
               int days = Days.daysBetween(fecha, today).getDays() - 1;
               if (days <punitorio_desde) continue;
-              Cuenta_detalle punitorio = this.calcularPunitorio(cd,1,punitorio_porc);
+              Cuenta_detalle punitorio = this.calcularPunitorio(cd,1,punitorio_porc, new LocalDate());
               if(punitorio!=null) listaDetalle.add(punitorio);
           }
           return listaDetalle;
         }
       
       public List<Cuenta_detalle> getByRangoFecha(Cuenta cuenta,LocalDate fecha_desde, LocalDate fecha_hasta){
-          String query = String.format("select * from cuenta_detalle where cuenta_detalle.id_cuenta = %d and cuenta_detalle.fecha >= '%s' and cuenta_detalle.fecha <= '%s' order by fecha,id_concepto ",cuenta.getId(),fecha_desde, fecha_hasta);
-          //System.out.println(query);
+          String query = String.format("select * from cuenta_detalle where cuenta_detalle.id_cuenta = %d and cuenta_detalle.fecha >= '%s' and cuenta_detalle.fecha <= '%s' order by fecha, id, id_concepto ",cuenta.getId(),fecha_desde, fecha_hasta);
+          System.out.println(query);
           return this.getList(query);
       }
      

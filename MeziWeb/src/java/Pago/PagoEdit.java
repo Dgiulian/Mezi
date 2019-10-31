@@ -238,7 +238,7 @@ public class PagoEdit extends HttpServlet {
                 }
 
                 if (fecha.isAfter(fecha_consulta)) {
-                    continue; // No se considera nada posterior a la fecha de liquidacion
+                    continue; // No se considera nada posterior a la fecha de consulta
                 }
                 if (fecha.isAfter(today)) {
                     continue;
@@ -254,7 +254,7 @@ public class PagoEdit extends HttpServlet {
                     if (days < punitorio_desde) {
                         continue;
                     }
-                    Cuenta_detalle punitorio = tcd.calcularPunitorio(cuenta_detalle, 1, punitorio_porc);
+                    Cuenta_detalle punitorio = tcd.calcularPunitorio(cuenta_detalle, 1, punitorio_porc, new LocalDate());
                     if (punitorio != null) {
                         listaPunitorio.add(punitorio);
                         saldo += punitorio.getDebe();

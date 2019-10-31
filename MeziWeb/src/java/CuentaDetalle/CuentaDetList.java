@@ -115,7 +115,7 @@ public class CuentaDetList extends HttpServlet {
 
                 int days = Days.daysBetween(fecha, today).getDays() - 1;
                 if (days <punitorio_desde) continue;
-                Cuenta_detalle punitorio = tcd.calcularPunitorio(cd,1,punitorio_porc);
+                Cuenta_detalle punitorio = tcd.calcularPunitorio(cd,1,punitorio_porc, new LocalDate());
                 if(punitorio!=null) listaDetalle.add(punitorio);
             }
             if(cuenta.getFecha_liquidacion()==null || cuenta.getFecha_liquidacion().equals("")) cuenta.setFecha_liquidacion(strFecha_desde);

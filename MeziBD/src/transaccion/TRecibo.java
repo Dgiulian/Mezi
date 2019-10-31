@@ -54,7 +54,7 @@ public class TRecibo extends TransaccionBase<Recibo> {
                 "and recibo.id_cliente = %d\n" +
                 "and recibo.id_tipo_recibo = %d\n"+
                 "and recibo.fecha >= '%s'\n"+
-                "and recibo.id <> %d\n"+
+                "and recibo.id > %d\n"+
                 "order by recibo.fecha desc"
                 ,recibo.getId_contrato(),recibo.getId_cuenta(),recibo.getId_cliente(),recibo.getId_tipo_recibo(),recibo.getFecha(),recibo.getId());
         return this.getById(query);
@@ -66,7 +66,7 @@ public class TRecibo extends TransaccionBase<Recibo> {
                 "and recibo.id_cliente = %d\n" +
                 "and recibo.id_tipo_recibo = %d\n"+
                 "and recibo.fecha <= '%s'\n"+
-                "and recibo.id <> %d\n"+
+                "and recibo.id < %d\n"+
                 "order by recibo.fecha"
                 ,recibo.getId_contrato(),recibo.getId_cuenta(),recibo.getId_cliente(),recibo.getId_tipo_recibo(),recibo.getFecha(),recibo.getId());
         return this.getById(query);
